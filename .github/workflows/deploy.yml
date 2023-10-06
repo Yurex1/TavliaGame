@@ -30,7 +30,7 @@ jobs:
         npm run build
 
     - name: Deploy Backend to Azure Web App
-      uses: azure/webapps-deploy@v4 
+      uses: azure/webapps-deploy@v2
       with:
         app-name: tavilgame-backend
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_Backend }}
