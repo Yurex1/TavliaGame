@@ -18,14 +18,28 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install dependencies
-      run: npm install 
+    - name: Install dependencies (Backend)
+      run: |
+        cd backend
+        npm install
 
-    - name: Build project
-      run: npm run build 
+    - name: Install dependencies (Frontend)
+      run: |
+        cd frontend
+        npm install
+
+    - name: Build project (Backend)
+      run: |
+        cd backend
+        npm run build
+
+    - name: Build project (Frontend)
+      run: |
+        cd frontend
+        npm run build
 
     - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2 
+      uses: azure/webapps-deploy@v2
       with:
         app-name: tavilgame
         publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
