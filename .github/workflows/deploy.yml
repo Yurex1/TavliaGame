@@ -41,8 +41,8 @@ jobs:
     - name: Prepare Deployment Directory
       run: |
         mkdir -p deploy_output/backend deploy_output/frontend
-        cp -r backend/dist/* deploy_output/backend
-        cp -r frontend/.next/* deploy_output/frontend
+        cp -r backend/* deploy_output/backend
+        cp -r frontend/* deploy_output/frontend
 
     - name: Create web.config
       run: |
