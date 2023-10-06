@@ -72,4 +72,3 @@
           app-name: tavilgame
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
           package: './deploy_output'
-          startup-command: 'bash deploy_output/startup.sh'
