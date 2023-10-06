@@ -48,7 +48,7 @@ jobs:
         npm run build
 
     - name: Deploy Frontend to Azure Web App
-      uses: azure/webapps-deploy@v42
+      uses: azure/webapps-deploy@v2
       with:
         app-name: tavilgame-frontend
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_Frontend }}
