@@ -44,6 +44,27 @@ jobs:
         cp -r backend/dist/* deploy_output/backend
         cp -r frontend/.next/* deploy_output/frontend
 
+    - name: Create web.config
+      run: |
+        echo '<configuration>' >> deploy_output/web.config
+        echo '    <system.webServer>' >> deploy_output/web.config
+        echo '        <rewrite>' >> deploy_output/web.config
+        echo '            <rules>' >> deploy_output/web.config
+        echo '                <!-- Rule to route all backend requests -->' >> deploy_output/web.config
+        echo '                <rule name="Backend" stopProcessing="true">' >> deploy_output/web.config
+        echo '                    <match url="^backend/(.*)" />' >> deploy_output/web.config
+        echo '                    <action type="Rewrite" url="backend/dist/{R:1}" />' >> deploy_output/web.config
+        echo '                </rule>' >> deploy_output/web.config
+        echo '                <!-- Rule to route all other requests to frontend -->' >> deploy_output/web.config
+        echo '                <rule name="Frontend" stopProcessing="true">' >> deploy_output/web.config
+        echo '                    <match url=".*" />' >> deploy_output/web.config
+        echo '                    <action type="Rewrite" url="frontend/{R:0}" />' >> deploy_output/web.config
+        echo '                </rule>' >> deploy_output/web.config
+        echo '            </rules>' >> deploy_output/web.config
+        echo '        </rewrite>' >> deploy_output/web.config
+        echo '    </system.webServer>' >> deploy_output/web.config
+        echo '</configuration>' >> deploy_output/web.config
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
