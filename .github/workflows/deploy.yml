@@ -1,34 +1,32 @@
-name: CI/CD
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
-
+      - main 
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    
+
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '20'
-        
+
     - name: Install dependencies
-      run: npm ci
-    
-    - name: Build
-      run: npm run build
-      
-    - name: Deploy to Azure
-      uses: azure/webapps-deploy@v2
+      run: npm install 
+
+    - name: Build project
+      run: npm run build 
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v4 
       with:
-        app-name: TavliaGame
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
-        package: .
+        app-name: tavilgame
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
+        package: '.'
