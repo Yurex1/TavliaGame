@@ -18,10 +18,14 @@ jobs:
       with:
         node-version: '20'
 
-    # Backend
     - name: Install dependencies (Backend)
       run: |
         cd backend
+        npm install
+
+    - name: Install dependencies (Frontend)
+      run: |
+        cd frontend
         npm install
 
     - name: Build project (Backend)
@@ -29,27 +33,20 @@ jobs:
         cd backend
         npm run build
 
-    - name: Deploy Backend to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: tavilgame
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
-        package: './backend/dist'  
-
-    # Frontend
-    - name: Install dependencies (Frontend)
-      run: |
-        cd frontend
-        npm install
-
     - name: Build project (Frontend)
       run: |
         cd frontend
         npm run build
 
-    - name: Deploy Frontend to Azure Web App
+    - name: Prepare Deployment Directory
+      run: |
+        mkdir -p deploy_output/backend deploy_output/frontend
+        cp -r backend/dist/* deploy_output/backend
+        cp -r frontend/.next/* deploy_output/frontend
+
+    - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: tavilgame
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
-        package: './frontend/build'
+        package: './deploy_output'
