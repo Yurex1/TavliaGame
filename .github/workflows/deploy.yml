@@ -33,7 +33,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: tavilgame-backend
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_Backend }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
         package: './backend/dist'  
 
     # Frontend
@@ -51,5 +51,5 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: tavilgame-frontend
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_Frontend }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
         package: './frontend/build'
