@@ -1,7 +1,11 @@
 #!/bin/bash
 
-cd backend && npm run start &
+pwd
 
-cd ../frontend && npm run start &
+ls ..
 
-wait
+cd backend
+node dist/src/main.js &
+
+cd ../frontend
+npm run start
