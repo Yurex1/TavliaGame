@@ -7,7 +7,7 @@ on:
     paths-ignore:
       - "README.md"
       - ".husky"
-      - ".github/**"
+      
       - "**/*.csv"
       - .env*
   workflow_dispatch:
