@@ -41,6 +41,6 @@
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: tavilgame
+          app-name: tavlia
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
           package: './deploy_output'
