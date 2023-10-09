@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BoardComponent from "./BoardComponent";
 import { Board } from "../src/models/Board";
+import Table from "./Table";
 
 export default function GameTavlia({n} : any) {
     const[board, setBoard] = useState(new Board(n));
@@ -20,6 +21,7 @@ export default function GameTavlia({n} : any) {
     return (
         < div className = "game">
             <BoardComponent board={board} setBoard={setBoard}/>
+            <Table />
         </div>
     );
 }
