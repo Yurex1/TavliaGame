@@ -22,11 +22,9 @@ jobs:
       with:
         node-version: '18'
     
-    - name: Install dependencies and buildddd
+    - name: Install dependencies
       run: |
-        cd backend
         npm install
-        npm run build
     
     - name: Deploy to Azure
       uses: azure/webapps-deploy@v2
