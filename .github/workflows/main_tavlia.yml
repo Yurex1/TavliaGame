@@ -37,5 +37,5 @@ jobs:
         with:
           app-name: tavlia
           slot-name: "Production"
-          publish-profile: ${{ AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
           package: ./build/standalone
