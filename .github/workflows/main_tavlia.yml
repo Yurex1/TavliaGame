@@ -36,6 +36,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: tavlia
-          slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
           package: ./build/standalone
