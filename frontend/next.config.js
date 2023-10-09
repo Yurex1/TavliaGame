@@ -2,6 +2,8 @@
 const nextConfig = {
 
   reactStrictMode: true,
+  distDir: "build",
+  output: "standalone",
   basePath: '/frontend',
 }
 
