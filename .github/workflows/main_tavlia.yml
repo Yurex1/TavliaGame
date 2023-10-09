@@ -18,13 +18,13 @@
         with:
           node-version: '20'
   
-      - name: Install dependencies (Frontend)
+      - name: Install dependencies(Frontend)
         run: |
           cd frontend
           npm install
   
   
-      - name: Build project (Frontend)
+      - name: Build project(Frontend)
         run: |
           cd frontend
           npm run build
