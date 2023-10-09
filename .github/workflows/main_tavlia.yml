@@ -1,40 +1,34 @@
-name: Build and deploy Medium Next.js app to Azure Web App
+name: Deploy Frontend to Azure
 
 on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "README.md"
-      - ".husky"
-      
-      - "**/*.csv"
-      - .env*
-  workflow_dispatch:
+    paths:
+      - 'backend/**'
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v1
-        with:
-          node-version: "18.x"
-
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build
-          mv ./build/static ./build/standalone/build
-          mv ./public ./build/standalone
-
-      - name: "Deploy to Azure Web App"
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: tavlia
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4018ECCFB52A4751BF1D3DD939248084 }}
-          package: ./build/standalone
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+    
+    - name: Install dependencies and build
+      run: |
+        cd backend
+        npm install
+        npm run build
+    
+    - name: Deploy to Azure
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: tavliaback
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_932711221715456589443288068BB65A}}
+        package: backend/
