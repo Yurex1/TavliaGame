@@ -22,7 +22,7 @@ jobs:
       with:
         node-version: '18'
     
-    - name: Install dependencies and build
+    - name: Install dependencies and buildddd
       run: |
         cd backend
         npm install
