@@ -9,28 +9,28 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [20.x]
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Install dependencies
-      run: |
-        cd backend
-        npm install
-
-    - name: Build NestJS App
-      run: |
-        cd backend
-        npm run build
-
-    - name: Deploy to Azure
-      uses: azure/webapps-deploy@v2
-      with: 
-        app-name: tavilgamebackend
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_932711221715456589443288068BB65A }}
-        package: './backend'
+      # Build and deploy backend
+      - name: Build backend
+        run: |
+          cd backend
+          npm install
+          npm run build
+      - name: Deploy backend to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.tavilgamebackend }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_932711221715456589443288068BB65A }}
+          package: backend
