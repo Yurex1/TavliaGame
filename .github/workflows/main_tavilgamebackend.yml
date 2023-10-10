@@ -31,6 +31,6 @@ jobs:
       - name: Deploy backend to Azure
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.tavilgamebackend }}
+          app-name: tavilgamebackend
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_932711221715456589443288068BB65A }}
           package: backend
