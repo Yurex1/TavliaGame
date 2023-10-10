@@ -32,7 +32,7 @@ jobs:
       - name: Deploy frontend to Azure
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.Tavil }}
+          app-name: Tavil 
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_FRONTEND }}
           package: frontend
 
