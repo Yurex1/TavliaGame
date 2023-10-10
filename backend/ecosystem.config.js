@@ -2,7 +2,7 @@ module.exports = {
     apps: [
       {
         name: "my-nestJs-backend",
-        script: "dist/main.js",
+        script: "dist/src/main.js",
         args: "",
         watch: false,
         autorestart: true,
