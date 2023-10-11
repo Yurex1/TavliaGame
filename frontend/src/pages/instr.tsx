@@ -1,0 +1,26 @@
+import { useRouter } from "next/router";
+import SideBare from "../../components/SideBar";
+import GameTavlia from "../../components/GameTavlia";
+
+export default function instr() {
+    
+  return (
+    <>
+      <div className='wrapper'>
+        <SideBare /> 
+
+      <div style = {{marginLeft: "20vw", textIndent: "2vw"}} className = "text">
+        <h1>Instructions</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In auctor egestas sapien, a sodales lacus convallis vel. Donec malesuada lacus a sem consequat, eu interdum erat condimentum. Cras pellentesque pharetra ligula, et pulvinar ipsum scelerisque quis. Nulla lobortis quis mi ac ultrices. In et auctor risus. Phasellus vel hendrerit risus, vel sagittis orci. Curabitur tristique ante in leo vulputate, molestie facilisis leo semper. Sed vestibulum turpis nec pulvinar imperdiet. Pellentesque vitae metus velit. Praesent est est, iaculis tincidunt placerat lobortis, viverra at sapien. Fusce placerat ligula id libero bibendum lobortis. Mauris mollis non velit non posuere. Integer hendrerit tincidunt congue. Sed condimentum sem a lacus sagittis, quis convallis lorem porta. Sed nec lacinia quam, ac venenatis justo. </p>
+        <img src = "instr.jpeg" style={{float:"right"}}/>
+        <p>Cras a sem urna. Donec dui tortor, posuere ut auctor sit amet, euismod in mi. Nullam ut libero magna. Aliquam at turpis accumsan ligula pulvinar scelerisque. Duis non mauris arcu. Morbi non urna fermentum, ultrices purus ac, malesuada nisi. Fusce sit amet finibus sem, a porta tortor. Nam vitae sem nec odio vestibulum sollicitudin. Aliquam egestas, augue sit amet tempus cursus, nunc leo porttitor dolor, ut sollicitudin nisi tellus auctor elit. </p>
+        <p>Nullam quis ligula sit amet augue pellentesque ultricies. Sed vitae risus quis velit sagittis tincidunt. Nullam non semper libero. Nulla facilisi. Sed vel tortor non elit ultricies dapibus. Sed vitae nisl vitae justo tincidunt aliquet. Nullam euismod, tortor ac ultrices aliquam, nisl risus aliquam nisl, quis tincidunt purus justo vel nisl. </p> 
+        <p>Nullam quis ligula sit amet augue pellentesque ultricies. Sed vitae risus quis velit sagittis tincidunt. Nullam non semper libero. Nulla facilisi. Sed vel tortor non elit ultricies dapibus. Sed vitae nisl vitae justo tincidunt aliquet. Nullam euismod, tortor ac ultrices aliquam, nisl risus aliquam nisl, quis tincidunt purus justo vel nisl. </p>
+        <p>Fusce porta, nibh et tristique rutrum, dui nunc fringilla odio, nec viverra quam ex et massa. Donec ultrices lacus in vehicula porta. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam porttitor urna nec erat aliquet, et viverra nibh venenatis. Donec libero lorem, fringilla quis placerat sit amet, viverra nec mauris. Nulla ipsum enim, fermentum eget urna at, euismod porttitor urna. Mauris molestie velit a sem pharetra vestibulum. Praesent efficitur odio erat, ut aliquet purus porttitor ut. Nulla imperdiet eu dolor et laoreet. Vestibulum eget diam bibendum, ultrices mauris tristique, consequat magna. Donec consequat eleifend arcu, id porttitor ligula efficitur ut. Vestibulum vel magna ac nibh finibus commodo. Nulla gravida nec elit et tempor. Suspendisse volutpat neque nibh, sollicitudin lobortis ex lacinia a. Sed tristique gravida velit, nec tincidunt augue dictum at. </p>
+        <p>Mauris lacinia faucibus erat, quis congue urna consectetur nec. Ut et bibendum tortor. In ut nunc et lorem consectetur commodo. Donec imperdiet convallis ipsum, sit amet laoreet orci aliquam nec. Sed feugiat porta metus, at porttitor ipsum hendrerit nec. Nunc dictum dapibus mauris, id aliquet augue consectetur in. Etiam at hendrerit justo, eget iaculis velit. Vivamus eget lorem eu lectus egestas pretium non vitae massa. Etiam non feugiat nibh. Sed laoreet magna a nunc dapibus, eu iaculis lacus posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam et vulputate urna, sit amet convallis lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc lacus mi, gravida tincidunt commodo in, efficitur quis erat. Vestibulum vulputate lorem tempus diam varius, sed vestibulum enim sodales. In imperdiet, dui nec vehicula aliquam, augue mi ornare arcu, in tincidunt est velit sed urna. </p>
+        <p>Nulla ut pharetra quam. Aenean non lobortis ex, nec luctus diam. Donec condimentum sapien in imperdiet hendrerit. Phasellus mauris augue, ultrices id pellentesque sit amet, varius non enim. Etiam ultrices justo eget mi condimentum, sed hendrerit elit euismod. Curabitur rhoncus purus eget lorem porttitor imperdiet. Quisque tristique pretium facilisis. Sed vehicula sodales maximus. Sed in molestie lectus. Aliquam ex purus, iaculis at pharetra ac, condimentum quis mauris. Aenean cursus eros sit amet lectus viverra, ultricies tristique metus euismod. Nunc dapibus mollis ullamcorper. Sed rutrum mauris ante, vitae imperdiet magna lacinia ut. Quisque a commodo lectus. Praesent lacinia mauris in urna bibendum, et accumsan lectus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+      </div>
+      </div>
+    </>
+  );
+}

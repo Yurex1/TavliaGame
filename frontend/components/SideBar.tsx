@@ -15,7 +15,7 @@ export default function SideBare()
                 Play
               </div>
             </a>
-            <a href="" className='aside-item'>
+            <a href="/instr" className='aside-item'>
               <div className='icon'></div>
               <div className='text'>
                 Instractions
