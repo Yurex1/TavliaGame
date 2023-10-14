@@ -18,7 +18,13 @@ export declare class AuthController {
         email: string;
         name: string;
     }[]>;
-    findOne(id: string): string;
-    update(id: string, updateAuthDto: UpdateAuthDto): string;
+    findOne(id: string): Promise<string | {
+        id: number;
+        login: string;
+        password: string;
+        email: string;
+        name: string;
+    }>;
+    update(id: string, updateAuthDto: UpdateAuthDto): Promise<string>;
     remove(id: string): Promise<string>;
 }

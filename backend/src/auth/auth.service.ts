@@ -12,7 +12,6 @@ export class AuthService {
   async createUser(data: Prisma.UserCreateInput) {
     return this.prismaService.user
       .findFirstOrThrow({
-        // where: { OR: [{ email: data.email }, { login: data.login }] },
         where: { login: data.login },
       })
       .then(() => {
@@ -27,15 +26,27 @@ export class AuthService {
   }
 
   async findAll() {
-    return this.prismaService.user.findMany();
+    return await this.prismaService.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  async findOne(id: number) {
+    return await this.prismaService.user
+      .findFirstOrThrow({ where: { id: id } })
+      .catch(() => `User with id: ${id} was not found`);
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  async update(id: number, updateAuthDto: UpdateAuthDto) {
+    return await this.prismaService.user
+      .update({
+        where: { id: id },
+        data: updateAuthDto,
+      })
+      .then(() => {
+        return `User successfully updated`;
+      })
+      .catch(() => {
+        return `Error occured while updating user`;
+      });
   }
 
   async remove(id: number) {
