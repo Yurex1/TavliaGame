@@ -20,5 +20,5 @@ export declare class AuthService {
     }[]>;
     findOne(id: number): string;
     update(id: number, updateAuthDto: UpdateAuthDto): string;
-    remove(id: number): string;
+    remove(id: number): Promise<string>;
 }

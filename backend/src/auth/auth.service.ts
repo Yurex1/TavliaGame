@@ -38,12 +38,14 @@ export class AuthService {
     return `This action updates a #${id} auth`;
   }
 
-  remove(id: number) {
-    if (
-      this.prismaService.user.findFirst({ where: { id: id } }).then(() => {
-        return this.prismaService.user.delete({ where: { id: id } });
+  async remove(id: number) {
+    return await this.prismaService.user
+      .delete({ where: { id: id } })
+      .then(() => {
+        return "User was successfully deleted";
       })
-    )
-      return "No user with this id";
+      .catch(() => {
+        return `No user with id: ${id}`;
+      });
   }
 }

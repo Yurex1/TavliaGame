@@ -41,11 +41,15 @@ let AuthService = class AuthService {
     update(id, updateAuthDto) {
         return `This action updates a #${id} auth`;
     }
-    remove(id) {
-        if (this.prismaService.user.findFirst({ where: { id: id } }).then(() => {
-            return this.prismaService.user.delete({ where: { id: id } });
-        }))
-            return "No user with this id";
+    async remove(id) {
+        return await this.prismaService.user
+            .delete({ where: { id: id } })
+            .then(() => {
+            return "User was successfully deleted";
+        })
+            .catch(() => {
+            return `No user with id: ${id}`;
+        });
     }
 };
 exports.AuthService = AuthService;
