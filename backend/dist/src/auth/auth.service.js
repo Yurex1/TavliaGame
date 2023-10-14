@@ -33,13 +33,25 @@ let AuthService = class AuthService {
         });
     }
     async findAll() {
-        return this.prismaService.user.findMany();
+        return await this.prismaService.user.findMany();
     }
-    findOne(id) {
-        return `This action returns a #${id} auth`;
+    async findOne(id) {
+        return await this.prismaService.user
+            .findFirstOrThrow({ where: { id: id } })
+            .catch(() => `User with id: ${id} was not found`);
     }
-    update(id, updateAuthDto) {
-        return `This action updates a #${id} auth`;
+    async update(id, updateAuthDto) {
+        return await this.prismaService.user
+            .update({
+            where: { id: id },
+            data: updateAuthDto,
+        })
+            .then(() => {
+            return `User successfully updated`;
+        })
+            .catch(() => {
+            return `Error occured while updating user`;
+        });
     }
     async remove(id) {
         return await this.prismaService.user
