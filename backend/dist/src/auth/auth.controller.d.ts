@@ -20,5 +20,5 @@ export declare class AuthController {
     }[]>;
     findOne(id: string): string;
     update(id: string, updateAuthDto: UpdateAuthDto): string;
-    remove(id: string): string;
+    remove(id: string): Promise<string>;
 }
