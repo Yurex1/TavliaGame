@@ -23,7 +23,7 @@ export declare class AuthService {
         email: string;
         name: string;
     }[]>;
-    findOne(login: string): Promise<string | {
+    findOne(id: number): Promise<string | {
         id: number;
         login: string;
         password: string;

@@ -22,7 +22,7 @@ export declare class AuthController {
         name: string;
     }[]>;
     getProfile(req: any): any;
-    findOne(login: string): Promise<string | {
+    findOne(id: string): Promise<string | {
         id: number;
         login: string;
         password: string;

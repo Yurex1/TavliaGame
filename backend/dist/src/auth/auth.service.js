@@ -50,10 +50,10 @@ let AuthService = class AuthService {
     async findAll() {
         return await this.prismaService.user.findMany();
     }
-    async findOne(login) {
+    async findOne(id) {
         return await this.prismaService.user
-            .findFirstOrThrow({ where: { login: login } })
-            .catch(() => `User with login: ${login} was not found`);
+            .findFirstOrThrow({ where: { id: id } })
+            .catch(() => `User with login: ${id} was not found`);
     }
     async update(id, updateAuthDto) {
         return await this.prismaService.user
