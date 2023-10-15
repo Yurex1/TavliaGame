@@ -7,14 +7,26 @@ import {
   Param,
   Delete,
   Put,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+  Request,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateAuthDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
+import { JwtService } from "@nestjs/jwt";
+import { AuthGuard } from "./auth.guard";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @HttpCode(HttpStatus.OK)
+  @Post("login")
+  signIn(@Body() signInDto: Record<string, any>) {
+    return this.authService.signIn(signInDto.username, signInDto.password);
+  }
 
   @Post()
   create(@Body() createAuthDto: CreateAuthDto) {
@@ -26,9 +38,15 @@ export class AuthController {
     return this.authService.findAll();
   }
 
+  @UseGuards(AuthGuard)
+  @Get("profile")
+  getProfile(@Request() req) {
+    return req.user;
+  }
+
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.authService.findOne(+id);
+  findOne(@Param("id") login: string) {
+    return this.authService.findOne(login);
   }
 
   @Put(":id")

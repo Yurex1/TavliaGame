@@ -1,9 +1,14 @@
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { PrismaService } from "src/prisma.service";
 import { Prisma } from "@prisma/client";
+import { JwtService } from "@nestjs/jwt";
 export declare class AuthService {
     private prismaService;
-    constructor(prismaService: PrismaService);
+    private jwtService;
+    constructor(prismaService: PrismaService, jwtService: JwtService);
+    signIn(username: any, pass: any): Promise<{
+        access_token: string;
+    }>;
     createUser(data: Prisma.UserCreateInput): Promise<string | {
         id: number;
         login: string;
@@ -18,7 +23,7 @@ export declare class AuthService {
         email: string;
         name: string;
     }[]>;
-    findOne(id: number): Promise<string | {
+    findOne(login: string): Promise<string | {
         id: number;
         login: string;
         password: string;

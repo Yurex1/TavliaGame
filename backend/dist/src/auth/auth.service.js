@@ -13,9 +13,24 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
 const bcrypt = require("bcrypt");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
-    constructor(prismaService) {
+    constructor(prismaService, jwtService) {
         this.prismaService = prismaService;
+        this.jwtService = jwtService;
+    }
+    async signIn(username, pass) {
+        console.log("PP: ", username, pass);
+        const user = await this.prismaService.user.findFirst({
+            where: { login: username },
+        });
+        if (user?.password !== pass) {
+            throw new common_1.UnauthorizedException();
+        }
+        const payload = { sub: user.id, username: user.login };
+        return {
+            access_token: await this.jwtService.signAsync(payload),
+        };
     }
     async createUser(data) {
         return this.prismaService.user
@@ -35,10 +50,10 @@ let AuthService = class AuthService {
     async findAll() {
         return await this.prismaService.user.findMany();
     }
-    async findOne(id) {
+    async findOne(login) {
         return await this.prismaService.user
-            .findFirstOrThrow({ where: { id: id } })
-            .catch(() => `User with id: ${id} was not found`);
+            .findFirstOrThrow({ where: { login: login } })
+            .catch(() => `User with login: ${login} was not found`);
     }
     async update(id, updateAuthDto) {
         return await this.prismaService.user
@@ -67,6 +82,7 @@ let AuthService = class AuthService {
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map
