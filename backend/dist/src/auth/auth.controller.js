@@ -17,9 +17,13 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const update_auth_dto_1 = require("./dto/update-auth.dto");
+const auth_guard_1 = require("./auth.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
+    }
+    signIn(signInDto) {
+        return this.authService.signIn(signInDto.username, signInDto.password);
     }
     create(createAuthDto) {
         return this.authService.createUser(createAuthDto);
@@ -27,8 +31,11 @@ let AuthController = class AuthController {
     findAll() {
         return this.authService.findAll();
     }
-    findOne(id) {
-        return this.authService.findOne(+id);
+    getProfile(req) {
+        return req.user;
+    }
+    findOne(login) {
+        return this.authService.findOne(login);
     }
     update(id, updateAuthDto) {
         return this.authService.update(+id, updateAuthDto);
@@ -38,6 +45,14 @@ let AuthController = class AuthController {
     }
 };
 exports.AuthController = AuthController;
+__decorate([
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, common_1.Post)("login"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "signIn", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
@@ -51,6 +66,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Get)("profile"),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getProfile", null);
 __decorate([
     (0, common_1.Get)(":id"),
     __param(0, (0, common_1.Param)("id")),

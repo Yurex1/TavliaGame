@@ -1,13 +1,31 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { CreateAuthDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { PrismaService } from "src/prisma.service";
 import { User, Prisma } from "@prisma/client";
 import * as bcrypt from "bcrypt";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private jwtService: JwtService
+  ) {}
+
+  async signIn(username, pass) {
+    console.log("PP: ", username, pass);
+    const user: User = await this.prismaService.user.findFirst({
+      where: { login: username },
+    });
+    if (user?.password !== pass) {
+      throw new UnauthorizedException();
+    }
+    const payload = { sub: user.id, username: user.login };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
 
   async createUser(data: Prisma.UserCreateInput) {
     return this.prismaService.user
@@ -29,10 +47,10 @@ export class AuthService {
     return await this.prismaService.user.findMany();
   }
 
-  async findOne(id: number) {
+  async findOne(login: string) {
     return await this.prismaService.user
-      .findFirstOrThrow({ where: { id: id } })
-      .catch(() => `User with id: ${id} was not found`);
+      .findFirstOrThrow({ where: { login: login } })
+      .catch(() => `User with login: ${login} was not found`);
   }
 
   async update(id: number, updateAuthDto: UpdateAuthDto) {
