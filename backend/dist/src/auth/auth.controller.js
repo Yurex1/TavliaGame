@@ -34,8 +34,8 @@ let AuthController = class AuthController {
     getProfile(req) {
         return req.user;
     }
-    findOne(login) {
-        return this.authService.findOne(login);
+    findOne(id) {
+        return this.authService.findOne(+id);
     }
     update(id, updateAuthDto) {
         return this.authService.update(+id, updateAuthDto);
@@ -61,6 +61,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "create", null);
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

@@ -47,10 +47,10 @@ export class AuthService {
     return await this.prismaService.user.findMany();
   }
 
-  async findOne(login: string) {
+  async findOne(id: number) {
     return await this.prismaService.user
-      .findFirstOrThrow({ where: { login: login } })
-      .catch(() => `User with login: ${login} was not found`);
+      .findFirstOrThrow({ where: { id: id } })
+      .catch(() => `User with login: ${id} was not found`);
   }
 
   async update(id: number, updateAuthDto: UpdateAuthDto) {

@@ -33,6 +33,7 @@ export class AuthController {
     return this.authService.createUser(createAuthDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.authService.findAll();
@@ -45,8 +46,8 @@ export class AuthController {
   }
 
   @Get(":id")
-  findOne(@Param("id") login: string) {
-    return this.authService.findOne(login);
+  findOne(@Param("id") id: string) {
+    return this.authService.findOne(+id);
   }
 
   @Put(":id")
