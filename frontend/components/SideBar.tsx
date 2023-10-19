@@ -1,59 +1,32 @@
-export default function SideBare()
-{
-    return (
-        <aside>
-          <div className='top-items'>
-            <a href="../" className='name'>
-              {/* <div className='img'></div> */}
-              <div className='text'>
-                <b>Tavlia</b>
-              </div>
-            </a>
-            <a href="../" className='aside-item'>
-              <div className='icon'></div>
-              <div className='text'>
-                Play
-              </div>
-            </a>
-            <a href="" className='aside-item'>
-              <div className='icon'></div>
-              <div className='text'>
-                Instractions
-              </div>
-            </a>
-            <a href="" className='aside-item'>
-              <div className='icon'></div>
-              <div className='text'>
-                Profile
-              </div>
-            </a>
-            <a href="" className='aside-item'>
-              <div className='icon'></div>
-              <div className='text'>
-                Rank
-              </div>
-            </a>
-            <a href="" className='aside-item'>
-              <div className='icon'></div>
-              <div className='text'>
-                Friends
-              </div>
-            </a>
-            <a href="" className='aside-item'>
-              <div className='icon'></div>
-              <div className='text'>
-                Settings
-              </div>
-            </a>
+function SideBareItems({text, hrefText} : any) {
+  return (<a href={hrefText} className='aside-item'>
+    <div className='icon'></div>
+    <div className='text'>
+      {text}
+    </div>
+  </a>);
+}
+
+export default function SideBare() {
+  return (
+    <aside>
+      <div className='top-items'>
+        <a href="../" className='name'>
+          {/* <div className='img'></div> */}
+          <div className='text'>
+            <b>Tavlia</b>
           </div>
-          <div className='down-items'>
-            <a href="instraction" className='aside-item'>
-              <div className='icon'></div>
-              <div className='text'>
-                Help
-              </div>
-            </a>
-          </div>
-        </aside>
-    );
+        </a>
+        <SideBareItems text="Play" hrefText="../"/>
+        <SideBareItems text="Instraction" hrefText="../"/>
+        <SideBareItems text="Profile" hrefText="../"/>
+        <SideBareItems text="Rank" hrefText="../"/>
+        <SideBareItems text="Friends" hrefText="../"/>
+        <SideBareItems text="Settings" hrefText="../"/>
+      </div>
+      <div className='down-items'>
+        <SideBareItems text="Help" hrefText="../"/>
+      </div>
+    </aside>
+  );
 }
