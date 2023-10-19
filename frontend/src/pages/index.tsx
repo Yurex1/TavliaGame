@@ -1,5 +1,3 @@
-import Link from "next/link";
-import SideBare from "@components/SideBar";
 import React from "react";
 import Dropdown from "@components/Dropdown";
 
@@ -10,7 +8,6 @@ export default function Home() {
   return (
     <>
       <div className='wrapper'>
-        <SideBare />
         <div className='main'>
           <div className='games'>
             <div className="main-game">
