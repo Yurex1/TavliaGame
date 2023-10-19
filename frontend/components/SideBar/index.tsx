@@ -1,4 +1,5 @@
 import SideBarItem from "./SideBarItem";
+import SideBarLogItem from "./SideBarLogItem";
 export default function SideBare() {
   return (
     <aside>
@@ -15,6 +16,7 @@ export default function SideBare() {
         <SideBarItem text="Rank" hrefText="../" />
         <SideBarItem text="Friends" hrefText="../" />
         <SideBarItem text="Settings" hrefText="../" />
+        <SideBarLogItem />
       </div>
       <div className="down-items">
         <SideBarItem text="Help" hrefText="../" />
