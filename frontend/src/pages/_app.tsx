@@ -6,7 +6,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <SideBare />
-      <Component {...pageProps} />
+      <div className="main">
+        <Component  {...pageProps} />
+      </div>
     </>
   );
 }
