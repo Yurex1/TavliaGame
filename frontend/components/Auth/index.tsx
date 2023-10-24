@@ -7,11 +7,13 @@ const Auth = () => {
     setMode((prev) => (prev === "login" ? "signup" : "login"));
   }
   return (
-    <div className="auth">
-      <AuthForm mode={mode} />
-      <button onClick={onClick}>
-        {mode === "login" ? "I have not acount" : "I already have acount"}
-      </button>
+    <div className="auth-wraper">
+      <div className="auth">
+        <AuthForm mode={mode} />
+        <button onClick={onClick}>
+          {mode === "login" ? "I have not acount" : "I already have acount"}
+        </button>
+      </div>
     </div>
   );
 };
