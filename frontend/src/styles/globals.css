@@ -259,6 +259,10 @@ aside{
 } */
 
 .auth{
+  border-radius: 2%;
+  border: black solid 1px;
+  box-shadow: 2px 2px 2px black;
+  padding: 100px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -287,5 +291,10 @@ form{
   justify-content: center;
 }
 form > *{
+  margin: 10px;
+  font-size: 25px;
+}
+
+.auth>button{
   margin: 10px;
 }
