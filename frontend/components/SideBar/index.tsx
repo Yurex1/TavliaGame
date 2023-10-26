@@ -1,12 +1,18 @@
+import { Dispatch, FC, SetStateAction } from "react";
 import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
-export default function SideBare() {
+type SideBareProps = {
+  setShowAuth: (showAuth: boolean) => void;
+}
+
+
+const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
   return (
     <aside>
       <div className="top-items">
         <a href="../" className="name">
           {/* <div className='img'></div> */}
-          <div className="text">
+          <div>
             <b>Tavlia</b>
           </div>
         </a>
@@ -16,7 +22,7 @@ export default function SideBare() {
         <SideBarItem text="Rank" hrefText="../" />
         <SideBarItem text="Friends" hrefText="../" />
         <SideBarItem text="Settings" hrefText="../" />
-        <SideBarLogItem />
+        <SideBarLogItem setShowAuth = {setShowAuth}/>
       </div>
       <div className="down-items">
         <SideBarItem text="Help" hrefText="../" />
@@ -24,3 +30,5 @@ export default function SideBare() {
     </aside>
   );
 }
+
+export default SideBare;
