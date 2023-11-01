@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import SideBare from "../../components/SideBar";
 import GameTavlia from "../../components/GameTavlia";
 
 export default function Game() {
@@ -9,7 +8,6 @@ export default function Game() {
   return (
     <>
       <div className='wrapper'>
-        <SideBare /> 
         <GameTavlia n = {n}/>
       </div>
     </>
