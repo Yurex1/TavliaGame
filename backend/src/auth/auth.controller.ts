@@ -15,7 +15,6 @@ import {
 import { AuthService } from "./auth.service";
 import { CreateAuthDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
-import { JwtService } from "@nestjs/jwt";
 import { AuthGuard } from "./auth.guard";
 
 @Controller("auth")
