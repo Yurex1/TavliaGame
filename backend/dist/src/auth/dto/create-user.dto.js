@@ -32,6 +32,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], CreateAuthDto.prototype, "email", void 0);
 //# sourceMappingURL=create-user.dto.js.map

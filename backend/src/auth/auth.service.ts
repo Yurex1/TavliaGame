@@ -14,7 +14,9 @@ export class AuthService {
   ) {}
 
   async signIn(username, pass) {
-    console.log("PP: ", username, pass);
+    // if (username === undefined || pass === undefined) {
+    //   return "username of password is undefined";
+    // }
     const user: User = await this.prismaService.user.findFirst({
       where: { login: username },
     });

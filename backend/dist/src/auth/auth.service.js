@@ -20,7 +20,6 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async signIn(username, pass) {
-        console.log("PP: ", username, pass);
         const user = await this.prismaService.user.findFirst({
             where: { login: username },
         });
