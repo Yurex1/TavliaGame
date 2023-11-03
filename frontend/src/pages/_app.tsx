@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [showAuth, setShowAuth] = useState(false);
   return (
     <>
-      {showAuth &&  < Auth setShowAuth = {setShowAuth} />}
+      {showAuth &&  < Auth />}
       <SideBare setShowAuth={setShowAuth}/>
       <div className="main">
         <Component  {...pageProps} />
