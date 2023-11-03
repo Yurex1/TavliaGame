@@ -23,7 +23,7 @@ let AuthService = class AuthService {
         const user = await this.prismaService.user.findFirst({
             where: { login: username },
         });
-        if (user?.password !== pass) {
+        if (!bcrypt.compare(user?.password, pass)) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.login };
