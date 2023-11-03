@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import AuthForm from "./AuthForm";
+import { type } from "os";
 
-const Auth = () => {
+type AuthProps = {
+  setShowAuth: (showAuth: boolean) => void;
+};
+
+const Auth :FC<AuthProps> = ({setShowAuth}) => {
   const [mode, setMode] = useState<"login" | "signup">("login");
   function onClick() {
     setMode((prev) => (prev === "login" ? "signup" : "login"));
@@ -9,7 +14,7 @@ const Auth = () => {
   return (
     <div className="auth-wraper">
       <div className="auth">
-        <AuthForm mode={mode} />
+        <AuthForm setShowAuth = {setShowAuth} mode={mode} />
         <button onClick={onClick}>
           {mode === "login" ? "I have not acount" : "I already have acount"}
         </button>
