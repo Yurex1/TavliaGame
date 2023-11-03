@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import BoardComponent from "./BoardComponent";
-import { Board } from "../src/models/Board";
+import { Board } from "../models/Board";
 import Table from "./Table";
 
 export default function GameTavlia({n} : any) {
