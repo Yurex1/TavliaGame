@@ -32,16 +32,18 @@ export class AuthService {
   async createUser(data: Prisma.UserCreateInput) {
     return this.prismaService.user
       .findFirstOrThrow({
-        where: { login: data.login },
+        where: { OR: [{ login: data.login }, { email: data.email }] },
       })
       .then(() => {
         return "User with this login or email has already been created.";
       })
       .catch(async () => {
-        const password = bcrypt.hash(data.password, await bcrypt.genSalt());
-        return this.prismaService.user.create({
-          data,
-        });
+        const password = await bcrypt.hash(
+          data.password,
+          await bcrypt.genSalt()
+        );
+        data.password = password;
+        return this.prismaService.user.create({ data });
       });
   }
 

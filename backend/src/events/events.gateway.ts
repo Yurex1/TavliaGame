@@ -19,26 +19,28 @@ export class EventsGateway {
     }
     return x;
   };
-
   @WebSocketServer() server: Server;
   private gameMoves: string[] = [];
 
-  @SubscribeMessage("new move from 1")
-  handleNewMove1(@MessageBody() body) {
-    this.gameMoves.push(body);
-    this.server.emit("onMessage1", {
-      msg: "New Message",
-      content: body,
-    });
+  @SubscribeMessage("joinRoom")
+  handleJoinRoom(@MessageBody() data: any, client: Socket): void {
+    const { roomName } = data;
+    console.log("Name: ", roomName);
+    if (client) {
+      client.join(roomName);
+      this.server
+        .to(roomName)
+        .emit("roomJoined", `${client.id} has joined the room`);
+    }
   }
 
-  @SubscribeMessage("new move from 2")
-  handleNewMove2(@MessageBody() body) {
+  @SubscribeMessage("move")
+  handleMove(@MessageBody() body) {
+    // this.server.emit("aa", body);
+    console.log("Body: ", body);
     this.gameMoves.push(body);
-    this.server.emit("onMessage2", {
-      msg: "New Message",
-      content: body,
-    });
+    // console.log("Here", body, body.room, body.body);
+    this.server.in("room1").emit(body);
   }
 
   @SubscribeMessage("end game")
