@@ -28,19 +28,20 @@ let EventsGateway = class EventsGateway {
         };
         this.gameMoves = [];
     }
-    handleNewMove1(body) {
-        this.gameMoves.push(body);
-        this.server.emit("onMessage1", {
-            msg: "New Message",
-            content: body,
-        });
+    handleJoinRoom(data, client) {
+        const { roomName } = data;
+        console.log("Name: ", roomName);
+        if (client) {
+            client.join(roomName);
+            this.server
+                .to(roomName)
+                .emit("roomJoined", `${client.id} has joined the room`);
+        }
     }
-    handleNewMove2(body) {
+    handleMove(body) {
+        console.log("Body: ", body);
         this.gameMoves.push(body);
-        this.server.emit("onMessage2", {
-            msg: "New Message",
-            content: body,
-        });
+        this.server.in("room1").emit(body);
     }
     handleEndOfTheGame() {
         console.log("123123");
@@ -56,19 +57,19 @@ __decorate([
     __metadata("design:type", socket_io_1.Server)
 ], EventsGateway.prototype, "server", void 0);
 __decorate([
-    (0, websockets_1.SubscribeMessage)("new move from 1"),
+    (0, websockets_1.SubscribeMessage)("joinRoom"),
     __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, socket_io_1.Socket]),
     __metadata("design:returntype", void 0)
-], EventsGateway.prototype, "handleNewMove1", null);
+], EventsGateway.prototype, "handleJoinRoom", null);
 __decorate([
-    (0, websockets_1.SubscribeMessage)("new move from 2"),
+    (0, websockets_1.SubscribeMessage)("move"),
     __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], EventsGateway.prototype, "handleNewMove2", null);
+], EventsGateway.prototype, "handleMove", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("end game"),
     __metadata("design:type", Function),

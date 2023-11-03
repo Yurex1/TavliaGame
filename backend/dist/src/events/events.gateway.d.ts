@@ -6,8 +6,8 @@ export declare class EventsGateway {
     RandomRoom: () => string;
     server: Server;
     private gameMoves;
-    handleNewMove1(body: any): void;
-    handleNewMove2(body: any): void;
+    handleJoinRoom(data: any, client: Socket): void;
+    handleMove(body: any): void;
     handleEndOfTheGame(): Promise<{
         id: number;
         move: string[];
