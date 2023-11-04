@@ -5,15 +5,15 @@ import { useForm } from "react-hook-form";
 
 type AuthFromProps = {
   mode: "login" | "signup";
-  setShowAuth: (showAuth: boolean) => void;
+  AuthClick: () => void;
 };
 
 const submitTextMap = { signup: "Sign up", login: "Log in" };
 
-const AuthFrom: FC<AuthFromProps> = ({ mode , setShowAuth}) => {
+const AuthFrom: FC<AuthFromProps> = ({ mode , AuthClick}) => {
   const methods = useForm();
 
-  const onSubmit = async (data: { email: string; password: string }) => {};
+  const onSubmit = async (data: { email: string; password: string }) => {AuthClick();};
   return (
     <Form
       methods={methods}
