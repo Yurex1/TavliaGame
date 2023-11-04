@@ -3,11 +3,12 @@ import { FC } from "react";
 type SideBareLogItemProps = {
   setShowAuth: (showAuth: boolean) => void;
   loggedIn: boolean;
+  setLoggedIn: (loggedIn: boolean) => void;
 };
 
 
 
-const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth, loggedIn}) => {
+const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth, loggedIn, setLoggedIn}) => {
   if (!loggedIn) {
     return (
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
@@ -16,7 +17,7 @@ const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth, loggedIn}) => {
     );
   } else {
     return (
-      <div className="aside-item">
+      <div onClick= {() => setLoggedIn(false)} className="aside-item">
         <div className="text">Log Out</div>
       </div>
     );
