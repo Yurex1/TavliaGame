@@ -1,16 +1,31 @@
+import { OnGatewayConnection, OnGatewayDisconnect } from "@nestjs/websockets";
 import { EventsService } from "./events.service";
-import { Socket, Server } from "socket.io";
-export declare class EventsGateway {
+import { Socket, Namespace } from "socket.io";
+import { PrismaService } from "src/prisma.service";
+export declare class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly eventsService;
-    constructor(eventsService: EventsService);
-    RandomRoom: () => string;
-    server: Server;
+    private prismaService;
+    constructor(eventsService: EventsService, prismaService: PrismaService);
+    io: Namespace;
+    private logger;
     private gameMoves;
-    handleJoinRoom(data: any, client: Socket): void;
-    handleMove(body: any): void;
-    handleEndOfTheGame(): Promise<{
+    RandomRoom: () => string;
+    handleConnection(client: Socket): void;
+    createRoom(socket: Socket): void;
+    joinRoom(socket: Socket, data: {
+        roomId: string;
+    }): void;
+    handleMove(socket: Socket, data: {
+        move: any;
+        roomId: any;
+    }): void;
+    handleEndOfTheGame(data: {
+        roomId: any;
+        player1: any;
+        player2: any;
+    }): Promise<"Error. Data is undefined" | {
         id: number;
-        move: string[];
+        moves: string[];
     }>;
     handleDisconnect(client: Socket): void;
 }
