@@ -27,9 +27,4 @@ export class EventsService {
   remove(id: number) {
     return `This action removes a #${id} event`;
   }
-
-  async endGame(data: string[]) {
-    console.log("End game service");
-    return await this.prismaService.game.create({ data: { move: data } });
-  }
 }

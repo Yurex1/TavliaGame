@@ -9,8 +9,4 @@ export declare class EventsService {
     findOne(id: number): string;
     update(id: number, updateEventDto: UpdateEventDto): string;
     remove(id: number): string;
-    endGame(data: string[]): Promise<{
-        id: number;
-        move: string[];
-    }>;
 }
