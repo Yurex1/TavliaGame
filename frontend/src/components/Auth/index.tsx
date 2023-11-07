@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Login from "./login";
+import Login from "./Login";
 import Singup from "./Singup";
 
 type AuthProps = {
