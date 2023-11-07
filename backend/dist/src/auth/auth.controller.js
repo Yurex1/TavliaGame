@@ -18,12 +18,24 @@ const auth_service_1 = require("./auth.service");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const update_auth_dto_1 = require("./dto/update-auth.dto");
 const auth_guard_1 = require("./auth.guard");
+const login_user_dto_1 = require("../auth/dto/login-user.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    signIn(signInDto) {
-        return this.authService.signIn(signInDto.username, signInDto.password);
+    async signIn(signInDto, res) {
+        try {
+            const result = await this.authService.signIn({
+                username: signInDto.username,
+                pass: signInDto.password,
+            }, res);
+            res.json(result);
+        }
+        catch (error) {
+            res
+                .status(common_1.HttpStatus.INTERNAL_SERVER_ERROR)
+                .json({ message: "Error occurred" });
+        }
     }
     create(createAuthDto) {
         return this.authService.createUser(createAuthDto);
@@ -49,9 +61,10 @@ __decorate([
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     (0, common_1.Post)("login"),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [login_user_dto_1.SignInDto, Object]),
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, common_1.Post)(),
