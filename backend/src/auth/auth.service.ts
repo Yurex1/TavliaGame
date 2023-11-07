@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { CreateAuthDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { PrismaService } from "src/prisma.service";
@@ -13,21 +17,24 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async signIn(username, pass) {
-    // if (username === undefined || pass === undefined) {
-    //   return "username of password is undefined";
-    // }
+  async signIn(data: { username; pass }, res) {
+    // console.log(res);
+    if (data.username === undefined || data.pass === undefined) {
+      throw new BadRequestException("Username or password is undefined");
+    }
     const user: User = await this.prismaService.user.findFirst({
-      where: { login: username },
+      where: { login: data.username },
     });
 
-    if (!bcrypt.compare(user?.password, pass)) {
+    if (user === null || !bcrypt.compare(user?.password, data.pass)) {
       throw new UnauthorizedException();
     }
+    console.log("TYT");
     const payload = { sub: user.id, username: user.login };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    const access_token = await this.jwtService.signAsync(payload);
+    res.cookie("access_token", access_token, { httpOnly: true });
+    // console.log("TYTA");
+    return { access_token: access_token };
   }
 
   async createUser(data: Prisma.UserCreateInput) {

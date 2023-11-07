@@ -19,17 +19,21 @@ let AuthService = class AuthService {
         this.prismaService = prismaService;
         this.jwtService = jwtService;
     }
-    async signIn(username, pass) {
+    async signIn(data, res) {
+        if (data.username === undefined || data.pass === undefined) {
+            throw new common_1.BadRequestException("Username or password is undefined");
+        }
         const user = await this.prismaService.user.findFirst({
-            where: { login: username },
+            where: { login: data.username },
         });
-        if (!bcrypt.compare(user?.password, pass)) {
+        if (user === null || !bcrypt.compare(user?.password, data.pass)) {
             throw new common_1.UnauthorizedException();
         }
+        console.log("TYT");
         const payload = { sub: user.id, username: user.login };
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        const access_token = await this.jwtService.signAsync(payload);
+        res.cookie("access_token", access_token, { httpOnly: true });
+        return { access_token: access_token };
     }
     async createUser(data) {
         return this.prismaService.user

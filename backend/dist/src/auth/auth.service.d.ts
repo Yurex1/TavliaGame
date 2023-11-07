@@ -6,7 +6,10 @@ export declare class AuthService {
     private prismaService;
     private jwtService;
     constructor(prismaService: PrismaService, jwtService: JwtService);
-    signIn(username: any, pass: any): Promise<{
+    signIn(data: {
+        username: any;
+        pass: any;
+    }, res: any): Promise<{
         access_token: string;
     }>;
     createUser(data: Prisma.UserCreateInput): Promise<string | {

@@ -1,12 +1,12 @@
 import { AuthService } from "./auth.service";
 import { CreateAuthDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
+import { Response } from "express";
+import { SignInDto } from "../auth/dto/login-user.dto";
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
-    signIn(signInDto: any): Promise<{
-        access_token: string;
-    }>;
+    signIn(signInDto: SignInDto, res: Response): Promise<void>;
     create(createAuthDto: CreateAuthDto): Promise<string | {
         id: number;
         login: string;
