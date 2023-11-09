@@ -3,10 +3,10 @@ import Login from "./Login";
 import Singup from "./Singup";
 
 type AuthProps = {
-  AuthClick: () => void;
+  setShowAuth: (showAuth: boolean) => void;
 };
 
-const Auth: FC<AuthProps> = ({ AuthClick }) => {
+const Auth: FC<AuthProps> = ({ setShowAuth }) => {
   const [mode, setMode] = useState<"login" | "signup">("login");
   function onClick() {
     setMode((prev) => (prev === "login" ? "signup" : "login"));
@@ -15,9 +15,9 @@ const Auth: FC<AuthProps> = ({ AuthClick }) => {
     <div className="auth-wraper">
       <div className="auth">
         {mode === "login" ? (
-          <Login AuthClick={AuthClick} />
+          <Login setShowAuth={setShowAuth} />
         ) : (
-          <Singup AuthClick={AuthClick} />
+          <Singup setShowAuth={setShowAuth} />
         )}
         <button onClick={onClick}>
           {mode === "login" ? "I have not acount" : "I already have acount"}
