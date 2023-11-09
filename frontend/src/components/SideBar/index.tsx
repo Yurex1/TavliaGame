@@ -3,12 +3,10 @@ import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
-  loggedIn: boolean;
-  setLoggedIn: (loggedIn: boolean) => void;
 }
 
 
-const SideBare:FC<SideBareProps> = ({setShowAuth, loggedIn, setLoggedIn}) => {
+const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
   return (
     <aside>
       <div className="top-items">
@@ -24,7 +22,7 @@ const SideBare:FC<SideBareProps> = ({setShowAuth, loggedIn, setLoggedIn}) => {
         <SideBarItem text="Rank" hrefText="../" />
         <SideBarItem text="Friends" hrefText="../" />
         <SideBarItem text="Settings" hrefText="../" />
-        <SideBarLogItem setLoggedIn = {setLoggedIn} loggedIn = {loggedIn} setShowAuth = {setShowAuth}/>
+        <SideBarLogItem setShowAuth = {setShowAuth}/>
       </div>
       <div className="down-items">
         <SideBarItem text="Help" hrefText="../" />
