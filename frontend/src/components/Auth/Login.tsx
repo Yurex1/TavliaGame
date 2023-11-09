@@ -6,15 +6,15 @@ import RHFInput from "../Form/RHFinput";
 import useLogin from "@/hooks/useLogin";
 
 type loginProps = {
-  AuthClick: () => void;
+  setShowAuth: (showAuth: boolean) => void;
 };
 
-const Login: FC<loginProps> = ({ AuthClick }) => {
+const Login: FC<loginProps> = ({ setShowAuth }) => {
   const methods = useForm();
   const { mutateAsync } = useLogin();
   const onSubmit = async (data: User) => {
     await mutateAsync(data);
-    AuthClick();
+    setShowAuth(false);
   };
   return (
     <Form methods={methods} submitText="Log in" onSubmit={onSubmit}>
