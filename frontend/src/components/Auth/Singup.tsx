@@ -7,15 +7,15 @@ import useLogin from "@/hooks/useLogin";
 import useRegister from "@/hooks/useRegister";
 
 type SingupProps = {
-  AuthClick: () => void;
+  setShowAuth: (showAuth: boolean) => void;
 };
 
-const Singup: FC<SingupProps> = ({ AuthClick }) => {
+const Singup: FC<SingupProps> = ({ setShowAuth }) => {
   const methods = useForm();
   const { mutateAsync } = useRegister();
   const onSubmit = async (data: User) => {
     await mutateAsync(data);
-    AuthClick();
+    setShowAuth(false);
   };
   return (
     <Form methods={methods} submitText="Log in" onSubmit={onSubmit}>
