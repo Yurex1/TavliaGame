@@ -3,7 +3,7 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
 const register = async (user: User) => {
-  return axios.post("/auth", user);
+  return await axios.post("/auth", user);
 };
 
 const useRegister = () => {
