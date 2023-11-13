@@ -3,7 +3,7 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
 const login = async (user: User) => {
-  return axios.post("/auth/login", user);
+  return await axios.post("/auth/login", user);
 };
 
 const useLogin = () => {
