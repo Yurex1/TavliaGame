@@ -12,9 +12,9 @@ type SingupProps = {
 
 const Singup: FC<SingupProps> = ({ setShowAuth }) => {
   const methods = useForm();
-  const { mutateAsync } = useRegister();
+  const { mutateAsync: singup } = useRegister();
   const onSubmit = async (data: User) => {
-    await mutateAsync(data);
+    await singup(data);
     setShowAuth(false);
   };
   return (
