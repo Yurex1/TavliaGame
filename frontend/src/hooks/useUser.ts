@@ -7,7 +7,7 @@ const getUser = async () => {
 }
 
 const useUser= () => {
-    return useQuery('user', getUser);
+    return useQuery(['user'], getUser);
 };
 
 export default useUser;
