@@ -17,7 +17,7 @@ const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
           </div>
         </a>
         <SideBarItem text="Play" hrefText="../" />
-        <SideBarItem text="Instraction" hrefText="../" />
+        <SideBarItem text="Instruction" hrefText="../" />
         <SideBarItem text="Profile" hrefText="../" />
         <SideBarItem text="Rank" hrefText="../" />
         <SideBarItem text="Friends" hrefText="../" />
