@@ -20,7 +20,7 @@ const Auth: FC<AuthProps> = ({ setShowAuth }) => {
           <Singup setShowAuth={setShowAuth} />
         )}
         <button onClick={onClick}>
-          {mode === "login" ? "I have not acount" : "I already have acount"}
+          {mode === "login" ? "I don't have an account" : "I already have an account"}
         </button>
       </div>
     </div>
