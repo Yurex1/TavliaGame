@@ -11,9 +11,9 @@ type loginProps = {
 
 const Login: FC<loginProps> = ({ setShowAuth }) => {
   const methods = useForm();
-  const { mutateAsync } = useLogin();
+  const { mutateAsync: login } = useLogin();
   const onSubmit = async (data: User) => {
-    await mutateAsync(data);
+    await login(data);
     setShowAuth(false);
   };
   return (
