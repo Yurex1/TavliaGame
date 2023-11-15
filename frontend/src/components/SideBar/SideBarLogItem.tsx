@@ -1,4 +1,5 @@
-import { FC } from "react";
+import useUser from "@/hooks/useUser";
+import { FC, use } from "react";
 
 type SideBareLogItemProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -7,7 +8,8 @@ type SideBareLogItemProps = {
 
 
 const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
-  if (true) {
+  const user = useUser();
+  if (user === null) {
     return (
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
         <div  className="text">Log In</div>
@@ -15,7 +17,7 @@ const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
     );
   } else {
     return (
-      <div className="aside-item">
+      <div onClick= {() => {console.log('logout')}} className="aside-item">
         <div className="text">Log Out</div>
       </div>
     );
