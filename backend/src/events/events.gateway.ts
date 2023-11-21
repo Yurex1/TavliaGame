@@ -27,13 +27,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() io: Namespace;
   private logger = new Logger();
   private gameMoves: string[] = [];
+  private playerRoom: Map<string, string> = null;
 
   RandomRoom = (): string => {
     let x: string = "";
     for (let i = 0; i < 22; i++) {
       x += String.fromCharCode(Math.random() * (90 - 65) + 65);
     }
-    console.log("Random: ", x);
     return x;
   };
 
@@ -71,7 +71,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("move")
   handleMove(socket: Socket, data: { move; roomId }) {
     console.log("rooms: ", this.io.adapter.rooms);
-    console.log("move: ", data.move, "roomId: ", data.roomId);
+    
+    console.log("move: ", data.move, "roomId: ", Array.from(socket.rooms.values()).filter(id => id !== socket.id)[0]);
     if (this.io.adapter.rooms.get(data.roomId)) {
       console.log("Da");
       socket.broadcast.to(data.roomId).emit("move", data.move);

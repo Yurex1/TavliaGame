@@ -10,14 +10,14 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
-  Request,
   Res,
+  Req,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateAuthDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { AuthGuard } from "./auth.guard";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { SignInDto } from "../auth/dto/login-user.dto";
 
 @Controller("auth")
@@ -35,10 +35,9 @@ export class AuthController {
         },
         res
       );
-
+        console.log("Res: ", result)
       res.json(result);
     } catch (error) {
-      // Handle errors and send an error response
       res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: "Error occurred" });
@@ -58,8 +57,9 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("profile")
-  getProfile(@Request() req) {
-    return req.user;
+  getProfile(@Req() req: Request) {
+    console.log(req)
+    // return req.user;
   }
 
   @Get(":id")
