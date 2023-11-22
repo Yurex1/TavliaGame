@@ -22,21 +22,20 @@ import { SignInDto } from "../auth/dto/login-user.dto";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @HttpCode(HttpStatus.OK)
   @Post("login")
   async signIn(@Body() signInDto: SignInDto, @Res() res: Response) {
     try {
-      const result = await this.authService.signIn(
+      await this.authService.signIn(
         {
           username: signInDto.username,
           pass: signInDto.password,
         },
         res
       );
-        console.log("Res: ", result)
-      res.json(result);
+      res.json("Success login");
     } catch (error) {
       res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -58,8 +57,8 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get("profile")
   getProfile(@Req() req: Request) {
-    console.log(req)
-    // return req.user;
+    //@ts-ignore
+    return req.user;
   }
 
   @Get(":id")
