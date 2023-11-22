@@ -1,11 +1,12 @@
 import { FC, useState } from "react";
-import AuthForm from "./AuthForm";
+import Login from "./Login";
+import Singup from "./Singup";
 
 type AuthProps = {
   setShowAuth: (showAuth: boolean) => void;
 };
 
-const Auth : FC<AuthProps>= ({setShowAuth}) => {
+const Auth: FC<AuthProps> = ({ setShowAuth }) => {
   const [mode, setMode] = useState<"login" | "signup">("login");
   function onClick() {
     setMode((prev) => (prev === "login" ? "signup" : "login"));
@@ -13,9 +14,13 @@ const Auth : FC<AuthProps>= ({setShowAuth}) => {
   return (
     <div className="auth-wraper">
       <div className="auth">
-        <AuthForm setShowAuth={setShowAuth} mode={mode} />
+        {mode === "login" ? (
+          <Login setShowAuth={setShowAuth} />
+        ) : (
+          <Singup setShowAuth={setShowAuth} />
+        )}
         <button onClick={onClick}>
-          {mode === "login" ? "I have not acount" : "I already have acount"}
+          {mode === "login" ? "I don't have an account" : "I already have an account"}
         </button>
       </div>
     </div>
