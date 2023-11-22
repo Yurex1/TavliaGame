@@ -9,6 +9,7 @@ import { PrismaService } from "src/prisma.service";
 import { User, Prisma } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
+import { Response } from "express";
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
     private jwtService: JwtService
   ) { }
 
-  async signIn(data: { username; pass }, res) {
+  async signIn(data: { username; pass }, res: Response) {
 
     if (data.username === undefined || data.pass === undefined) {
       throw new BadRequestException("Username or password is undefined");
@@ -33,8 +34,8 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync(payload);
     const cookieValue = `Bearer ${access_token}`;
     // console.log("Cookie value: ", cookieValue);
-    res.cookie("access_token", cookieValue, { httpOnly: true });
-    return "Success login";
+    res.cookie("access_token", cookieValue, { maxAge: 10000000, httpOnly: true, sameSite: "none" });
+    return res;
   }
 
   async createUser(data: Prisma.UserCreateInput) {
