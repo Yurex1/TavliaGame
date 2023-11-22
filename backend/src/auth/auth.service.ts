@@ -15,10 +15,10 @@ export class AuthService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService
-  ) {}
+  ) { }
 
   async signIn(data: { username; pass }, res) {
-    
+
     if (data.username === undefined || data.pass === undefined) {
       throw new BadRequestException("Username or password is undefined");
     }
@@ -31,8 +31,10 @@ export class AuthService {
     }
     const payload = { sub: user.id, username: user.login };
     const access_token = await this.jwtService.signAsync(payload);
-    res.cookie("access_token", access_token, { httpOnly: true });
-    return { access_token: access_token };
+    const cookieValue = `Bearer ${access_token}`;
+    // console.log("Cookie value: ", cookieValue);
+    res.cookie("access_token", cookieValue, { httpOnly: true });
+    return "Success login";
   }
 
   async createUser(data: Prisma.UserCreateInput) {
