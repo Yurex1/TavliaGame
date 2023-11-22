@@ -34,11 +34,14 @@ export class AuthController {
           pass: signInDto.password,
         },
         res
-      );
-      res.json("Success login");
+      ).then((result) => {
+        res = result
+        res.json("Success login");
+      });
     } catch (error) {
+      console.log("Error: ", error)
       res
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .status(HttpStatus.UNAUTHORIZED)
         .json({ message: "Error occurred" });
     }
   }
@@ -57,6 +60,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get("profile")
   getProfile(@Req() req: Request) {
+    console.log("AA")
     //@ts-ignore
     return req.user;
   }
