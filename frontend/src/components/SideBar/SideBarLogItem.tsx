@@ -8,8 +8,9 @@ type SideBareLogItemProps = {
 
 
 const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
-  const user = useUser();
-  if (user === null) {
+  // const user = useUser();
+  // console.log(user);
+  if (true) {
     return (
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
         <div  className="text">Log In</div>
