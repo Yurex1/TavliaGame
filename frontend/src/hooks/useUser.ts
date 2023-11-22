@@ -1,9 +1,9 @@
+import API_URL from "@/constants";
 import axios from "axios";
-import { get } from "http";
 import { useQuery } from "react-query";
 
 const getUser = async () => {
-    return await axios.get('/profile');
+    return await axios.get(API_URL + 'auth/profile', {withCredentials: true});
 }
 
 const useUser= () => {
