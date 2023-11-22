@@ -10,35 +10,33 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
-  Request,
   Res,
+  Req,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateAuthDto } from "./dto/create-user.dto";
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { AuthGuard } from "./auth.guard";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { SignInDto } from "../auth/dto/login-user.dto";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @HttpCode(HttpStatus.OK)
   @Post("login")
   async signIn(@Body() signInDto: SignInDto, @Res() res: Response) {
     try {
-      const result = await this.authService.signIn(
+      await this.authService.signIn(
         {
           username: signInDto.username,
           pass: signInDto.password,
         },
         res
       );
-
-      res.json(result);
+      res.json("Success login");
     } catch (error) {
-      // Handle errors and send an error response
       res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: "Error occurred" });
@@ -58,7 +56,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("profile")
-  getProfile(@Request() req) {
+  getProfile(@Req() req: Request) {
+    //@ts-ignore
     return req.user;
   }
 
