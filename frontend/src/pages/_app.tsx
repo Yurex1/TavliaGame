@@ -1,6 +1,9 @@
 import "@/styles/globals.css";
-import Auth from "@/components/Auth";
-import SideBare from "@/components/SideBar";
+import "@/styles/game.css";
+import "@/styles/sidebar.css";
+import "@/styles/profile.css";
+import Auth from "../components/Auth";
+import SideBare from "../components/SideBar";
 import type { AppProps } from "next/app";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";

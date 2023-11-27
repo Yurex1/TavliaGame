@@ -1,0 +1,38 @@
+aside {
+  background-color: #fffbe9;
+  width: 20vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+}
+
+.name {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #c0a080;
+  font-size: 40px;
+}
+
+.aside-item {
+  padding: 10px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #ffffff00;
+  border-bottom: #c0a080 solid 1px;
+}
+
+.aside-item:hover {
+  background-color: rgb(225, 197, 155);
+}
+
+.icon {
+  height: 2vh;
+  width: 2vh;
+  background-color: #c0a080;
+  margin-right: 10px;
+}
