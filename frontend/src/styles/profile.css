@@ -1,0 +1,40 @@
+.profile{
+    padding: 5vh 5vw;
+    height: 100vh;
+}
+
+.avatar{
+    width: 35vh;
+    height: 35vh;
+    border-radius: 50%;
+}
+
+.profile-name{
+    font-size: 40px;
+    margin: 10px 0;
+}
+
+.profile > .wrapper{
+    background-color: #fffbe9;
+    padding: 5vh 5vw;
+    height: 100%;
+}
+
+.profile-header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5vh;
+}
+
+.user-info{
+    margin-left: 5vw;
+}
+
+.rang{
+    font-size: 20px;
+}
+
+select{
+    width: 100%;
+    height: 40vh;
+}
