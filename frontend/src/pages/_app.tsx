@@ -4,9 +4,9 @@ import SideBare from "@/components/SideBar";
 import type { AppProps } from "next/app";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import useUser from "@/hooks/useUser";
-import axios from "axios";
-import API_URL from "@/constants";
+// import useUser from "@/hooks/useUser";
+// import axios from "axios";
+// import API_URL from "@/constants";
 import React from "react";
 
 const queryClient = new QueryClient();
