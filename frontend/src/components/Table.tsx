@@ -1,3 +1,4 @@
+import React from 'react'
 
 function Schore() {
     return(<div className="schore">
