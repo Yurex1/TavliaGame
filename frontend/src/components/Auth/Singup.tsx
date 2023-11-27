@@ -5,6 +5,7 @@ import Form from "../Form";
 import RHFInput from "../Form/RHFinput";
 import useLogin from "@/hooks/useLogin";
 import useRegister from "@/hooks/useRegister";
+import React from 'react'
 
 type SingupProps = {
   setShowAuth: (showAuth: boolean) => void;
