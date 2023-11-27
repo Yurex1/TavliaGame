@@ -1,0 +1,10 @@
+.instruction{
+    padding: 5vh 5vw;
+    height: 100%;
+}
+
+.instruction > .wrapper{
+    padding: 5vh 5vw;
+    background-color: #FFFBE9;
+    height: 100%;
+}
