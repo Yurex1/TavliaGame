@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import useUser from "@/hooks/useUser";
 import axios from "axios";
 import API_URL from "@/constants";
+import React from "react";
 
 const queryClient = new QueryClient();
 

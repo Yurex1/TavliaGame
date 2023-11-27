@@ -1,9 +1,10 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import {  FC,  } from "react";
 import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
 }
+import React from 'react'
 
 
 const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
