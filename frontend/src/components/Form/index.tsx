@@ -1,6 +1,7 @@
 "use client";
 import { FC, PropsWithChildren } from "react";
 import { FormProvider } from "react-hook-form";
+import React from 'react'
 
 type FormProps = {
   methods: any;

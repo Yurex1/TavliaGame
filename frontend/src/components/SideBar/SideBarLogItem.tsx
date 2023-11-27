@@ -1,5 +1,6 @@
 import useUser from "@/hooks/useUser";
 import { FC, use } from "react";
+import React from 'react'
 
 type SideBareLogItemProps = {
   setShowAuth: (showAuth: boolean) => void;

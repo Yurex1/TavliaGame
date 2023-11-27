@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import BoardComponent from "./BoardComponent";
 import { Board } from "../models/Board";
 import Table from "./Table";
+import React from 'react'
 
 export default function GameTavlia({n} : any) {
     const[board, setBoard] = useState(new Board(n));
