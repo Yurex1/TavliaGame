@@ -39,10 +39,17 @@ export class AuthController {
         res.json("Success login");
       });
     } catch (error) {
-      console.log("Error: ", error)
-      res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ message: "Error occurred" });
+      if (error.status === 401) {
+        res
+          .status(HttpStatus.UNAUTHORIZED)
+          .json({ message: "Error occurred" });
+      }
+      else if (error.status === 400) {
+        res.status(HttpStatus.BAD_REQUEST).json({ message: "username or password is undefined" })
+      }
+      else {
+        res.status(HttpStatus.SEE_OTHER).json({ message: "Error occured" })
+      }
     }
   }
 
