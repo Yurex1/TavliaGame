@@ -1,0 +1,58 @@
+.rank{
+    height: 100%;
+    width: 100%;
+    padding: 5vh 5vw;
+}
+
+.rank > .wrapper{
+    height: 100%;
+    width: 100%;
+    background-color: #FFFBE9;
+    padding: 5vh 5vw;
+}
+
+.rank-standing{
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    scroll-behavior: auto;
+    border: 1px solid #C0A080;
+}
+
+.rank-item{
+    display: flex;
+    flex-direction: row;
+    font-size: large;
+    height: 5vh;
+    border-bottom: 1px solid #C0A080;
+}
+
+.id{
+    width: 10%;
+    text-align: center;
+    justify-content: center;
+}
+
+.user-name{
+    width: 30%;
+    text-align: center;
+    justify-content: center;
+}
+.user-rank{
+    width: 10%;
+    margin-left: auto;
+    text-align: center;
+    justify-content: center;
+}
+
+/* .user-standings{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #FFFBE9;
+    border: 1px solid #C0A080;
+    padding: 1vh 1vw;
+} */
