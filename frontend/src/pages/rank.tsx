@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function Rank() {
   const list = [
     {
@@ -36,10 +38,16 @@ export default function Rank() {
       rank: 120,
     },
   ];
+  const [friend , setFriend] = useState(false);
+  
   return (
     <>
       <div className="rank">
         <div className="wrapper">
+          <div className="rank-buttons">
+            <button onClick = {() => setFriend(false)} className="rank-button">Rank</button>
+            <button onClick = {() => setFriend(true)} className="rank-button">Friend rank</button>
+          </div>
           <ul className="rank-standing">
             {list.map((item) => {
               return (
