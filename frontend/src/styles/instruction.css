@@ -8,3 +8,30 @@
     background-color: #FFFBE9;
     height: 100%;
 }
+
+.img-ins{
+    width: 20vw;
+    margin: 2vh;
+}
+
+.img-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.subtitle{
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.section{
+    margin: 2vh 0;
+}
