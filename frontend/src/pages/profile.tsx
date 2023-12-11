@@ -3,8 +3,9 @@ import useUser from "../hooks/useUser";
 
 export default function Profile() {
   const user = useUser();
-  const username = "tedi20 (Roman)";
+  const username = "tedi20";
   const avatar = "Avatar.png";
+  const rang = "2100";
   return (
     <>
       <div className="profile">
@@ -13,7 +14,7 @@ export default function Profile() {
             <img className="avatar" src={avatar} alt="" />
             <div className="user-info">
               <div className="profile-name">{username}</div>
-              <div className="rang">2100</div>
+              <div className="rang">rating: {rang}</div>
             </div>
           </div>
           <select className="select" size = {2}>
