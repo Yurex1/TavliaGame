@@ -4,9 +4,10 @@
 }
 
 .avatar{
-    width: 35vh;
-    height: 35vh;
+    width: 25vh;
+    height: 25vh;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .profile-name{
@@ -16,8 +17,14 @@
 
 .profile > .wrapper{
     background-color: #fffbe9;
+    border-radius: 10px;
     padding: 5vh 5vw;
     height: 100%;
+}
+
+.lists{
+    display: flex;
+    justify-content: space-between;
 }
 
 .profile-header{
@@ -34,7 +41,38 @@
     font-size: 20px;
 }
 
-select{
+.frieng-list{
+    width: 48%;
+    height: 50vh;
+}
+
+.full-list{
+    width: 48%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list-name{
+    font-size: 20px;
+    margin-bottom: 2vh;
+}
+
+.list{
+    overflow-y: scroll;
+    scroll-behavior: auto;
+    border: 1px solid #C0A080;
+    height: 100%;
     width: 100%;
-    height: 40vh;
+    border-radius: 10px;
+    /* background-color: rgb(222, 203, 170); */
+}
+
+.list-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid #C0A080;
 }
