@@ -69,10 +69,74 @@
     /* background-color: rgb(222, 203, 170); */
 }
 
+.friend-list-item{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid #C0A080;
+}
+
+.friend-id{
+    border-right: solid #C0A080;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+}
+
+.friend-name{
+    padding: 10px;
+    grid-column-start: 3;
+    grid-column-end: 7;
+    justify-content: flex-start;
+    display: flex;
+    border-right: solid #C0A080;
+    align-items: center;
+}
+
+.friend-rating{
+    justify-content: center;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
 .list-item{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
+}
+
+
+
+.game-list-item{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     border-bottom: 1px solid #C0A080;
+}
+
+.game-id{
+    border-right: solid #C0A080;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+}
+
+.game-color{
+    padding: 10px;
+    grid-column-start: 2;
+    grid-column-end: 4;
+    justify-content: center;
+    display: flex;
+    border-right: solid #C0A080;
+    align-items: center;
+}
+
+.game-status{
+    justify-content: center;
+    padding: 10px;
+    grid-column-start: 4;
+    grid-column-end: 6;
+    display: flex;
+    align-items: center;
 }
