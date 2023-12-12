@@ -1,9 +1,9 @@
 import { User } from "@/types/User";
-import { FC, useReducer } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import Form from "../Form";
 import RHFInput from "../Form/RHFinput";
-import useLogin from "@/hooks/useLogin";
+// import useLogin from "@/hooks/useLogin";
 import useRegister from "@/hooks/useRegister";
 import React from 'react'
 
