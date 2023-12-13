@@ -1,4 +1,3 @@
-import { init } from "next/dist/compiled/@vercel/og/satori";
 import { Square } from "./Square";
 import { Colors } from "./Colors";
 import { King } from "./figures/King";
