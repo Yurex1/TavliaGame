@@ -5,7 +5,6 @@ import React from 'react'
 export default function Game() {
   const router = useRouter();
   const { n } = router.query;
-  console.log(n);
   return (
     <>
       <div className='wrapper'>
