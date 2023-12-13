@@ -1,5 +1,5 @@
 import { Board } from "@/models/Board";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import SquareComponent from "./SquareComponent";
 import { Square } from "@/models/Square";
