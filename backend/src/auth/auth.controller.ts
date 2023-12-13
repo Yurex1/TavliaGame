@@ -57,6 +57,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get("profile")
   getProfile(@Req() req: Request) {
+    console.log("Req: ", req)
     //@ts-ignore
     return req.user;
   }
