@@ -2,10 +2,10 @@ import { Colors } from "../Colors";
 import { Square } from "../Square";
 
 export enum FigureNames{
-    FIGURE = "Фігура",
-    KING = "Король",
-    HELPER = "Лицарь",
-    TARGET = "Вікінг",
+    FIGURE = "figure",
+    KING = "king",
+    HELPER = "helper",
+    TARGET = "target",
 }
 
 export class Figure {
@@ -21,7 +21,7 @@ export class Figure {
         this.square.figure = this;
         this.logo = null;
         this.name = FigureNames.FIGURE;
-        this.id = Math.random();
+        this.id = square.id;
     }
 
     canMove(target: Square): boolean {
@@ -29,7 +29,5 @@ export class Figure {
         if(this.square.isEmptyVertcal(target)) return true;
         if(this.square.isEmptyHorizontal(target)) return true;
         return false;
-        
     }
-    moveFigure(target: Square) {}
 }
