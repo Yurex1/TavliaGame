@@ -225,10 +225,20 @@ aside{
 
 .history{
   width: 50%;
-  height: 42vw;
+  height: 37vw;
   border: 0.5px solid black;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.status{
+  width: 100%;
+  height: 5vw;
+  border: 0.5px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
