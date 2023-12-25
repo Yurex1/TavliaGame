@@ -1,65 +1,73 @@
-import { Board } from "@/models/Board";
-import React, { use, useEffect, useState } from "react";
+import { Status } from "@/models/Board";
+import React, {useEffect, useState } from "react";
 import { FC } from "react";
 import SquareComponent from "./SquareComponent";
 import { Square } from "@/models/Square";
+import { Game } from "@/models/Game";
+import { Colors } from "@/models/Colors";
 
-interface BoardProps{
-    board: Board;
-    setBoard: (board: Board) => void;
+interface BoardProps {
+  game: Game;
+  setMove : (move: Colors) => void;
+  setHistory : (history: any) => void;
+  setStatus : (status: Status) => void;
 }
 
-const BoardComponent: FC<BoardProps> = ({board, setBoard}) =>
-{
-    const[selectedSquare, setSelectedSquare] = useState<Square | null>(null);
+const BoardComponent: FC<BoardProps> = ({ game, setMove, setHistory, setStatus}) => {
+  const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
 
-    function click(square: Square){
-        if(selectedSquare && selectedSquare == square){
-            setSelectedSquare(null);
-            return;
-        }
-        if(selectedSquare && selectedSquare.figure?.canMove(square)){
-            selectedSquare.moveFigure(square);
-            square.killEnemy();
-            setSelectedSquare(null);
-            return;
-        }
-        if(square.figure)
-            setSelectedSquare(square);
+  function click(square: Square) {
+    if(game.status != Status.PLAYING) return;
+    if (selectedSquare && selectedSquare == square) {
+      game.board.highlightSquares(null);
+      setSelectedSquare(null);
+      return;
     }
-
-    useEffect(() => { 
-        highlightSquares();
-    }, [selectedSquare]);
-
-    function highlightSquares(){
-        board.highlightSquares(selectedSquare);
-        updateBoard();
+    if (selectedSquare && selectedSquare.figure?.canMove(square)) {
+      selectedSquare.moveFigure(square);
+      game.board.highlightSquares(null);
+      setSelectedSquare(null);
+      game.changeColor();
+      return;
     }
-
-    function updateBoard(){
-        const newBoard = board.getCopyBoard();
-        setBoard(newBoard);
+    if (square.figure && square.figure.color == game.color) {
+      game.board.highlightSquares(square);
+      setSelectedSquare(square);
     }
+  }
 
-    return <div className="board">
-        {
-            board.squares.map((row, i) => 
-                <React.Fragment key = {i}>
-                    {
-                        row.map(square => 
-                            <SquareComponent 
-                                click={click}
-                                selected = {square.x == selectedSquare?.x && square.y == selectedSquare?.y}
-                                square={square}
-                                key={square.id}
-                            />
-                        )
-                    }
-                </React.Fragment>
-            )
-        }
-    </div>;
-}
+  useEffect(() => {
+    setStatus(game.status);
+  }, [game.status]);
+
+  useEffect(() => {
+    setMove(game.color);
+  }, [game.color]);
+
+  useEffect(() => {
+    setHistory(game.history);
+  }, [game.history]);
+
+  return (
+    <>  
+      <div className="board">
+      {game.board.squares.map((row, i) => (
+        <React.Fragment key={i}>
+          {row.map((square) => (
+            <SquareComponent
+              click={click}
+              selected={
+                square.x == selectedSquare?.x && square.y == selectedSquare?.y
+              }
+              square={square}
+              key={square.id}
+            />
+          ))}
+        </React.Fragment>
+      ))}
+    </div></>
+
+  );
+};
 
 export default BoardComponent;
