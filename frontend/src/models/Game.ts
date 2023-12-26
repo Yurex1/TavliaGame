@@ -4,8 +4,10 @@ import { Square } from "./Square";
 import { Figure } from "./figures/Figure";
 
 export type Move = {
-  from: Square;
-  to: Square;
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
 };
 
 export class Game {
