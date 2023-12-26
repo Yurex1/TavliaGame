@@ -53,7 +53,7 @@ export class Square {
             this.figure = null;
             target.killEnemy();
             this.board.checkWin();
-            this.board.game.history.push({from: this, to: target});
+            this.board.game.history.push({fromX: this.x, fromY: this.y, toX: target.x, toY: target.y});
         }
     }
 
