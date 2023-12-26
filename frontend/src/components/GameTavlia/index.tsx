@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import BoardComponent from "./BoardComponent";
-import { Board, Status } from "../models/Board";
-import { Game } from "../models/Game";
+import { Game } from "@/models/Game";
 import Table from "./Table";
-import { set } from "react-hook-form";
 import { Colors } from "@/models/Colors";
-
+import { Status } from "@/models/Board";
 export default function GameTavlia({n} : any) {
     const[game, setGame] = useState(new Game(n));
     const[status, setStatus] = useState(Status.PLAYING);
     const[history, setHistory] = useState(game.history);
     const[move, setMove] = useState(Colors.WHITE);
+
     useEffect(() => {
-        restart();
+      console.log("restart");
+      restart();
     },[n]);
 
     function restart(){
