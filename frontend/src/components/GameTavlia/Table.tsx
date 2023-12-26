@@ -25,7 +25,7 @@ const History: FC<HistoryProps> = ({ array }) => {
     <div className="history">
       {array.map((item) => (
         <div>
-            {item.from.x + 1}{String.fromCharCode(item.from.y + 65)} {item.to.x + 1}{String.fromCharCode(item.to.y + 65)} 
+            {item.fromX + 1}{String.fromCharCode(item.fromY + 65)} {item.toX + 1}{String.fromCharCode(item.toY + 65)} 
         </div>
       ))}
     </div>
