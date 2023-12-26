@@ -17,13 +17,19 @@ export class Game {
   king: Figure | null = null;
   status = Status.PLAYING;
   board: Board;
-  constructor(n: number) {
+  constructor(n: number, history: Move[] = []) {
     this.n = n;
     this.color = Colors.WHITE;
     this.board = new Board(n, this);
-    if (n)
+    if (n) {
       this.king =
         this.board.squares[(this.n - 1) / 2][(this.n - 1) / 2].figure!;
+      history.map((move) => {
+        const from = this.board.getSquare(move.fromX, move.fromY);
+        const to = this.board.getSquare(move.toX, move.toY);
+        from.moveFigure(to);
+      });
+    }
   }
 
   public changeColor() {
