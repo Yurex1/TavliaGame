@@ -36,7 +36,7 @@ export class AuthController {
         res
       ).then((result) => {
 
-        res.json("Bearer " + result);
+        res.json(result);
       });
     } catch (error) {
       if (error.status === 401) {
