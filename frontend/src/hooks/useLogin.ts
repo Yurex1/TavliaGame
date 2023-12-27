@@ -11,8 +11,7 @@ const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation(login, {
     onSuccess: (data) => {
-      console.log(data);
-      // localStorage.setItem("token", data.data.token);
+      localStorage.setItem("token", data.data);
       queryClient.invalidateQueries(["user"]);
     },
   });
