@@ -7,7 +7,7 @@ export default function Game2x2() {
   return (
     <>
       <div className='wrapper'>
-        <GameTavlia n = {n}/>
+        {n && <GameTavlia  n = {n}/>}
       </div>
     </>
   );
