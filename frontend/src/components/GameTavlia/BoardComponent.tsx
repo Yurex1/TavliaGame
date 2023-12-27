@@ -5,6 +5,7 @@ import SquareComponent from "./SquareComponent";
 import { Square } from "@/models/Square";
 import { Game } from "@/models/Game";
 import { Colors } from "@/models/Colors";
+import { set } from "react-hook-form";
 
 interface BoardProps {
   game: Game;
@@ -27,7 +28,6 @@ const BoardComponent: FC<BoardProps> = ({ game, setMove, setHistory, setStatus})
       selectedSquare.moveFigure(square);
       game.board.highlightSquares(null);
       setSelectedSquare(null);
-      game.changeColor();
       return;
     }
     if (square.figure && square.figure.color == game.color) {
