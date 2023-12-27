@@ -1,60 +1,50 @@
 import { ConflictException } from "@nestjs/common";
-
-enum ChessPiece {
-    Pawn,
-    Rook,
-    Knight,
-    Bishop,
-    Queen,
-    King,
-}
-
-enum Player {
-    White,
-    Black,
-}
-
-class ChessBoard {
-}
-
-class PlayerMove {
-}
+import GameManager from "./gameManager";
+import Player from "./Player";
+import { PrismaService } from "src/prisma.service";
 
 export class Room {
     private _size = 0;
-    private players: { [key in Player]: string };
+    public players: Array<Player>;
+    public gameManager: GameManager;
+    constructor(player1: string, n: number,
+    ) {
+        this.players = new Array<Player>(2);
+        this.players[0] = new Player(1, player1);
+        this.players[1] = new Player(null, null);
+        this._size = 1;
+        this.gameManager = new GameManager(this.players, n)
 
-    constructor(player1: string, player2: string) {
-        this.players = {
-            [Player.White]: player1,
-            [Player.Black]: null,
-        };
-        this._size = 1
+
     }
-
 
     get size(): number {
         return this._size;
     }
 
-
-    private board: ChessBoard;
-
-
-
     public playerMoves = 1;
 
-    public ChangePlayerMoves = () => this.playerMoves ^ 1;
 
     public position: string[8][8];
 
-    public makeMove(move: PlayerMove): void {
-
+    public makeMove(from: { x: number, y: number }, to: { x: number, y: number },) {
+        let isGameOver: boolean = false;
+        if (this.gameManager.isGameEnded()) {
+            return "Game is over";
+        }
+        const moveResult = this.gameManager.processMove(from, to);
+        if (moveResult === true) {
+            return "Success";
+        }
+        else if (moveResult === "Eng game")
+            return "Game is over";
+        return "Error move"
     }
 
     public addPlayer(id: string) {
-        if (this.players[Player.Black] === null) {
-            this.players[Player.Black] = id;
+        if (this.players[1].id === null) {
+            this.players[1].id = id;
+            this.players[1].role = 0;
             this._size = 2;
         }
         else {
@@ -62,12 +52,13 @@ export class Room {
         }
     }
 
-    public getGameState(): ChessBoard {
-        return this.board;
-    }
+    public removePlayer(id: string) {
+        if (this.size === 2) {
+            this._size = 1;
+            return "1 player left"
+        }
+        else if (this.size === 1) {
 
-    public getCurrentPlayer(): string {
-        return this.players[Player.White]; // Повертаємо ідентифікатор поточного гравця (може бути користувачем або іншим ідентифікатором)
+        }
     }
-
 }
