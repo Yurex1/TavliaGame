@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import GameTavlia from "@/components/GameTavlia";
+import GameTavlia from "../components/GameTavlia";
+import React from "react";
 
 
 export default function Game() {
