@@ -1,10 +1,11 @@
 import { User } from "@/types/User";
-import { FC, useReducer } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import Form from "../Form";
 import RHFInput from "../Form/RHFinput";
-import useLogin from "@/hooks/useLogin";
+// import useLogin from "@/hooks/useLogin";
 import useRegister from "@/hooks/useRegister";
+import React from 'react'
 
 type SingupProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -12,9 +13,9 @@ type SingupProps = {
 
 const Singup: FC<SingupProps> = ({ setShowAuth }) => {
   const methods = useForm();
-  const { mutateAsync } = useRegister();
+  const { mutateAsync: singup } = useRegister();
   const onSubmit = async (data: User) => {
-    await mutateAsync(data);
+    await singup(data);
     setShowAuth(false);
   };
   return (
