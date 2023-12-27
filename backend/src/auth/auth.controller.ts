@@ -66,8 +66,9 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("profile")
-  getProfile(@Req() req: Request, @Body() id: number) {
-    return this.authService.findOne(id)
+  getProfile(@Req() req: Request) {
+    //@ts-ignore
+    return req.user
   }
 
   @Get(":id")
