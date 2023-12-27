@@ -12,18 +12,18 @@ export default function GameTavlia({ n }: any) {
   const [move, setMove] = useState(Colors.WHITE);
 
   useEffect(() => {
-    const savedHistory = localStorage.getItem("history");
+    const savedHistory = localStorage.getItem("history" + n);
     if (savedHistory) setGame(new Game(n, JSON.parse(savedHistory)));
     else setGame(new Game(n));
   }, []);
 
   useEffect(() => {
     history.length > 0 &&
-      localStorage.setItem("history", JSON.stringify(history));
+      localStorage.setItem("history" + n, JSON.stringify(history));
   }, [history.length]);
 
   function restart() {
-    localStorage.removeItem("history");
+    localStorage.removeItem("history" + n);
     setGame(new Game(n));
   }
 
