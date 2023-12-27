@@ -1,5 +1,6 @@
 export enum Colors {
-    KING = 'king',
+    WHITE = 'white',
+    BLACK = 'black',
     START = 'start',
     FINISH = 'finish',
     HELPER = 'helper',
