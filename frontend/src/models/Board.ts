@@ -6,7 +6,6 @@ import { Helper } from "./figures/Helper";
 import { Game } from "./Game";
 import { FigureNames } from "./figures/Figure";
 
-
 export enum Status{
     PLAYING = "playing", 
     WIN = "win",
@@ -51,6 +50,7 @@ export class Board {
         else row.push(new Square(this, j, i, Colors.EMPTY, null));
       }
       this.squares.push(row);
+
     }
     this.addFigures();
   }
@@ -69,6 +69,7 @@ export class Board {
         if (this.squares[i][j].color == Colors.HELPER)
           new Helper(Colors.WHITE, this.squares[i][j]);
       }
+
     }
   }
 
@@ -89,6 +90,7 @@ export class Board {
     if (king?.square.color == Colors.FINISH) {
       this.game.status = Status.WIN;
       return;
+
     }
     let count = 0;
     const x = square.x, y = square.y;

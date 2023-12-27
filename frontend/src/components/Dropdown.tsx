@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Dropdown({ n }: any) {
     const [open, setOpen] = React.useState(false);
 
