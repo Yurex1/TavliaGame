@@ -3,7 +3,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 const getUser = async () => {
-    return await axios.get(API_URL + 'auth/profile', {withCredentials: true});
+    return await axios.get(API_URL + 'auth/profile' , {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}});
 }
 
 const useUser= () => {
