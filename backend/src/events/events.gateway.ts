@@ -22,6 +22,9 @@ interface Move {
 }
 
 @WebSocketGateway({
+  cors:{
+    origin: '*',
+  },
   namespace: "events",
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -48,6 +51,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   };
 
   handleConnection(client: Socket) {
+    console.log("Event connection");
+    console.log(Socket);
     const sockets = this.io.sockets;
     this.logger.log("Client's id: " + client.id);
     this.logger.debug("Number of clients: " + sockets.size);
