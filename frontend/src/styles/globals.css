@@ -63,6 +63,7 @@ aside{
 
 .main{
   width: 80vw;
+  min-height: 100vh;
   margin-left: 20vw;
 }
 
@@ -225,10 +226,34 @@ aside{
 
 .history{
   width: 50%;
-  height: 42vw;
+  height: 32vw;
   border: 0.5px solid black;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.restart{
+  width: 100%;
+  height: 5vw;
+  border: 0.5px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.restart:hover{
+  background-color: rgb(225, 197, 155);
+}
+
+.status{
+  width: 100%;
+  height: 5vw;
+  border: 0.5px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
