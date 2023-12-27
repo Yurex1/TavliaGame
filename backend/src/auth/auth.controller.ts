@@ -35,14 +35,14 @@ export class AuthController {
         },
         res
       ).then((result) => {
-        res = result
-        res.json("Success login");
+
+        res.json("Bearer " + result);
       });
     } catch (error) {
       if (error.status === 401) {
         res
           .status(HttpStatus.UNAUTHORIZED)
-          .json({ message: "Error occurred" });
+          .json({ message: "Incorrect username or password" });
       }
       else if (error.status === 400) {
         res.status(HttpStatus.BAD_REQUEST).json({ message: "username or password is undefined" })
@@ -66,9 +66,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("profile")
-  getProfile(@Req() req: Request) {
-    //@ts-ignore
-    return req.user;
+  getProfile(@Req() req: Request, @Body() id: number) {
+    return this.authService.findOne(id)
   }
 
   @Get(":id")
