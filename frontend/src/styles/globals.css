@@ -63,6 +63,7 @@ aside{
 
 .main{
   width: 80vw;
+  min-height: 100vh;
   margin-left: 20vw;
 }
 
