@@ -1,9 +1,10 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import {  FC,  } from "react";
 import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
 }
+import React from 'react'
 
 
 const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
@@ -17,7 +18,7 @@ const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
           </div>
         </a>
         <SideBarItem text="Play" hrefText="../" />
-        <SideBarItem text="Instraction" hrefText="../" />
+        <SideBarItem text="Instruction" hrefText="../instruction" />
         <SideBarItem text="Profile" hrefText="../" />
         <SideBarItem text="Rank" hrefText="../" />
         <SideBarItem text="Friends" hrefText="../" />
