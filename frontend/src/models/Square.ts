@@ -54,6 +54,7 @@ export class Square {
             target.killEnemy();
             this.board.checkWin();
             this.board.game.history.push({fromX: this.x, fromY: this.y, toX: target.x, toY: target.y});
+            this.board.game.changeColor();
         }
     }
 
