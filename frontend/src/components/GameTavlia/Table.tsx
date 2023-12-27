@@ -36,9 +36,10 @@ type TableProps = {
   history: Move[];
   move: Colors;
   status: Status;
+  restart: () => void;
 };
 
-const Table: FC<TableProps> = ({ history, move, status }) => {
+const Table: FC<TableProps> = ({ history, move, status, restart}) => {
   const whiteHistory: Move[] = [],
     blackHistory: Move[] = [];
   for (let i = 0; i < history.length; i++) {
@@ -60,6 +61,9 @@ const Table: FC<TableProps> = ({ history, move, status }) => {
       <div className="row">
         <History array={whiteHistory} />
         <History array={blackHistory} />
+      </div>
+      <div onClick={restart} className="restart">
+          Restart
       </div>
     </div>
   );
