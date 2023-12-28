@@ -71,6 +71,30 @@ export class AuthController {
     return req.user
   }
 
+  @UseGuards(AuthGuard)
+  @Put('friends')
+  addFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
+    console.log("SS", id)
+    //@ts-ignore
+    return this.authService.addFriend(req.user.sub, id, res)
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('friends')
+  removeFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
+
+    //@ts-ignore
+    return this.authService.removeFriend(req.user.sub, id, res)
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('friends')
+  async getAllFriends(@Req() req: Request, @Res() res: Response) {
+    //@ts-ignore
+    return (await this.authService.getAllFriends(req.user.sub, res));
+  }
+
+
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.authService.findOne(+id);
