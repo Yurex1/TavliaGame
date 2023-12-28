@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import BoardComponent from "./BoardComponent";
 import { Game } from "@/models/Game";
 import Table from "./Table";
 import { Colors } from "@/models/Colors";
 import { Status } from "@/models/Board";
 
-export default function GameTavlia({ n }: any) {
+type GameTavliaProps = {
+  n : number;
+}
+
+const GameTavlia : FC<GameTavliaProps>= ({n}) => {
   const [game, setGame] = useState(new Game(n));
   const [status, setStatus] = useState(Status.PLAYING);
   const [history, setHistory] = useState(game.history);
@@ -39,3 +43,5 @@ export default function GameTavlia({ n }: any) {
     </div>
   );
 }
+
+export default GameTavlia;
