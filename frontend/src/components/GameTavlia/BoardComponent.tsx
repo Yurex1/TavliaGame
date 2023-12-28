@@ -3,14 +3,13 @@ import React, {useEffect, useState } from "react";
 import { FC } from "react";
 import SquareComponent from "./SquareComponent";
 import { Square } from "@/models/Square";
-import { Game } from "@/models/Game";
+import { Game, Move } from "@/models/Game";
 import { Colors } from "@/models/Colors";
-import { set } from "react-hook-form";
 
 interface BoardProps {
   game: Game;
   setMove : (move: Colors) => void;
-  setHistory : (history: any) => void;
+  setHistory : (history: Move[]) => void;
   setStatus : (status: Status) => void;
 }
 
