@@ -21,6 +21,10 @@ model User {
 
   name String
 
+  rank Int @default(500)
+
+  friends Int[]
+
   games Game[]
 }
 
