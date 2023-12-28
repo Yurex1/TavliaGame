@@ -5,13 +5,13 @@ class SocketApi {
     static socket: null| Socket = null;
 
     static initSocket() {
-        this.socket = io(API_URL);
+        this.socket = io(API_URL + "events");
 
         this.socket.on("connect", () => {
             console.log("Connected to socket");
         });
 
-        this.socket.on("disconnect", (e) => {
+        this.socket.on("disconnect", () => {
             console.log("Disconnected from socket");
         });
     }
