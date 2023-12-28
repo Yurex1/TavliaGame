@@ -13,7 +13,6 @@ type SideBareLogItemProps = {
 const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
   const user = useUser();
   const logout = useLogout();
-  console.log('user', user);
   if (!user.data) {
     return (
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
