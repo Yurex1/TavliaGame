@@ -5,6 +5,7 @@ export default class Board {
     board: Figure[][] = [];
     n: number;
     public isEndGame: boolean;
+    public KingWins: boolean;
     constructor(n: number) {
         this.n = n;
         this.isEndGame = false;
@@ -102,8 +103,14 @@ export default class Board {
             this.board[to.x][to.y].FigureType = this.board[from.x][from.y].FigureType;
             this.board[from.x][from.y].FigureType = 0;
 
-            if (this.board[0][0].FigureType === 3 || this.board[0][this.n - 1].FigureType === 3 || this.board[this.n - 1][0].FigureType === 3 || this.board[this.n - 1][this.n - 1].FigureType === 3 || this.areAllHeighboringPositionCoveredByBlack()) {
+            if (this.board[0][0].FigureType === 3 || this.board[0][this.n - 1].FigureType === 3 || this.board[this.n - 1][0].FigureType === 3 || this.board[this.n - 1][this.n - 1].FigureType === 3) {
                 this.isEndGame = true;
+                this.KingWins = true;
+                return "Eng game";
+            }
+            else if (this.areAllHeighboringPositionCoveredByBlack()) {
+                this.isEndGame = true;
+                this.KingWins = false;
                 return "Eng game";
             }
             return true;
