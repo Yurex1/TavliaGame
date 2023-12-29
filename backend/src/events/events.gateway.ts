@@ -22,9 +22,6 @@ interface Move {
 }
 
 @WebSocketGateway({
-  cors:{
-    origin: '*',
-  },
   namespace: "events",
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -51,8 +48,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   };
 
   handleConnection(client: Socket) {
-    console.log("Event connection");
-    console.log(Socket);
     const sockets = this.io.sockets;
     this.logger.log("Client's id: " + client.id);
     this.logger.debug("Number of clients: " + sockets.size);
@@ -126,44 +121,32 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
           to: data.moveTo
         })
         this.isGameAlreadyInDatabase = true;
-        try {
-          await this.prismaService.game.create({
-            data:
-            {
+        console.log(this.gameMoves)
+        await this.prismaService.game.create({
+          data:
+          {
 
-              users: {
-                connect: [
-                  { id: this.firstUserId },
-                  { id: this.secondUserId }
-                ]
-              },
-              Move: {
-                create: this.gameMoves.map(move => ({
+            users: {
+              connect: [
+                { id: this.firstUserId },
+                { id: this.secondUserId }
+              ]
+            },
+            Move: {
+
+              createMany: {
+                data: this.gameMoves.map(move => ({
                   fromX: move.from.x,
                   fromY: move.from.y,
                   toX: move.to.x,
                   toY: move.to.y
-                })),
+                }))
               },
             },
+          },
 
-          });
-          const firstUser = await this.prismaService.user.findUnique({ where: { id: this.firstUserId } });
-          const secondUser = await this.prismaService.user.findUnique({ where: { id: this.secondUserId } });
-          const KingWins = room.gameManager.isKingWin();
-          if (KingWins) {
-            await this.prismaService.user.update({ where: { id: this.firstUserId }, data: { rank: firstUser.rank + 25 } })
-            await this.prismaService.user.update({ where: { id: this.secondUserId }, data: { rank: secondUser.rank - 25 } })
-          }
-          else {
-            await this.prismaService.user.update({ where: { id: this.firstUserId }, data: { rank: firstUser.rank - 25 } })
-            await this.prismaService.user.update({ where: { id: this.secondUserId }, data: { rank: secondUser.rank + 25 } })
-          }
-          this.io.to(roomId).emit("move", "End of the game");
-        } catch {
-          throw new Error("Error while ending a game")
-        }
-
+        }).then((res) => console.log("Ok", res)).catch(res => console.log("Error prisma", res));
+        this.io.to(roomId).emit("move", "End of the game");
       }
       else {
         this.io.to(roomId).emit("move", "Incorrect move");
@@ -174,7 +157,23 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage("end game")
+  async handleEndOfTheGame(data: { roomId; player1; player2 }) {
+    this.io.socketsLeave(data.roomId);
+    const user1 = await this.prismaService.user.findUnique({
+      where: { login: data.player1 },
+    });
+    const user2 = await this.prismaService.user.findUnique({
+      where: { login: data.player2 },
+    });
 
+    // return await this.prismaService.game.create({
+    //   data: {
+    //     moves: this.gameMoves,
+    //     users: { connect: [{ id: user1.id }, { id: user2.id }] },
+    //   },
+    // });
+  }
 
   handleDisconnect(client: Socket) {
 
