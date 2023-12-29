@@ -15,15 +15,14 @@ type OnlineTavliaGameProps = {
 };
 
 const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n }) => {
-  const game = new Game(n);
+  const [game, ] = useState(new Game(n));
   const [status, setStatus] = useState(Status.PLAYING);
   const [history, setHistory] = useState(game.history);
   const [move, setMove] = useState(Colors.WHITE);
   const [Loading, setLoading] = useState(false);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
-
   function click(square: Square) {
-    if (game.color !== color || Loading) return;
+    if (color != move || Loading) return;
     if (game.status != Status.PLAYING) return;
     if (selectedSquare && selectedSquare == square) {
       game.board.highlightSquares(null);
@@ -74,20 +73,11 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n }) => {
       game.board.highlightSquares(null);
       setSelectedSquare(null);
       setLoading(false);
+      setStatus(game.status);
+      setMove(game.color);
+      setHistory(game.history);
     }
   );
-
-  useEffect(() => {
-    setStatus(game.status);
-  }, [game.status]);
-
-  useEffect(() => {
-    setMove(game.color);
-  }, [game.color]);
-
-  useEffect(() => {
-    setHistory(game.history);
-  }, [game.history]);
 
   return (
     <>
@@ -111,8 +101,8 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n }) => {
         </div>
         <Table
           status={status}
-          move={move}
           history={history}
+          move={move}
           restart={() => {}}
         />
       </div>
