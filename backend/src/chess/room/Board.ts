@@ -1,8 +1,7 @@
 import Figure from "./Figure";
-import Player from "./Player";
 import { FigureType } from "./Figure";
 export default class Board {
-    board: Figure[][] = [];
+    cells: Figure[][] = [];
     n: number;
     public isEndGame: boolean;
     public KingWins: boolean;
@@ -44,7 +43,7 @@ export default class Board {
                     row.push(new Figure({ x: j, y: i }, 0))
                 }
             }
-            this.board.push(row);
+            this.cells.push(row);
         }
     }
 
@@ -55,10 +54,10 @@ export default class Board {
 
 
     areAllHeighboringPositionCoveredByBlack() {
-        let kingPosition = { x: String = null, y: String = null }
+        let kingPosition: { x: number | null, y: number | null } = { x: null, y: null }
         for (let i = 0; i < this.n; i++) {
             for (let j = 0; j < this.n; j++) {
-                if (this.board[i][j].FigureType === 3) {
+                if (this.cells[i][j].FigureType === 3) {
                     kingPosition.x = i,
                         kingPosition.y = j;
                     break;
@@ -68,7 +67,7 @@ export default class Board {
                 break;
             }
         }
-        const isCoveredByBlack = (x, y) => this.board[x][y].FigureType === FigureType.Defender;
+        const isCoveredByBlack = (x, y) => this.cells[x][y].FigureType === FigureType.Defender;
         const positionsToCheck = [
             { x: kingPosition.x - 1, y: kingPosition.y },
             { x: kingPosition.x + 1, y: kingPosition.y },
@@ -93,17 +92,17 @@ export default class Board {
         return false;
     }
 
-    makeMove(from: { x: number, y: number }, to: { x: number, y: number }, player: Player) {
+    makeMove(from: { x: number, y: number }, to: { x: number, y: number }, player: number) {
 
         if (!this.isValidMove(from, to, player) || this.isEndGame) {
             return false;
         }
         else {
 
-            this.board[to.x][to.y].FigureType = this.board[from.x][from.y].FigureType;
-            this.board[from.x][from.y].FigureType = 0;
+            this.cells[to.x][to.y].FigureType = this.cells[from.x][from.y].FigureType;
+            this.cells[from.x][from.y].FigureType = 0;
 
-            if (this.board[0][0].FigureType === 3 || this.board[0][this.n - 1].FigureType === 3 || this.board[this.n - 1][0].FigureType === 3 || this.board[this.n - 1][this.n - 1].FigureType === 3) {
+            if (this.cells[0][0].FigureType === 3 || this.cells[0][this.n - 1].FigureType === 3 || this.cells[this.n - 1][0].FigureType === 3 || this.cells[this.n - 1][this.n - 1].FigureType === 3) {
                 this.isEndGame = true;
                 this.KingWins = true;
                 return "Eng game";
@@ -118,11 +117,11 @@ export default class Board {
         }
     }
 
-    private isValidMove(from: { x: number, y: number }, to: { x: number, y: number }, player: Player): boolean {
-        const typeOfFigureFrom = this.board[from.x][from.y].FigureType
+    private isValidMove(from: { x: number, y: number }, to: { x: number, y: number }, player: number): boolean {
+        const typeOfFigureFrom = this.cells[from.x][from.y].FigureType
 
-        if (typeOfFigureFrom === 1 && player.role === 0 || (typeOfFigureFrom === 2 || typeOfFigureFrom === 3) && player.role === 1) {
-            const allPossibleMoves = this.board[from.x][from.y].possibleMoves(this);
+        if (typeOfFigureFrom === 1 && player === 0 || (typeOfFigureFrom === 2 || typeOfFigureFrom === 3) && player === 1) {
+            const allPossibleMoves = this.cells[from.x][from.y].possibleMoves(this);
             let isMovePossible: boolean = false;
 
             allPossibleMoves.forEach((el) => {
