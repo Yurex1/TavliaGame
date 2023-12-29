@@ -14,7 +14,7 @@ export class Room {
     public player2: number | null = null;
     public gameManager: GameManager;
     private prismaService: PrismaService;
-    private gameMoves: Move[] = [];
+    public gameMoves: Move[] = [];
 
 
 
@@ -51,13 +51,18 @@ export class Room {
     }
 
 
-    public playerMoves(playerId: number) {
+    public youMove(playerId: number) {
+
         if (playerId === this.player1) {
             return this.gameManager.currentPlayer === 0;
         }
         else {
             return this.gameManager.currentPlayer === 1;
         }
+    }
+
+    public playerMove() {
+        return this.gameManager.currentPlayer;
     }
 
 
