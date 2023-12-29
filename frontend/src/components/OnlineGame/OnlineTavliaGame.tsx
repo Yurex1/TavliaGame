@@ -2,13 +2,10 @@ import { Status } from "@/models/Board";
 import { Colors } from "@/models/Colors";
 import { Game } from "@/models/Game";
 import React, { FC, useEffect, useState } from "react";
-import BoardComponent from "../GameTavlia/BoardComponent";
 import SquareComponent from "../GameTavlia/SquareComponent";
 import { Square } from "@/models/Square";
 import Table from "../GameTavlia/Table";
-import { Socket } from "socket.io-client";
 import SocketApi from "@/api/socket-api";
-import { set } from "react-hook-form";
 
 type OnlineTavliaGameProps = {
   n: number;
@@ -17,13 +14,8 @@ type OnlineTavliaGameProps = {
   color: string;
 };
 
-const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
-  color,
-  n,
-  userId,
-  roomId,
-}) => {
-  const [game, setGame] = useState(new Game(n));
+const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n }) => {
+  const game = new Game(n);
   const [status, setStatus] = useState(Status.PLAYING);
   const [history, setHistory] = useState(game.history);
   const [move, setMove] = useState(Colors.WHITE);
@@ -58,22 +50,32 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
     }
   }
 
-  SocketApi.socket?.on("move", (data: any) => {
-    if (data == "End of the game") {
-      alert(data);
-      return;
+  SocketApi.socket?.on(
+    "move",
+    (
+      data:
+        | string
+        | { from: { x: number; y: number }; to: { x: number; y: number } }
+    ) => {
+      if (typeof data == "string") {
+        if (data == "End of the game") {
+          alert(data);
+          return;
+        }
+        if (data == "Incorrect move") {
+          alert(data);
+          return;
+        }
+        return;
+      }
+      const from = game.board.getSquare(data.from.x, data.from.y);
+      const to = game.board.getSquare(data.to.x, data.to.y);
+      from.moveFigure(to);
+      game.board.highlightSquares(null);
+      setSelectedSquare(null);
+      setLoading(false);
     }
-    if (data == "Incorrect move") {
-      alert(data);
-      return;
-    }
-    const from = game.board.getSquare(data.from.x, data.from.y);
-    const to = game.board.getSquare(data.to.x, data.to.y);
-    from.moveFigure(to);
-    game.board.highlightSquares(null);
-    setSelectedSquare(null);
-    setLoading(false);
-  });
+  );
 
   useEffect(() => {
     setStatus(game.status);
