@@ -28,13 +28,16 @@ jobs:
           cd frontend
           npm install
           npm run build
+
+      - run: zip -r -X frontend.zip node_modules/ .next/ public/ package.json package-lock.json 
+        working-directory: frontend
           
       - name: Deploy frontend to Azure
         uses: azure/webapps-deploy@v2
         with:
           app-name: Tavil 
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_FRONTEND }}
-          package: frontend
+          package: frontend/frontend.zip
 
       # Build and deploy backend
       - name: Build backend
@@ -42,10 +45,13 @@ jobs:
           cd backend
           npm install
           npm run build
+
+      - run: zip -r -X backend.zip node_modules/ dist/ package.json package-lock.json
+        working-directory: backend
           
       - name: Deploy backend to Azure
         uses: azure/webapps-deploy@v2
         with:
           app-name: tavil-backend
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: backend
+          package: backend/backend.zip
