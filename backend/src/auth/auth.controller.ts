@@ -59,7 +59,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Get()
+  @Get('findAll')
   findAll() {
     return this.authService.findAll();
   }
