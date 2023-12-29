@@ -43,6 +43,10 @@ export default class GameManager {
         return this.gameBoard.isGameEnded();
     }
 
+    public isKingWin() {
+        return this.gameBoard.KingWins;
+    }
+
 
 
 }
