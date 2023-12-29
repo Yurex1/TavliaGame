@@ -14,7 +14,8 @@ const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
         <a href="../" className="name">
           {/* <div className='img'></div> */}
           <div>
-            <b>Tavlia</b>
+            <b>T</b>
+            <b className="notformobile">avlia</b>
           </div>
         </a>
         <SideBarItem text="Play" hrefText="../" img_url={"Lightning.png"}  />
@@ -26,7 +27,7 @@ const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
         <SideBarLogItem setShowAuth = {setShowAuth}/>
       </div>
       <div className="down-items">
-        <SideBarItem text="Help" hrefText="../" img_url={""} />
+        <SideBarItem text="Help" hrefText="../" img_url={"help.png"} />
       </div>
     </aside>
   );
