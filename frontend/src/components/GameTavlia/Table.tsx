@@ -1,8 +1,7 @@
 import { Status } from "@/models/Board";
 import { Colors } from "@/models/Colors";
 import { Move } from "@/models/Game";
-import { Square } from "@/models/Square";
-import { FC } from "react";
+import React, { FC } from "react";
 
 type SchoreProps = {
   text: string;
@@ -23,9 +22,11 @@ type HistoryProps = {
 const History: FC<HistoryProps> = ({ array }) => {
   return (
     <div className="history">
-      {array.map((item) => (
-        <div>
-            {item.fromX + 1}{String.fromCharCode(item.fromY + 65)} {item.toX + 1}{String.fromCharCode(item.toY + 65)} 
+      {array.map((item, id) => (
+        <div key={id}>
+          {item.fromX + 1}
+          {String.fromCharCode(item.fromY + 65)} {item.toX + 1}
+          {String.fromCharCode(item.toY + 65)}
         </div>
       ))}
     </div>
@@ -39,7 +40,7 @@ type TableProps = {
   restart: () => void;
 };
 
-const Table: FC<TableProps> = ({ history, move, status, restart}) => {
+const Table: FC<TableProps> = ({ history, move, status, restart }) => {
   const whiteHistory: Move[] = [],
     blackHistory: Move[] = [];
   for (let i = 0; i < history.length; i++) {
@@ -63,7 +64,7 @@ const Table: FC<TableProps> = ({ history, move, status, restart}) => {
         <History array={blackHistory} />
       </div>
       <div onClick={restart} className="restart">
-          Restart
+        Restart
       </div>
     </div>
   );
