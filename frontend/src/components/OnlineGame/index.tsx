@@ -1,9 +1,7 @@
-import SocketApi from "@/api/socket-api";
 import { useConnect } from "@/hooks/useConnect";
 import React, { FC } from "react";
 import OnlineTavliaGame from "./OnlineTavliaGame";
 import CreateRoomComponent from "./CreateRoomComponenet";
-import useUser from "@/hooks/useUser";
 import { Colors } from "@/models/Colors";
 import JoinRoomComponent from "./JoinRoomComponent";
 
@@ -13,7 +11,7 @@ type OnlineGameProps = {
   username: string;
 };
 
-const OnlineGame: FC<OnlineGameProps> = ({ n, userId, username }) => {
+const OnlineGame: FC<OnlineGameProps> = ({ n, userId}) => {
   useConnect();
   const [roomId, setRoomId] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<string | null>(null);
