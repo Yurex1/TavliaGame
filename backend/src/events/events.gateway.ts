@@ -18,14 +18,10 @@ import { Room } from "src/chess/room/room";
 import { AuthGuard } from "src/auth/auth.guard";
 import { JwtService } from "@nestjs/jwt";
 import { jwtConstants } from '../auth/constants';
-import { PrismaClientRustPanicError } from "@prisma/client/runtime/library";
 
 
 
 @WebSocketGateway({
-  cors:{
-    origin: '*',
-  },
   namespace: "events",
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {

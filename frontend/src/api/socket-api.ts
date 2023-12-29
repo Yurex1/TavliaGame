@@ -5,7 +5,7 @@ class SocketApi {
     static socket: null| Socket = null;
 
     static initSocket() {
-        this.socket = io(API_URL + "events", {extraHeaders: {Authorization: `Bearer ${localStorage.getItem("token")}`}});
+        this.socket = io(API_URL + "events");
 
         this.socket.on("connect", () => {
             console.log("Connected to socket");
