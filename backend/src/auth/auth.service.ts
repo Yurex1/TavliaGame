@@ -32,10 +32,8 @@ export class AuthService {
     }
     const payload = { sub: user.id, username: user.login };
     const access_token = await this.jwtService.signAsync(payload);
-    const cookieValue = `Bearer ${access_token}`;
-    // console.log("Cookie value: ", cookieValue);
-    res.cookie("access_token", cookieValue, { maxAge: 10000000, httpOnly: true, sameSite: "none" });
-    return res;
+
+    return access_token;
   }
 
   async createUser(data: Prisma.UserCreateInput) {

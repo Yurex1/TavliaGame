@@ -1,6 +1,5 @@
 import { Board, Status } from "./Board";
 import { Colors } from "./Colors";
-import { Square } from "./Square";
 import { Figure } from "./figures/Figure";
 
 export type Move = {
