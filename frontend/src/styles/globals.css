@@ -332,3 +332,18 @@ form > *{
   }
   
 }
+.link{
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.link:hover{
+  color: aqua;
+}
+input{
+  font-size: 20px;
+}
+.xbutt{
+  background-color: transparent;
+  font-size: 22px;
+}

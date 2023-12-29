@@ -19,11 +19,11 @@ const Singup: FC<SingupProps> = ({ setShowAuth }) => {
     setShowAuth(false);
   };
   return (
-    <Form methods={methods} submitText="Log in" onSubmit={onSubmit}>
-      <RHFInput placeholder="login" name="login" type="text" />
-      <RHFInput placeholder="name" name="name" type="text" />
-      <RHFInput placeholder="email" name="email" type="email" />
-      <RHFInput placeholder="password" name="password" type="password" />
+    <Form methods={methods} submitText="Sign in" onSubmit={onSubmit}>
+      <RHFInput placeholder="Login" name="login" type="text" />
+      <RHFInput placeholder="Name" name="name" type="text" />
+      <RHFInput placeholder="Email" name="email" type="email" />
+      <RHFInput placeholder="Password" name="password" type="password" />
     </Form>
   );
 };
