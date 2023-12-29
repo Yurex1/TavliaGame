@@ -260,7 +260,14 @@ aside{
   flex-direction: column;
   align-items: center;
 }
-
+.history-online{
+  width: 50%;
+  height: 37vw;
+  border: 0.5px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .restart{
   width: 100%;
   height: 5vw;
