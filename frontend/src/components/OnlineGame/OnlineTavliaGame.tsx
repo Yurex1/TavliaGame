@@ -1,7 +1,7 @@
 import { Status } from "@/models/Board";
 import { Colors } from "@/models/Colors";
 import { Game } from "@/models/Game";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import SquareComponent from "../GameTavlia/SquareComponent";
 import { Square } from "@/models/Square";
 import Table from "../GameTavlia/Table";
