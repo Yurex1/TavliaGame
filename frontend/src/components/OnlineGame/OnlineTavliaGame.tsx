@@ -31,7 +31,7 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
 
   function click(square: Square) {
-    // if (game.color !== color || Loading) return;
+    if (game.color !== color || Loading) return;
     if (game.status != Status.PLAYING) return;
     if (selectedSquare && selectedSquare == square) {
       game.board.highlightSquares(null);
