@@ -88,4 +88,63 @@ export class AuthService {
         return `No user with id: ${id}`;
       });
   }
+
+  async addFriend(id: number, friendsId: number, res: Response) {
+    try {
+      const user = await this.prismaService.user.findUnique({ where: { id: id } });
+      const friend = await this.prismaService.user.findUnique({ where: { id: friendsId } });
+      if (!user || !friend) {
+        return res.status(404).json("User was not found")
+      }
+      if (user.friends.includes(friendsId)) {
+        return res.status(400).json("User is already your friend")
+      }
+
+
+      const currentFriends = user.friends ?? [];
+
+      const updatedUser = await this.prismaService.user.update({
+        where: { id: id },
+        data: {
+
+          friends: [...currentFriends, friendsId],
+        },
+      });
+      return res.status(200).json(updatedUser)
+
+    }
+    catch (error) {
+
+      throw error;
+    }
+  }
+
+  async removeFriend(id: number, friendsId: number, res: Response) {
+    const user = await this.prismaService.user.findUnique({ where: { id: id } });
+    if (!user) {
+      return res.status(404).json("No user with this id");
+    }
+    if (!user.friends.includes(friendsId)) {
+      return res.status(400).json("User doesn't have this friend");
+    }
+
+    const updatedFriendsList = user.friends.filter(friendId => friendId !== friendsId);
+
+    const result = this.prismaService.user.update({
+      where: { id: id }, data: {
+        friends: updatedFriendsList
+      }
+    })
+    return res.status(200).json({ message: "Friend removed successfully" });
+  }
+
+  async getAllFriends(id: number, res: Response) {
+    const user = await this.prismaService.user.findUnique({ where: { id: id } });
+    if (!user) {
+      return res.status(404).json("No user with this id");
+    }
+
+    return res.status(200).json(user.friends);
+  }
+
 }

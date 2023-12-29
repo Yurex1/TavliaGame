@@ -1,20 +1,19 @@
 import Board from "./Board";
-import Player from "./Player";
 
 export default class GameManager {
     gameBoard: Board;
-    players: Player[];
-    currentPlayer: Player;
+
+    currentPlayer: number;
     n: number;
 
-    constructor(players: Array<Player>, n: number) {
-        this.players = players;
+    constructor(n: number) {
+
         this.n = n;
         this.gameBoard = new Board(this.n);
-        this.currentPlayer = players[0];
+        this.currentPlayer = 1;
     }
 
-    public ChangePlayerMoves = () => this.currentPlayer = this.currentPlayer === this.players[1] ? this.players[0] : this.players[1];
+    public ChangePlayerMoves = () => this.currentPlayer = 1 - this.currentPlayer;
 
     public processMove = (from: { x: number, y: number }, to: { x: number, y: number }) => {
         const result = this.gameBoard.makeMove(from, to, this.currentPlayer);
@@ -30,13 +29,6 @@ export default class GameManager {
             return true;
         }
 
-    }
-
-    public addPlayer(id: string) {
-        if (this.players[1].id === null) {
-            this.players[1].id = id;
-            this.players[1].role = 0;
-        }
     }
 
     public isGameEnded() {
