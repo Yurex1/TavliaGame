@@ -73,7 +73,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit('inGame', {
         roomId,
         board: room.gameManager.gameBoard.cells,
-        youMove: room.playerMoves(userId)
+        youMove: room.youMove(userId),
+        playerMove: room.playerMove(),
+        history: room.gameMoves,
       })
     }
   }
@@ -82,6 +84,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
+
+
 
   @SubscribeMessage("createRoom")
   async createRoom(socket: Socket, data: { n: number, userId: number }) {
