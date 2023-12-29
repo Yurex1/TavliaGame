@@ -1,17 +1,10 @@
-import API_URL from "@/constants";
-import axios from "axios";
+import React from "react";
+import useRank from "@/hooks/useRank";
 import { useState } from "react";
-import { useQuery } from "react-query";
 
 export default function Rank() {
 
-  const getUser = async () => {
-    return await axios.get(API_URL + 'auth/profile', {withCredentials: true});
-}
-
-  const useUser= () => {
-    return useQuery(['user'], getUser);
-};
+  const usersList = useRank();
 
   const initialList = [
     {
