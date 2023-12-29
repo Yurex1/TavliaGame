@@ -127,9 +127,9 @@ export class AuthService {
     if (!user.friends.includes(friendsId)) {
       return res.status(400).json("User doesn't have this friend");
     }
-    console.log("I", id, friendsId)
+
     const updatedFriendsList = user.friends.filter(friendId => friendId !== friendsId);
-    console.log("I2", updatedFriendsList)
+
     const result = this.prismaService.user.update({
       where: { id: id }, data: {
         friends: updatedFriendsList
@@ -143,7 +143,7 @@ export class AuthService {
     if (!user) {
       return res.status(404).json("No user with this id");
     }
-    console.log("1", user.friends)
+
     return res.status(200).json(user.friends);
   }
 

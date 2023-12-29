@@ -34,7 +34,7 @@ export default class Figure {
         let temp_y = this.position.x;
         const result: Array<{ x: number, y: number }> = [];
         for (let i = temp_x + 1; i < board.n; i++) {
-            if (board.board[i][temp_y].isEmpty()) {
+            if (board.cells[i][temp_y].isEmpty()) {
                 result.push({ x: i, y: temp_y });
             }
             else {
@@ -42,7 +42,7 @@ export default class Figure {
             }
         }
         for (let i = temp_x - 1; i >= 0; i--) {
-            if (board.board[i][temp_y].isEmpty()) {
+            if (board.cells[i][temp_y].isEmpty()) {
                 result.push({ x: i, y: temp_y });
             }
             else {
@@ -50,7 +50,7 @@ export default class Figure {
             }
         }
         for (let i = temp_y + 1; i < board.n; i++) {
-            if (board.board[temp_x][i].isEmpty()) {
+            if (board.cells[temp_x][i].isEmpty()) {
                 result.push({ x: temp_x, y: i });
             }
             else {
@@ -58,7 +58,7 @@ export default class Figure {
             }
         }
         for (let i = temp_y - 1; i >= 0; i--) {
-            if (board.board[temp_x][i].isEmpty()) {
+            if (board.cells[temp_x][i].isEmpty()) {
                 result.push({ x: temp_x, y: i });
             }
             else {
