@@ -1,9 +1,39 @@
 import React from "react";
-import { useConnect } from "@/hooks/useConnect";
+import { useRouter } from "next/router";
+import OnlineGame from "@/components/OnlineGame";
+import useUser from "@/hooks/useUser";
 
 export default function Game() {
-  // const router = useRouter();
-  // const { n } = router.query;
-  useConnect();
-  return(<>Aбоба</>);
+  const router = useRouter();
+  const  { n }  = router.query;
+  const user = useUser();
+  if(n && user.data)
+  {
+    const ty = n && n.toString();
+    return (
+      <>
+        <div className='wrapper'>
+          {ty && <OnlineGame username = {user.data.data.username} n = {parseInt(ty)} userId={user.data.data.sub}/>}
+        </div>
+      </>
+    );
+  }
+  else if(user.data){
+    return(
+      <>
+        <div className='cen'>
+          Loading...
+        </div>
+      </>
+    );
+  }
+  else{
+    return(
+      <>
+        <div className='cen'>
+          Please login{')'}
+        </div>
+      </>
+    );
+  }
 }
