@@ -17,16 +17,16 @@ const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
             <b>Tavlia</b>
           </div>
         </a>
-        <SideBarItem text="Play" hrefText="../" />
-        <SideBarItem text="Instruction" hrefText="../" />
-        <SideBarItem text="Profile" hrefText="../" />
-        <SideBarItem text="Rank" hrefText="../rank" />
-        <SideBarItem text="Friends" hrefText="../" />
-        <SideBarItem text="Settings" hrefText="../" />
+        <SideBarItem text="Play" hrefText="../" img_url={"Lightning.png"}  />
+        <SideBarItem text="Instruction" hrefText="../" img_url={"info.png"} />
+        <SideBarItem text="Profile" hrefText="../" img_url={"prof.png"} />
+        <SideBarItem text="Rank" hrefText="../rank" img_url={"rank.png"} />
+        <SideBarItem text="Friends" hrefText="../" img_url={"friends.png"} />
+        <SideBarItem text="Settings" hrefText="../" img_url={"sett.png"} />
         <SideBarLogItem setShowAuth = {setShowAuth}/>
       </div>
       <div className="down-items">
-        <SideBarItem text="Help" hrefText="../" />
+        <SideBarItem text="Help" hrefText="../" img_url={""} />
       </div>
     </aside>
   );

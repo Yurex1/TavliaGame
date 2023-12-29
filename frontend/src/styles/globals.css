@@ -52,10 +52,11 @@ aside{
 }
 
 .icon{
-  height: 2vh;
-  width: 2vh;
-  background-color: #C0A080;
+  height: 10px;
+  width: 10px;
+  background-color: transparent;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 /* main */
@@ -300,4 +301,28 @@ form > *{
 
 .auth>button{
   margin: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  aside{
+    background-color: #FFFBE9;
+    width: 50px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+  }
+  .aside-item{
+    height: 50px;
+    padding: 10px;
+    font-size: 0px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff00;
+    border-bottom: #C0A080 solid 1px;
+  }
+  
+  
 }
