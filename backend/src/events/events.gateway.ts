@@ -122,6 +122,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit('status', 'no user with this id');
       return;
     }
+    if (this.players.has(user.id)) {
+      socket.emit('status', 'Can\'t join when previous game is not ended');
+      return;
+    }
     // this.secondUserId = data.userId;
     const room = this.rooms.get(data.roomId);
     if (!room) {
@@ -175,8 +179,35 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage('surrender')
+  async surrender(socket: Socket) {
+    let roomId;
+    if (Array.from(socket.rooms)[0] === socket.id) {
+      roomId = Array.from(socket.rooms)[1];
+    } else {
+      roomId = Array.from(socket.rooms)[0];
+    }
+    const userId = socket['user'];
+    const room = this.rooms.get(roomId);
+    if (!room) {
+      this.io.emit("status", "No room with this roomId");
+      throw new NotFoundException();
+    }
+    if (!this.players.has(userId)) {
+      socket.emit('status', 'This user is not in the game')
+    }
+    room.surrender(userId)
+    this.io.to(roomId).emit("move", "Player surrendered");
+    this.io.socketsLeave(roomId);
+    this.rooms.delete(roomId)
+    this.players.delete(room.player1);
+    this.players.delete(room.player2);
+  }
+
   handleDisconnect(client: Socket) {
     this.io.to(this.rooms[client.id]).emit('status', "Client disconnected: ", client.id)
+    console.log(client['user'].sub)
+
     console.log("Event disconnect ");
   }
 }
