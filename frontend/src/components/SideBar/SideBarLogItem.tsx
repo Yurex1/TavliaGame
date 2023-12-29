@@ -14,13 +14,16 @@ const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
   // eslint-disable-next-line no-constant-condition
   if (true) {
     return (
+      
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
+        <img className="icon" src = "arrow.png"/>
         <div  className="text">Log In</div>
       </button>
     );
   } else {
     return (
       <div onClick= {() => {console.log('logout')}} className="aside-item">
+        <img className="icon" src = "arrow.png"/>
         <div className="text">Log Out</div>
       </div>
     );
