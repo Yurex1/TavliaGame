@@ -4,8 +4,8 @@ import { Game } from "@/models/Game";
 import React, { FC, useState } from "react";
 import SquareComponent from "../GameTavlia/SquareComponent";
 import { Square } from "@/models/Square";
-import Table from "../GameTavlia/Table";
 import SocketApi from "@/api/socket-api";
+import TableOnline from "./TableOnline";
 
 type OnlineTavliaGameProps = {
   n: number;
@@ -63,6 +63,8 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n }) => {
         }
         if (data == "Incorrect move") {
           alert(data);
+          setLoading(false);
+          setSelectedSquare(null);
           return;
         }
         return;
@@ -99,11 +101,11 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n }) => {
             </React.Fragment>
           ))}
         </div>
-        <Table
+        <TableOnline
           status={status}
           history={history}
           move={move}
-          restart={() => {}}
+          color={color}
         />
       </div>
     </>
