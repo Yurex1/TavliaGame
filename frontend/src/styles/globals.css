@@ -28,6 +28,34 @@ aside{
   position: fixed;
 }
 
+.cen{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 200%;
+  width: 100%;
+  height: 100vh;
+}
+
+.btn{
+  padding: 0.5vh;
+  margin: 2vh;
+  background-color: #C0A080;
+  border-radius: 5px ;
+  font-size: 20px;
+  margin-top: 20px;
+  box-shadow: 2px 2px 2px black;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.btn:hover{
+  background-color: #ad8b739b;
+}
+
 
 .name{
   padding: 10px;
