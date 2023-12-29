@@ -82,7 +82,7 @@ export class Room {
             return "1 player left"
         }
         else if (this.size === 1) {
-
+            return '0 players left'
         }
     }
 
@@ -119,5 +119,38 @@ export class Room {
             await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: firstUser.rank - 25 } })
             await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: secondUser.rank + 25 } })
         }
+    }
+
+    public async surrender(loserId: number) {
+        let loser, winner;
+        if (loserId === this.player1) {
+            loser = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
+            winner = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
+        } else {
+            loser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
+            winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
+        }
+        await this.prismaService.game.create({
+            data:
+            {
+                users: {
+                    connect: [
+                        { id: this.player1 },
+                        { id: this.player2 }
+                    ]
+                },
+                Move: {
+                    create: this.gameMoves.map(move => ({
+                        fromX: move.from.x,
+                        fromY: move.from.y,
+                        toX: move.to.x,
+                        toY: move.to.y
+                    })),
+                },
+            },
+
+        });
+        await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: winner.rank + 25 } })
+        await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: loser.rank - 25 } })
     }
 }
