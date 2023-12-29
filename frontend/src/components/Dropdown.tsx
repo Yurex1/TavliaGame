@@ -17,9 +17,7 @@ export default function Dropdown({ n }: any) {
   };
 
   useEffect(() => {
-    // Add event listener when the component mounts
     document.addEventListener("mousedown", handleClickOutside);
-    // Clean up the event listener when the component unmounts
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
