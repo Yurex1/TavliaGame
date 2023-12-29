@@ -74,7 +74,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Put('friends')
   addFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
-    console.log("SS", id)
+
     //@ts-ignore
     return this.authService.addFriend(req.user.sub, id, res)
   }
