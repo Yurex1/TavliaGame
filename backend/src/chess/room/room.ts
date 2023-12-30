@@ -1,6 +1,7 @@
 import { ConflictException } from "@nestjs/common";
 import GameManager from "./gameManager";
 import { PrismaService } from "src/prisma.service";
+import { MoveResult } from "./Board";
 
 
 interface Move {
@@ -10,7 +11,7 @@ interface Move {
 
 export class Room {
     private _size = 0;
-
+    public firstLogout: number | null = null;
     public player2: number | null = null;
     public gameManager: GameManager;
     private prismaService: PrismaService;
@@ -31,23 +32,18 @@ export class Room {
 
     public position: string[8][8];
 
-    public makeMove(from: { x: number, y: number }, to: { x: number, y: number },) {
+    public makeMove(from: { x: number, y: number }, to: { x: number, y: number },): MoveResult {
         if (this.gameManager.isGameEnded()) {
-            return "Game is over";
+            return { result: "END GAME" }
         }
         const moveResult = this.gameManager.processMove(from, to);
-        if (moveResult !== false) {
+        if (moveResult.result !== 'WRONG') {
             this.gameMoves.push({
                 from, to
             })
         }
-        if (moveResult === true) {
-            return "Success";
-        }
-        else if (moveResult === "Eng game")
-            return "Game is over";
 
-        return "Error move"
+        return moveResult
     }
 
 
@@ -76,12 +72,14 @@ export class Room {
         }
     }
 
-    public removePlayer(id: string) {
+    public removePlayer(id: number) {
         if (this.size === 2) {
             this._size = 1;
+            this.firstLogout = id;
             return "1 player left"
         }
         else if (this.size === 1) {
+            this._size = 0;
             return '0 players left'
         }
     }
