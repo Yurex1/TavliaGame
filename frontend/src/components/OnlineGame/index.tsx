@@ -4,59 +4,34 @@ import OnlineTavliaGame from "./OnlineTavliaGame";
 import CreateRoomComponent from "./CreateRoomComponenet";
 import { Colors } from "@/models/Colors";
 import JoinRoomComponent from "./JoinRoomComponent";
+import MainMenu from "./MainMenu";
 
 type OnlineGameProps = {
   n: number;
-  userId: number;
-  username: string;
 };
 
-const OnlineGame: FC<OnlineGameProps> = ({ n, userId}) => {
-  useConnect();
-  const [roomId, setRoomId] = React.useState<string | null>(null);
+const OnlineGame: FC<OnlineGameProps> = ({n}) => {
+  const socket = useConnect(n);
   const [status, setStatus] = React.useState<string | null>(null);
-  const [color, setColor] = React.useState<string>(Colors.EMPTY);
 
   if (status === null)
     return (
-      <div className="cen">
-        <div
-          className="btn"
-          onClick={() => {
-            setStatus("create");
-          }}
-        >
-          Create Game
-        </div>
-        <div
-          className="btn"
-          onClick={() => {
-            setStatus("join");
-          }}
-        >
-          Join Game
-        </div>
-      </div>
+      < MainMenu setStatus={setStatus} />
     );
   if (status === "create") {
     return (
       <CreateRoomComponent
-        n={n}
-        setRoomId={setRoomId}
-        setStatus={setStatus}
-        roomId={roomId}
-        userId={userId}
-        setColor={setColor}
+        socket={socket}
       />
     );
   }
   if(status === "join"){
     return (
-        <JoinRoomComponent userId={userId} setColor={setColor} setRoomId={setRoomId} setStatus={setStatus}/>
+        <JoinRoomComponent socket = {socket} />
     );
   }
   if (status === "start game") {
-    return <OnlineTavliaGame roomId = {roomId} userId = {userId} n = {n} color={color}/>;
+    return <OnlineTavliaGame socket = {socket}/>;
   }
 };
 
