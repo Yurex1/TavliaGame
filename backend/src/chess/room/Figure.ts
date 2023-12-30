@@ -71,7 +71,7 @@ export default class Figure {
             { x: board.n - 1, y: 0 },
             { x: board.n - 1, y: board.n - 1 }
         ]
-        if (this.FigureType != 3) {
+        if (this.FigureType !== FigureType.King) {
             const new_result = result.filter((el) => { return !coordinatesToRemove.some((coord) => el === coord) })
             return new_result;
         }
