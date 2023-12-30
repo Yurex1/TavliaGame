@@ -19,7 +19,6 @@ const CreateRoomComponent: FC<CreateRoomProps> = ({
   setStatus,
   setColor,
 }) => {
-    
   const CreateRoom = () => {
     const requestData = {
       n: n,
@@ -30,15 +29,20 @@ const CreateRoomComponent: FC<CreateRoomProps> = ({
       setRoomId(roomId);
     });
     SocketApi.socket?.on("status", (statusMessage: string) => {
-        setStatus(statusMessage);
-        setColor(Colors.WHITE);
+      setStatus(statusMessage);
+      setColor(Colors.WHITE);
     });
   };
 
   return (
     <div className="cen">
-      <div onClick={CreateRoom} className="btn"> get roomId</div>
-      <input defaultValue={roomId ? roomId : ""} />
+      <div className="auth">
+        <div onClick={CreateRoom} className="btn">
+          {" "}
+          Get roomId
+        </div>
+        <input className="" defaultValue={roomId ? roomId : ""} />
+      </div>
     </div>
   );
 };
