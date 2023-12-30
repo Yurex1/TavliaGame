@@ -17,12 +17,11 @@ export class Room {
     private prismaService: PrismaService;
     public gameMoves: Move[] = [];
 
-
-
-    constructor(public player1: number, n: number, prismaService: PrismaService,) {
+    constructor(public player1: number, n: number, prismaService: PrismaService) {
         this._size = 1;
         this.gameManager = new GameManager(n)
         this.prismaService = prismaService
+
     }
 
     get size(): number {
