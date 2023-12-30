@@ -1,6 +1,7 @@
 import SocketApi from "@/api/socket-api";
 import { Move } from "@/models/Game";
-import { useEffect } from "react";
+import { Square } from "@/models/Square";
+import { FC, useEffect } from "react";
 
 
 export type SocketApiType = {
@@ -14,29 +15,38 @@ export type SocketApiType = {
     moverId: number| null,
     moveStatus: string| null,
     move: (move: Move) => void,
-    createGame: () => void,
+    createGame: (setRoomId: (roomId: null|string ) => void) => void,
     joinRoom: (roomId: string) => void,
 };
 
-export const useConnect = (n:number) => {
+export type useConnectType = {
+    n: number,
+    userId: number,
+    setPageStatus: (pageStatus: string|null) => void,
+    setHistory: (history: Move[]) => void,
+    setMoverId: (moverId: number | null) => void,
+    setMoveStatus: (moveStatus: string) => void,
+};
+
+export const useConnect = ({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus} : useConnectType) => {
   const connectSocket = () => {
-    SocketApi.initSocket(n);
+    SocketApi.initSocket({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus});
   };
 
   useEffect(() => {
     connectSocket();
   }, []);
 
-  const move = (move: Move) => {
-    SocketApi.socket?.emit("move", move);
+  const move = (move: Move, setSelectedSquare: (square: Square|null) => void) => {
+    SocketApi.move(move, setSelectedSquare);
   };
 
-  const createGame = () => {
-    SocketApi.socket?.emit("createRoom");
+  const createGame = (setRoomId: (roomId: null|string ) => void) => {
+    SocketApi.createGame(setRoomId);
   };
 
   const joinRoom = (roomId: string) => {
-    SocketApi.socket?.emit("joinRoom", roomId);
+    SocketApi.joinRoom(roomId);
   }
 
   return {...SocketApi.getGame(), move: move, createGame: createGame, joinRoom: joinRoom} as SocketApiType;
