@@ -1,4 +1,6 @@
 // import useUser from "@/hooks/useUser";
+import useLogout from "@/hooks/useLogout";
+import useUser from "@/hooks/useUser";
 import { FC } from "react";
 import React from 'react'
 
@@ -9,10 +11,9 @@ type SideBareLogItemProps = {
 
 
 const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
-  // const user = useUser();
-  // console.log(user);
-  // eslint-disable-next-line no-constant-condition
-  if (true) {
+  const user = useUser();
+  const logout = useLogout();
+  if (!user.data) {
     return (
       
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
@@ -22,7 +23,7 @@ const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
     );
   } else {
     return (
-      <div onClick= {() => {console.log('logout')}} className="aside-item">
+      <div onClick= {() => {logout()}} className="aside-item">
         <img className="icon" src = "arrow.png"/>
         <div className="text">Log Out</div>
       </div>

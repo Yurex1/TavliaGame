@@ -1,16 +1,39 @@
+import React from "react";
 import { useRouter } from "next/router";
-import GameTavlia from "../components/GameTavlia";
-import React from 'react'
+import OnlineGame from "@/components/OnlineGame";
+import useUser from "@/hooks/useUser";
 
 export default function Game() {
   const router = useRouter();
-  const { n } = router.query;
-  console.log(n);
-  return (
-    <>
-      <div className='wrapper'>
-        <GameTavlia n = {n}/>
-      </div>
-    </>
-  );
+  const  { n }  = router.query;
+  const user = useUser();
+  if(n && user.data)
+  {
+    const ty = n && n.toString();
+    return (
+      <>
+        <div className='wrapper'>
+          {ty && <OnlineGame username = {user.data.data.username} n = {parseInt(ty)} userId={user.data.data.sub}/>}
+        </div>
+      </>
+    );
+  }
+  else if(user.data){
+    return(
+      <>
+        <div className='cen'>
+          Loading...
+        </div>
+      </>
+    );
+  }
+  else{
+    return(
+      <>
+        <div className='cen'>
+          Please login{')'}
+        </div>
+      </>
+    );
+  }
 }

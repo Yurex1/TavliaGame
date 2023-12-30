@@ -35,14 +35,14 @@ export class AuthController {
         },
         res
       ).then((result) => {
-        res = result
-        res.json("Success login");
+
+        res.json(result);
       });
     } catch (error) {
       if (error.status === 401) {
         res
           .status(HttpStatus.UNAUTHORIZED)
-          .json({ message: "Error occurred" });
+          .json({ message: "Incorrect username or password" });
       }
       else if (error.status === 400) {
         res.status(HttpStatus.BAD_REQUEST).json({ message: "username or password is undefined" })
@@ -59,7 +59,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Get()
+  @Get('findAll')
   findAll() {
     return this.authService.findAll();
   }
@@ -67,10 +67,33 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get("profile")
   getProfile(@Req() req: Request) {
-    console.log("AA")
     //@ts-ignore
-    return req.user;
+    return req.user
   }
+
+  @UseGuards(AuthGuard)
+  @Put('friends')
+  addFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
+
+    //@ts-ignore
+    return this.authService.addFriend(req.user.sub, id, res)
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('friends')
+  removeFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
+
+    //@ts-ignore
+    return this.authService.removeFriend(req.user.sub, id, res)
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('friends')
+  async getAllFriends(@Req() req: Request, @Res() res: Response) {
+    //@ts-ignore
+    return (await this.authService.getAllFriends(req.user.sub, res));
+  }
+
 
   @Get(":id")
   findOne(@Param("id") id: string) {
