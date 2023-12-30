@@ -58,7 +58,6 @@ export class AuthController {
     return this.authService.createUser(createAuthDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get('findAll')
   findAll() {
     return this.authService.findAll();
