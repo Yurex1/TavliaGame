@@ -1,47 +1,30 @@
 import { Status } from "@/models/Board";
 import { Colors } from "@/models/Colors";
-import { Game } from "@/models/Game";
+import { Game, Move } from "@/models/Game";
 import React, { FC, useState } from "react";
 import SquareComponent from "../GameTavlia/SquareComponent";
 import { Square } from "@/models/Square";
 import SocketApi from "@/api/socket-api";
 import TableOnline from "./TableOnline";
+import { SocketApiType } from "@/hooks/useConnect";
 
 type OnlineTavliaGameProps = {
-  n: number;
-  userId: number;
-  roomId: string | null;
-  color: string;
-  setGame: (game: Game) => void;
-  game: Game;
+  socket: SocketApiType;
 };
 
-const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n, game, setGame }) => {
-  const [status, setStatus] = useState(Status.PLAYING);
-  const [history, setHistory] = useState(game.history);
-  const [move, setMove] = useState(Colors.WHITE);
-  const [Loading, setLoading] = useState(false);
+const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({socket }) => {
+  const [game, ] = useState(new Game(socket.n!, socket.history));
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   function click(square: Square) {
-    if (color != move || Loading) return;
-    if (game.status != Status.PLAYING) return;
+    if (socket.moverId != socket.userId && socket.moveStatus == "can move" && game.status==Status.PLAYING) return;
     if (selectedSquare && selectedSquare == square) {
       game.board.highlightSquares(null);
       setSelectedSquare(null);
       return;
     }
     if (selectedSquare && selectedSquare.figure?.canMove(square)) {
-      setLoading(true);
-      SocketApi.socket?.emit("move", {
-        moveFrom: {
-          x: selectedSquare.x,
-          y: selectedSquare.y,
-        },
-        moveTo: {
-          x: square.x,
-          y: square.y,
-        },
-      });
+      const move : Move = {from: {x: selectedSquare.x, y: selectedSquare.y}, to: {x: square.x, y: square.y}};
+      SocketApi.move(move);
       return;
     }
     if (square.figure && square.figure.color == game.color) {
@@ -49,38 +32,6 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n, game, setGame }
       setSelectedSquare(square);
     }
   }
-
-  SocketApi.socket?.on(
-    "move",
-    (
-      data:
-        | string
-        | { from: { x: number; y: number }; to: { x: number; y: number } }
-    ) => {
-      if (typeof data == "string") {
-        if (data == "End of the game") {
-          alert(data);
-          return;
-        }
-        if (data == "Incorrect move") {
-          alert(data);
-          setLoading(false);
-          setSelectedSquare(null);
-          return;
-        }
-        return;
-      }
-      const from = game.board.getSquare(data.from.x, data.from.y);
-      const to = game.board.getSquare(data.to.x, data.to.y);
-      from.moveFigure(to);
-      game.board.highlightSquares(null);
-      setSelectedSquare(null);
-      setLoading(false);
-      setStatus(game.status);
-      setMove(game.color);
-      setHistory(game.history);
-    }
-  );
 
   return (
     <>
@@ -103,10 +54,7 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n, game, setGame }
           ))}
         </div>
         <TableOnline
-          status={status}
-          history={history}
-          move={move}
-          color={color}
+          socket={socket}
         />
       </div>
     </>
