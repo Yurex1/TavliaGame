@@ -113,9 +113,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
   @SubscribeMessage("createRoom")
-  async createRoom(socket: Socket, data: { n: number, userId: number }) {
+  async createRoom(socket: Socket, data: { n: number }) {
 
-    if (data.n === null || data.n === undefined || data.userId === null || data.userId === undefined) {
+    if (data.n === null || data.n === undefined) {
       socket.emit('page status', 'one of values is null or undefined');
       return;
     }
@@ -125,7 +125,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit('page status', 'size is incorrect');
       return;
     }
-    const user = await this.prismaService.user.findUnique({ where: { id: data.userId } })
+    const userId = socket['user']?.sub;
+    if (!userId) {
+      socket.emit('page status', 'token is invalid');
+      return;
+    }
+
+    const user = await this.prismaService.user.findUnique({ where: { id: userId } })
     if (!user) {
       socket.emit('page status', 'no user with this id');
       return;
@@ -144,12 +150,17 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
   @SubscribeMessage("joinRoom")
-  async joinRoom(socket: Socket, data: { roomId: string, userId: number }) {
-    if (data.roomId === null || data.roomId === undefined || data.userId === null || data.userId === undefined) {
+  async joinRoom(socket: Socket, data: { roomId: string }) {
+    if (data.roomId === null || data.roomId === undefined) {
       socket.emit('page status', 'one of values is null or undefined');
       return;
     }
-    const user = await this.prismaService.user.findUnique({ where: { id: data.userId } })
+    const userId = socket['user'].sub;
+    if (!userId) {
+      socket.emit('page status', 'token is invalid');
+      return;
+    }
+    const user = await this.prismaService.user.findUnique({ where: { id: userId } })
     if (!user) {
       socket.emit('page status', 'no user with this id');
       return;
@@ -160,10 +171,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     // this.secondUserId = data.userId;
     const room = this.rooms.get(data.roomId);
+
     if (!room) {
       socket.emit("page status", "No room with this roomId");
       return;
-    } else if (room.size >= 2) {
+    }
+    else if (room.size >= 2) {
       socket.emit("page status", "This room already has 2 players");
       return;
     }
@@ -224,16 +237,24 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } else {
       roomId = Array.from(socket.rooms)[0];
     }
-    const userId = socket['user'];
+    const userId = socket['user'].sub;
     const room = this.rooms.get(roomId);
     if (!room) {
       this.io.emit("status", "No room with this roomId");
-      throw new NotFoundException();
+      return;
     }
     if (!this.players.has(userId)) {
       socket.emit('status', 'This user is not in the game')
     }
-    room.surrender(userId)
+
+    const res = await room.surrender(userId);
+
+    if (!res) {
+      socket.emit("game status", "Can't surrender");
+
+      return;
+    }
+
     this.io.to(roomId).emit("game status", "Player surrendered");
     this.io.socketsLeave(roomId);
     this.rooms.delete(roomId)
@@ -244,15 +265,17 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleDisconnect(socket: Socket) {
 
     const userId = socket['user']?.sub;
+
     if (this.players.has(userId)) {
       this.io.to(this.players.get(userId)).emit('status', `Client disconnected: ${socket.id}`)
 
       const roomId = this.players.get(userId)
 
-      console.log("RoomID", roomId)
+
       const room = this.rooms.get(roomId);
 
       const result = room.removePlayer(userId)
+
       if (result === '1 player left') {
 
       }
@@ -263,6 +286,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.rooms.delete(roomId)
         this.players.delete(room.player1);
         this.players.delete(room.player2);
+
       }
     }
     console.log("Event disconnect ");
