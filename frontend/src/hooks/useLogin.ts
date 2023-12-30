@@ -4,13 +4,14 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
 const login = async (user: User) => {
-  await axios.post(API_URL + "auth/login", user, {withCredentials: true});
+  return await axios.post(API_URL + "auth/login", user, {withCredentials: true});
 };
 
 const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation(login, {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.data);
       queryClient.invalidateQueries(["user"]);
     },
   });
