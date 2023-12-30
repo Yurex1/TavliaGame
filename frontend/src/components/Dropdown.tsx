@@ -35,13 +35,13 @@ export default function Dropdown({ n }: any) {
               <b>Play Online</b>
             </Link>
           </div>
-          <div className="menu-items">
+          {/* <div className="menu-items">
             <Link className="menu-link" href={`/game?n=${n}`}>
               <b>Play vs computer</b>
             </Link>
-          </div>
+          </div> */}
           <div className="menu-items">
-            <Link className="menu-link" href={`/game?n=${n}`}>
+            <Link className="menu-link" href={`/game2x2?n=${n}`}>
               <b>Play two in one desk</b>
             </Link>
           </div>
