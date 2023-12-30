@@ -19,8 +19,8 @@ const Login: FC<loginProps> = ({ setShowAuth }) => {
   };
   return (
     <Form methods={methods} submitText="Log in" onSubmit={onSubmit}>
-      <RHFInput placeholder="name" name="username" type="text" />
-      <RHFInput placeholder="password" name="password" type="password" />
+      <RHFInput placeholder="Name" name="username" type="text" />
+      <RHFInput placeholder="Password" name="password" type="password" />
     </Form>
   );
 };
