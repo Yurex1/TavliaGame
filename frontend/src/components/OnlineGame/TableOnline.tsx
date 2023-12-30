@@ -1,3 +1,4 @@
+import { SocketApiType } from "@/hooks/useConnect";
 import { Status } from "@/models/Board";
 import { Colors } from "@/models/Colors";
 import { Move } from "@/models/Game";
@@ -19,8 +20,6 @@ type HistoryProps = {
   array: Move[];
 };
 
-
-
 const History: FC<HistoryProps> = ({ array }) => {
   return (
     <div className="history">
@@ -36,25 +35,21 @@ const History: FC<HistoryProps> = ({ array }) => {
 };
 
 type TableProps = {
-  history: Move[];
-  move: Colors;
-  status: Status;
-  restart: () => void;
+  socket: SocketApiType;
 };
 
-const Table: FC<TableProps> = ({ history, move, status, restart }) => {
+const Table: FC<TableProps> = ({ socket }) => {
   const whiteHistory: Move[] = [],
     blackHistory: Move[] = [];
-  for (let i = 0; i < history.length; i++) {
-    if (i % 2 === 0) whiteHistory.push(history[i]);
-    else blackHistory.push(history[i]);
+  for (let i = 0; i < socket.history.length; i++) {
+    if (i % 2 === 0) whiteHistory.push(socket.history[i]);
+    else blackHistory.push(socket.history[i]);
   }
   return (
     <div className="table">
       <div className="row">
-        {status == Status.PLAYING && <div className="status">Move: {move}</div>}
-        {status == Status.WIN && <div className="status">White win!</div>}
-        {status == Status.LOSE && <div className="status">Black win!</div>}
+        {socket.status == "End of Game" ? <div className="status">{socket.status}</div> : <div className="status">{socket.moverId} moving</div>}
+        
       </div>
       <div className="row">
         <Schore text="White" />
@@ -65,9 +60,7 @@ const Table: FC<TableProps> = ({ history, move, status, restart }) => {
         <History array={whiteHistory} />
         <History array={blackHistory} />
       </div>
-      <div onClick={restart} className="restart">
-        Restart
-      </div>
+      <div className="restart">Surrender</div>
     </div>
   );
 };
