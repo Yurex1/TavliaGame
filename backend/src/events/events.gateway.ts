@@ -118,6 +118,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit('status', 'one of values is null or undefined');
       return;
     }
+    const neededSizes = [7, 9, 11];
+
+    if (!neededSizes.includes(data.n)) {
+      socket.emit('status', 'size is incorrect');
+      return;
+    }
     const user = await this.prismaService.user.findUnique({ where: { id: data.userId } })
     if (!user) {
       socket.emit('status', 'no user with this id');
@@ -189,7 +195,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     const move = room.makeMove(data.moveFrom, data.moveTo);
     if (move.result === "OK") {
-      this.io.to(roomId).emit("move", { from: data.moveFrom, to: data.moveTo, die: move.die });
+      this.io.to(roomId).emit("move", {
+        from: data.moveFrom,
+        to: data.moveTo, die: move.die
+      });
     }
     else if (move.result === "END GAME") {
       room.saveGame();
