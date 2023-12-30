@@ -92,6 +92,19 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return type === 'Bearer' ? token : undefined;
   }
 
+  @SubscribeMessage('getInfoRoom')
+  getInfoRoom(socket: Socket, data: { roomId: string }) {
+    const room = this.rooms.get(data.roomId);
+    if (!room) {
+      socket.emit('info', 'no room with this roomId')
+      return;
+    }
+    this.io.to(data.roomId).emit('info', {
+      'history': room.gameMoves,
+      'firstPlayer': room.player1,
+      'secondPlayer': room.player2
+    })
+  }
 
 
   @SubscribeMessage("createRoom")
