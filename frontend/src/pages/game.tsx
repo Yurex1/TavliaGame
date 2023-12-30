@@ -13,7 +13,7 @@ export default function Game() {
     return (
       <>
         <div className='wrapper'>
-          {ty && <OnlineGame username = {user.data.data.username} n = {parseInt(ty)} userId={user.data.data.sub}/>}
+          {ty && <OnlineGame n = {parseInt(ty)} userId={user.data.data.sub}/>}
         </div>
       </>
     );
