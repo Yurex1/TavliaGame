@@ -4,6 +4,8 @@ import OnlineTavliaGame from "./OnlineTavliaGame";
 import CreateRoomComponent from "./CreateRoomComponenet";
 import { Colors } from "@/models/Colors";
 import JoinRoomComponent from "./JoinRoomComponent";
+import { Game } from "@/models/Game";
+import MainMenu from "./MainMenu";
 
 type OnlineGameProps = {
   n: number;
@@ -16,27 +18,11 @@ const OnlineGame: FC<OnlineGameProps> = ({ n, userId}) => {
   const [roomId, setRoomId] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<string | null>(null);
   const [color, setColor] = React.useState<string>(Colors.EMPTY);
+  const [game, setGame] = React.useState<Game>(new Game(n));
 
   if (status === null)
     return (
-      <div className="cen">
-        <div
-          className="btn"
-          onClick={() => {
-            setStatus("create");
-          }}
-        >
-          Create Game
-        </div>
-        <div
-          className="btn"
-          onClick={() => {
-            setStatus("join");
-          }}
-        >
-          Join Game
-        </div>
-      </div>
+      < MainMenu setStatus={setStatus} />
     );
   if (status === "create") {
     return (
@@ -56,7 +42,7 @@ const OnlineGame: FC<OnlineGameProps> = ({ n, userId}) => {
     );
   }
   if (status === "start game") {
-    return <OnlineTavliaGame roomId = {roomId} userId = {userId} n = {n} color={color}/>;
+    return <OnlineTavliaGame game = {game} setGame = {setGame} roomId = {roomId} userId = {userId} n = {n} color={color}/>;
   }
 };
 
