@@ -1,6 +1,7 @@
 import { ConflictException } from "@nestjs/common";
 import GameManager from "./gameManager";
 import { PrismaService } from "src/prisma.service";
+import { MoveResult } from "./Board";
 
 
 interface Move {
@@ -10,11 +11,11 @@ interface Move {
 
 export class Room {
     private _size = 0;
-
+    public firstLogout: number | null = null;
     public player2: number | null = null;
     public gameManager: GameManager;
     private prismaService: PrismaService;
-    private gameMoves: Move[] = [];
+    public gameMoves: Move[] = [];
 
 
 
@@ -31,33 +32,33 @@ export class Room {
 
     public position: string[8][8];
 
-    public makeMove(from: { x: number, y: number }, to: { x: number, y: number },) {
+    public makeMove(from: { x: number, y: number }, to: { x: number, y: number },): MoveResult {
         if (this.gameManager.isGameEnded()) {
-            return "Game is over";
+            return { result: "END GAME" }
         }
         const moveResult = this.gameManager.processMove(from, to);
-        if (moveResult !== false) {
+        if (moveResult.result !== 'WRONG') {
             this.gameMoves.push({
                 from, to
             })
         }
-        if (moveResult === true) {
-            return "Success";
-        }
-        else if (moveResult === "Eng game")
-            return "Game is over";
 
-        return "Error move"
+        return moveResult
     }
 
 
-    public playerMoves(playerId: number) {
+    public youMove(playerId: number) {
+
         if (playerId === this.player1) {
             return this.gameManager.currentPlayer === 0;
         }
         else {
             return this.gameManager.currentPlayer === 1;
         }
+    }
+
+    public playerMove() {
+        return this.gameManager.currentPlayer;
     }
 
 
@@ -71,13 +72,15 @@ export class Room {
         }
     }
 
-    public removePlayer(id: string) {
+    public removePlayer(id: number) {
         if (this.size === 2) {
             this._size = 1;
+            this.firstLogout = id;
             return "1 player left"
         }
         else if (this.size === 1) {
-
+            this._size = 0;
+            return '0 players left'
         }
     }
 
@@ -114,5 +117,38 @@ export class Room {
             await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: firstUser.rank - 25 } })
             await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: secondUser.rank + 25 } })
         }
+    }
+
+    public async surrender(loserId: number) {
+        let loser, winner;
+        if (loserId === this.player1) {
+            loser = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
+            winner = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
+        } else {
+            loser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
+            winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
+        }
+        await this.prismaService.game.create({
+            data:
+            {
+                users: {
+                    connect: [
+                        { id: this.player1 },
+                        { id: this.player2 }
+                    ]
+                },
+                Move: {
+                    create: this.gameMoves.map(move => ({
+                        fromX: move.from.x,
+                        fromY: move.from.y,
+                        toX: move.to.x,
+                        toY: move.to.y
+                    })),
+                },
+            },
+
+        });
+        await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: winner.rank + 25 } })
+        await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: loser.rank - 25 } })
     }
 }
