@@ -118,7 +118,12 @@ export class Room {
         }
     }
 
-    public async surrender(loserId: number) {
+    public async surrender(loserId: number): Promise<boolean> {
+
+        if (!this.player1 || !this.player2) {
+
+            return false;
+        }
         let loser, winner;
         if (loserId === this.player1) {
             loser = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
@@ -149,5 +154,6 @@ export class Room {
         });
         await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: winner.rank + 25 } })
         await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: loser.rank - 25 } })
+        return true;
     }
 }
