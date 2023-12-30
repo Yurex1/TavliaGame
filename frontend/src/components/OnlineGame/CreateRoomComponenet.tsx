@@ -1,47 +1,22 @@
-import SocketApi from "@/api/socket-api";
-import { Colors } from "@/models/Colors";
+import { SocketApiType } from "@/hooks/useConnect";
 import React, { FC } from "react";
 
 type CreateRoomProps = {
-  n: number;
-  userId: number;
-  roomId: string | null;
-  setRoomId: (roomId: string) => void;
-  setStatus: (status: string) => void;
-  setColor: (color: string) => void;
+  socket: SocketApiType;
 };
 
 const CreateRoomComponent: FC<CreateRoomProps> = ({
-  n,
-  userId,
-  roomId,
-  setRoomId,
-  setStatus,
-  setColor,
+  socket,
 }) => {
-  const CreateRoom = () => {
-    const requestData = {
-      n: n,
-      userId: userId,
-    };
-    SocketApi.socket?.emit("createRoom", requestData);
-    SocketApi.socket?.on("getRoomId", (roomId: string) => {
-      setRoomId(roomId);
-    });
-    SocketApi.socket?.on("status", (statusMessage: string) => {
-      setStatus(statusMessage);
-      setColor(Colors.WHITE);
-    });
-  };
 
   return (
     <div className="cen">
       <div className="auth">
-        <div onClick={CreateRoom} className="btn">
+        <div onClick={socket.createGame} className="btn">
           {" "}
           Get roomId
         </div>
-        <input className="" defaultValue={roomId ? roomId : ""} />
+        <input className="" defaultValue={socket.roomId ? socket.roomId : ""} />
       </div>
     </div>
   );
