@@ -39,11 +39,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() io: Namespace;
   private logger = new Logger();
 
-  private rooms: Map<string, Room> = new Map();
-  private players: Map<number, string> = new Map();
-  // private firstUserId: number | null = null;
-  // private secondUserId: number | null = null;
-  // private isGameAlreadyInDatabase: boolean = false;
+  private rooms: Map<string, Room> = new Map(); // roomId to room
+  private players: Map<number, string> = new Map(); // userId to roomId
 
 
   RandomRoom = (): string => {
@@ -67,9 +64,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
           secret: jwtConstants.secret
         }
       );
+
       socket['user'] = user;
     } catch {
-      socket.emit('status', 'token expired')
+      socket.emit('page status', 'token expired')
       socket.disconnect();
       return;
     }
@@ -82,11 +80,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const room = this.rooms.get(roomId);
       socket.join(roomId);
       socket.emit('inGame', {
-        roomId,
-        board: room.gameManager.gameBoard.cells,
-        youMove: room.youMove(userId),
-        playerMove: room.playerMove(),
+        // board: room.gameManager.gameBoard.cells,
+        // youMove: room.youMove(userId),
+        // playerMove: room.playerMove(),
         history: room.gameMoves,
+        n: room.gameManager.n,
+        roomId,
+        whiteId: room.player2,
+        blackId: room.player1,
       })
     }
   }
@@ -115,24 +116,25 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async createRoom(socket: Socket, data: { n: number, userId: number }) {
 
     if (data.n === null || data.n === undefined || data.userId === null || data.userId === undefined) {
-      socket.emit('status', 'one of values is null or undefined');
+      socket.emit('page status', 'one of values is null or undefined');
       return;
     }
     const neededSizes = [7, 9, 11];
 
     if (!neededSizes.includes(data.n)) {
-      socket.emit('status', 'size is incorrect');
+      socket.emit('page status', 'size is incorrect');
       return;
     }
     const user = await this.prismaService.user.findUnique({ where: { id: data.userId } })
     if (!user) {
-      socket.emit('status', 'no user with this id');
+      socket.emit('page status', 'no user with this id');
       return;
     }
     // this.firstUserId = data.userId;
     const roomId: string = this.RandomRoom();
     socket.join(roomId);
     const room = new Room(user.id, data.n, this.prismaService);
+
     this.rooms.set(roomId, room);
     this.players.set(user.id, roomId)
 
@@ -144,25 +146,25 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("joinRoom")
   async joinRoom(socket: Socket, data: { roomId: string, userId: number }) {
     if (data.roomId === null || data.roomId === undefined || data.userId === null || data.userId === undefined) {
-      socket.emit('status', 'one of values is null or undefined');
+      socket.emit('page status', 'one of values is null or undefined');
       return;
     }
     const user = await this.prismaService.user.findUnique({ where: { id: data.userId } })
     if (!user) {
-      socket.emit('status', 'no user with this id');
+      socket.emit('page status', 'no user with this id');
       return;
     }
     if (this.players.has(user.id)) {
-      socket.emit('status', 'Can\'t join when previous game is not ended');
+      socket.emit('page status', 'Can\'t join when previous game is not ended');
       return;
     }
     // this.secondUserId = data.userId;
     const room = this.rooms.get(data.roomId);
     if (!room) {
-      socket.emit("status", "No room with this roomId");
+      socket.emit("page status", "No room with this roomId");
       return;
     } else if (room.size >= 2) {
-      socket.emit("status", "This room already has 2 players");
+      socket.emit("page status", "This room already has 2 players");
       return;
     }
     socket.join(data.roomId);
@@ -175,7 +177,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       });
     }
     else {
-      this.io.to(data.roomId).emit(`Player joined room`);
+      this.io.to(data.roomId).emit('page status', `Player joined room`);
     }
   }
 
@@ -232,24 +234,24 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit('status', 'This user is not in the game')
     }
     room.surrender(userId)
-    this.io.to(roomId).emit("move", "Player surrendered");
+    this.io.to(roomId).emit("game status", "Player surrendered");
     this.io.socketsLeave(roomId);
     this.rooms.delete(roomId)
     this.players.delete(room.player1);
     this.players.delete(room.player2);
   }
 
-  handleDisconnect(client: Socket) {
-    this.io.to(this.rooms[client.id]).emit('status', "Client disconnected: ", client.id)
-    const userId = client['user']?.sub;
+  handleDisconnect(socket: Socket) {
+
+    const userId = socket['user']?.sub;
     if (this.players.has(userId)) {
-      let roomId;
-      if (Array.from(client.rooms)[0] === client.id) {
-        roomId = Array.from(client.rooms)[1];
-      } else {
-        roomId = Array.from(client.rooms)[0];
-      }
+      this.io.to(this.players.get(userId)).emit('status', `Client disconnected: ${socket.id}`)
+
+      const roomId = this.players.get(userId)
+
+      console.log("RoomID", roomId)
       const room = this.rooms.get(roomId);
+
       const result = room.removePlayer(userId)
       if (result === '1 player left') {
 
