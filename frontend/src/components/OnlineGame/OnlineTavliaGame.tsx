@@ -12,10 +12,11 @@ type OnlineTavliaGameProps = {
   userId: number;
   roomId: string | null;
   color: string;
+  setGame: (game: Game) => void;
+  game: Game;
 };
 
-const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n }) => {
-  const [game, ] = useState(new Game(n));
+const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({ color, n, game, setGame }) => {
   const [status, setStatus] = useState(Status.PLAYING);
   const [history, setHistory] = useState(game.history);
   const [move, setMove] = useState(Colors.WHITE);
