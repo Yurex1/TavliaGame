@@ -2,13 +2,24 @@ import React from "react";
 import useRank from "@/hooks/useRank";
 import { useState } from "react";
 
+type RankType = {
+  id: number;
+  rank: number;
+  name: string;
+}
+
 export default function Rank() {
 
   const rank = useRank();
   if(rank.isLoading){
     return <div className="cen">Loading...</div>
   }
-  const usersList = rank.data?.data;
+  let array: RankType[] = [];
+  const tempList : RankType[] = rank.data?.data  as RankType[];
+  tempList.map((item) => {
+    array.push({id: item.id, rank: item.rank, name: item.name});
+  });
+  const usersList = array;
   const [list, setList] = useState([...usersList]);
   const [sortOrder, setSortOrder] = useState({ field: 'rank', order: 'asc' });
   const [friend, setFriend] = useState(false);
