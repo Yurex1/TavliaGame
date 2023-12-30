@@ -79,10 +79,11 @@ aside{
 }
 
 .icon{
-  height: 2vh;
-  width: 2vh;
-  background-color: #C0A080;
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
   margin-right: 10px;
+  margin-left: 0px;
 }
 
 /* main */
@@ -92,6 +93,7 @@ aside{
   width: 80vw;
   min-height: 100vh;
   margin-left: 20vw;
+  height: 100vh;
 }
 
 /* games */
@@ -364,6 +366,49 @@ input{
 
 .auth>button{
   margin: 10px;
-  padding: 5px;
-  font-size: 25px;
+}
+
+@media only screen and (max-width: 600px) {
+  aside{
+    background-color: #FFFBE9;
+    width: 50px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+  }
+  .aside-item{
+    height: 50px;
+    padding: 10px;
+    font-size: 0px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff00;
+    border-bottom: #C0A080 solid 1px;
+  }
+  .icon{
+    height: 35px;
+    width: 35px;
+  }
+  .notformobile{
+    font-size: 0px;
+  }
+  
+}
+.link{
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.link:hover{
+  color: aqua;
+}
+input{
+  font-size: 20px;
+}
+.xbutt{
+  background-color: transparent;
+  font-size: 22px;
 }
