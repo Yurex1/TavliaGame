@@ -120,6 +120,7 @@ export default class Board {
     }
 
     isWhite(cell: { x: number, y: number }): boolean {
+
         return this.cells[cell.x][cell.y].FigureType === FigureType.King || this.cells[cell.x][cell.y].FigureType === FigureType.Defender;
     }
 
@@ -129,14 +130,13 @@ export default class Board {
 
     isFigureDies(cell: { x: number, y: number }): boolean {
         if (this.cells[cell.x][cell.y].FigureType === FigureType.Attacker) {
-            if (cell.x > 0 && cell.x < this.n && this.isWhite({ x: cell.x + 1, y: cell.y }) && this.isWhite({ x: cell.x - 1, y: cell.y })) {
+
+            if (cell.x > 1 && cell.x < this.n - 1 && this.isWhite({ x: cell.x + 1, y: cell.y }) && this.isWhite({ x: cell.x - 1, y: cell.y })) {
                 this.cells[cell.x][cell.y].FigureType = FigureType.Empty
                 return true;
             }
-            else if (cell.y > 0 && cell.y < this.n && this.isWhite({ x: cell.x, y: cell.y + 1 }) && this.isWhite({ x: cell.x, y: cell.y - 1 })) {
-                console.log("type1 ", this.cells[cell.x][cell.y].FigureType)
+            else if (cell.y > 1 && cell.y < this.n - 1 && this.isWhite({ x: cell.x, y: cell.y + 1 }) && this.isWhite({ x: cell.x, y: cell.y - 1 })) {
                 this.cells[cell.x][cell.y].FigureType = FigureType.Empty
-                console.log("type2 ", this.cells[cell.x][cell.y].FigureType)
                 return true;
             }
         }
@@ -162,9 +162,9 @@ export default class Board {
         this.cells[to.x][to.y].FigureType = this.cells[from.x][from.y].FigureType;
         this.cells[from.x][from.y].FigureType = FigureType.Empty;
 
-        const die = [[0, 1], [1, 0], [0, -1], [-1, 0]].map(([dx, dy]) => [to.x + dx, to.y + dy]).filter(([nx, ny]) => nx >= 0 && nx < this.n && ny >= 0 && ny < this.n && this.isFigureDies({ x: nx, y: ny })).map(([x, y]) => ({ x, y }))
+        const die = [[0, 1], [1, 0], [0, -1], [-1, 0]].map(([dx, dy]) => [to.x + dx, to.y + dy]).filter(([nx, ny]) => nx >= 0 && nx < this.n && ny >= 0 && ny < this.n && this.isFigureDies({ x: nx, y: ny })).map(([y, x]) => ({ x, y }))
 
-        this.test()
+        // this.test()
 
         if (this.cells[0][0].FigureType === 3 || this.cells[0][this.n - 1].FigureType === 3 || this.cells[this.n - 1][0].FigureType === 3 || this.cells[this.n - 1][this.n - 1].FigureType === 3) {
             this.isEndGame = true;
