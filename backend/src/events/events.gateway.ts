@@ -6,6 +6,7 @@ import {
   WsResponse,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  WsException,
 } from "@nestjs/websockets";
 import { Logger, NotFoundException, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { EventsService } from "./events.service";
@@ -54,14 +55,20 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (!token) {
       throw new UnauthorizedException();
     }
-
-
-    const user = await this.jwtService.verifyAsync(
-      token,
-      {
-        secret: jwtConstants.secret
-      }
-    );
+    let user;
+    try {
+      user = await this.jwtService.verifyAsync(
+        token,
+        {
+          secret: jwtConstants.secret
+        }
+      );
+      socket['user'] = user;
+    } catch {
+      socket.emit('status', 'token expired')
+      socket.disconnect();
+      return;
+    }
     socket['user'] = user;
     const userId = user.sub
 
@@ -161,21 +168,19 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     const move = room.makeMove(data.moveFrom, data.moveTo);
-    if (move === "Success") {
-      this.io.to(roomId).emit("move", { from: data.moveFrom, to: data.moveTo });
+    if (move.result === "OK") {
+      this.io.to(roomId).emit("move", { from: data.moveFrom, to: data.moveTo, die: move.die });
     }
-    else if (move === "Game is over") {
+    else if (move.result === "END GAME") {
       room.saveGame();
       this.io.to(roomId).emit("move", "End of the game");
       this.io.socketsLeave(roomId);
       this.rooms.delete(roomId)
       this.players.delete(room.player1);
       this.players.delete(room.player2);
-
     }
-    else {
+    else if (move.result === 'WRONG') {
       socket.emit('move', "Incorrect move")
-
     }
   }
 
@@ -206,8 +211,28 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleDisconnect(client: Socket) {
     this.io.to(this.rooms[client.id]).emit('status', "Client disconnected: ", client.id)
-    console.log(client['user'].sub)
+    const userId = client['user']?.sub;
+    if (this.players.has(userId)) {
+      let roomId;
+      if (Array.from(client.rooms)[0] === client.id) {
+        roomId = Array.from(client.rooms)[1];
+      } else {
+        roomId = Array.from(client.rooms)[0];
+      }
+      const room = this.rooms.get(roomId);
+      const result = room.removePlayer(userId)
+      if (result === '1 player left') {
 
+      }
+      else if (result === '0 players left') {
+        room.surrender(room.firstLogout)
+        this.io.to(roomId).emit("move", `Player ${room.firstLogout} surrendered`);
+        this.io.socketsLeave(roomId);
+        this.rooms.delete(roomId)
+        this.players.delete(room.player1);
+        this.players.delete(room.player2);
+      }
+    }
     console.log("Event disconnect ");
   }
 }
