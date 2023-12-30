@@ -4,9 +4,13 @@ import { useState } from "react";
 
 export default function Rank() {
 
-  const usersList = useRank();
+  const rank = useRank();
+  if(rank.isLoading){
+    return <div className="cen">Loading...</div>
+  }
+  const usersList = rank.data?.data;
 //@ts-ignore
-  const [list, setList] = useState([...usersList.data]);
+  const [list, setList] = useState([...usersList]);
   const [sortOrder, setSortOrder] = useState({ field: 'rank', order: 'asc' });
   const [friend, setFriend] = useState(false);
 
