@@ -23,19 +23,19 @@ export class Board {
       const row: Square[] = [];
       for (let j = 0; j < this.n; j++) {
         if ((i == 0 || i == this.n - 1) && (j == 0 || j == this.n - 1))
-          row.push(new Square(this, j, i, Colors.FINISH, null));
+          row.push(new Square(this, i, j, Colors.FINISH, null));
         else if (
           (i == 0 || i == this.n - 1 || j == 0 || j == this.n - 1) &&
           ((i > 2 && i < this.n - 3) || (j > 2 && j < this.n - 3))
         )
-          row.push(new Square(this, j, i, Colors.TARGET, null));
+          row.push(new Square(this, i, j, Colors.TARGET, null));
         else if (
           (i == (this.n - 1) / 2 && (j == 1 || j == this.n - 2)) ||
           (j == (this.n - 1) / 2 && (i == 1 || i == this.n - 2))
         )
-          row.push(new Square(this, j, i, Colors.TARGET, null));
+          row.push(new Square(this, i, j, Colors.TARGET, null));
         else if (i == (this.n - 1) / 2 && j == (this.n - 1) / 2)
-          row.push(new Square(this, j, i, Colors.START, null));
+          row.push(new Square(this, i, j, Colors.START, null));
         else if (
           (i == (this.n - 1) / 2 &&
             j > (this.n - 1) / 2 - 3 &&
@@ -44,19 +44,18 @@ export class Board {
             i > (this.n - 1) / 2 - 3 &&
             i < (this.n - 1) / 2 + 3)
         )
-          row.push(new Square(this, j, i, Colors.HELPER, null));
+          row.push(new Square(this, i, j, Colors.HELPER, null));
         else if (i > 3 && j > 3 && i < this.n - 4 && j < this.n - 4)
-          row.push(new Square(this, j, i, Colors.HELPER, null));
-        else row.push(new Square(this, j, i, Colors.EMPTY, null));
+          row.push(new Square(this, i, j, Colors.HELPER, null));
+        else row.push(new Square(this, i, j, Colors.EMPTY, null));
       }
       this.squares.push(row);
-
     }
     this.addFigures();
   }
 
   public getSquare(x: number, y: number) {
-    return this.squares[y][x];
+    return this.squares[x][y];
   }
 
   private addFigures() {
@@ -69,7 +68,6 @@ export class Board {
         if (this.squares[i][j].color == Colors.HELPER)
           new Helper(Colors.WHITE, this.squares[i][j]);
       }
-
     }
   }
 
