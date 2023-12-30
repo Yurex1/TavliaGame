@@ -18,6 +18,7 @@ const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
             <b className="notformobile">avlia</b>
           </div>
         </a>
+
         <SideBarItem text="Play" hrefText="../" img_url={"Lightning.png"}  />
         <SideBarItem text="Instruction" hrefText="../" img_url={"info.png"} />
         <SideBarItem text="Profile" hrefText="../" img_url={"prof.png"} />
