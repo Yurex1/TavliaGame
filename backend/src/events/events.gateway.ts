@@ -193,14 +193,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     else if (move.result === "END GAME") {
       room.saveGame();
-      this.io.to(roomId).emit("move", "End of the game");
+      this.io.to(roomId).emit("move", { from: data.moveFrom, to: data.moveTo });
+      this.io.to(roomId).emit("game status", "End of the game");
       this.io.socketsLeave(roomId);
       this.rooms.delete(roomId)
       this.players.delete(room.player1);
       this.players.delete(room.player2);
     }
     else if (move.result === 'WRONG') {
-      socket.emit('move', "Incorrect move")
+      socket.emit('move status', "Incorrect move")
     }
   }
 
