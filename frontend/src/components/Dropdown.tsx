@@ -1,37 +1,52 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Dropdown({ n }: any) {
-    const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-    const handleOpen = () => {
-        setOpen(!open);
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
+  const handleClickOutside = (event:  MouseEvent) => {
+//@ts-ignore
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-    return (
-        <div className="dropdown" >
-            <button className='game-button' onClick={handleOpen}>
-                <b>Play {n}x{n}</b>
-            </button>
-            {open &&
-                <div className="menu">
-                    <div className="menu-items">
-                        <Link className="menu-link" href={`/game?n=${n}`}>
-                            <b>Play Online</b>
-                        </Link>
-                    </div>
-                    {/* <div className="menu-items">
-                        <Link className="menu-link" href={`/game?n=${n}`}>
-                            <b>Play vs computer</b>
-                        </Link>
-                    </div> */}
-                    <div className="menu-items">
-                        <Link className="menu-link" href={`/game2x2?n=${n}`}>
-                            <b>Play two in one desk</b>
-                        </Link>
-                    </div>
-                </div>
-            }
+  }, []);
+
+  return (
+    <div className="dropdown" ref={dropdownRef}>
+      <button className="game-button" onClick={handleOpen}>
+        <b>Play {n}x{n}</b>
+      </button>
+      {open && (
+        <div className="menu">
+          <div className="menu-items">
+            <Link className="menu-link" href={`/game?n=${n}`}>
+              <b>Play Online</b>
+            </Link>
+          </div>
+          <div className="menu-items">
+            <Link className="menu-link" href={`/game?n=${n}`}>
+              <b>Play vs computer</b>
+            </Link>
+          </div>
+          <div className="menu-items">
+            <Link className="menu-link" href={`/game?n=${n}`}>
+              <b>Play two in one desk</b>
+            </Link>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 }
