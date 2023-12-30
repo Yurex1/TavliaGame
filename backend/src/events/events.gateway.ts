@@ -24,7 +24,7 @@ import { PrismaClientRustPanicError } from "@prisma/client/runtime/library";
 
 
 @WebSocketGateway({
-  cors:{
+  cors: {
     origin: '*',
   },
   namespace: "events",
@@ -163,7 +163,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     room.addPlayer(user.id);
     this.players.set(user.id, data.roomId);
     if (room.size === 2) {
-      this.io.to(data.roomId).emit("status", "start game");
+      this.io.to(data.roomId).emit("start game", {
+        "whiteId": room.player2,
+        "blackId": room.player1,
+      });
     }
     else {
       this.io.to(data.roomId).emit(`Player joined room`);
