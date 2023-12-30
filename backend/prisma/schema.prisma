@@ -21,11 +21,25 @@ model User {
 
   name String
 
+  rank Int @default(500)
+
+  friends Int[]
+
   games Game[]
 }
 
 model Game {
-  id    Int      @id @default(autoincrement())
-  moves String[]
+  id    Int    @id @default(autoincrement())
   users User[]
+  Move  Move[]
+}
+
+model Move {
+  id     Int  @id @default(autoincrement())
+  fromX  Int
+  fromY  Int
+  toX    Int
+  toY    Int
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
 }
