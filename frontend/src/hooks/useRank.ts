@@ -3,7 +3,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 const getRank = async () => {
-    return await axios.get(API_URL + 'auth');
+    return await axios.get(API_URL + 'auth/findAll');
 }
 
 const useRank= () => {
