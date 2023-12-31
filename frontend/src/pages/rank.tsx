@@ -14,7 +14,7 @@ export default function Rank() {
   if(rank.isLoading){
     return <div className="cen">Loading...</div>
   }
-  let array: RankType[] = [];
+  const array: RankType[] = [];
   const tempList : RankType[] = rank.data?.data  as RankType[];
   tempList.map((item) => {
     array.push({id: item.id, rank: item.rank, name: item.name});
@@ -22,7 +22,7 @@ export default function Rank() {
   const usersList = array;
   const [list, setList] = useState([...usersList]);
   const [sortOrder, setSortOrder] = useState({ field: 'rank', order: 'asc' });
-  const [friend, setFriend] = useState(false);
+  const [friend, ] = useState(false);
 
   const sortList = (field:'rank'|'name') => {
     const order = sortOrder.field === field && sortOrder.order === 'asc' ? 'desc' : 'asc';
@@ -40,7 +40,7 @@ export default function Rank() {
     setSortOrder({ field, order });
   };
 
-  const renderList = friend ? list.filter(item => false) : list;
+  const renderList = list;
 
   return (
     <>

@@ -1,11 +1,7 @@
+import { Move } from "@/types/types";
 import { Board, Status } from "./Board";
 import { Colors } from "./Colors";
 import { Figure } from "./figures/Figure";
-
-export type Move = {
-  from: { x: number; y: number }, 
-  to: { x: number; y: number },
-};
 
 export class Game {
   readonly n: number;
@@ -21,6 +17,8 @@ export class Game {
     if (n) {
       this.king =
         this.board.squares[(this.n - 1) / 2][(this.n - 1) / 2].figure!;
+        // console.log(history);
+        // return;
       history.map((move) => {
         const from = this.board.getSquare(move.from.x, move.from.y);
         const to = this.board.getSquare(move.to.x, move.to.y);
