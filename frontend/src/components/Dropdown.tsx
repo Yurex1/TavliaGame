@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 
-export default function Dropdown( n : number) {
+export default function Dropdown({n} : {n : number}) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -10,7 +10,7 @@ export default function Dropdown( n : number) {
   };
 
   const handleClickOutside = (event:  MouseEvent) => {
-    //@ts-expect-error
+    // @ts-expect-error becouse of typescript
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setOpen(false);
     }
