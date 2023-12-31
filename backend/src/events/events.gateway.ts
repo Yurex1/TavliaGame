@@ -64,7 +64,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
           secret: jwtConstants.secret
         }
       );
-
       socket['user'] = user;
     } catch {
       socket.emit('page status', 'token expired')
@@ -74,10 +73,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket['user'] = user;
     const userId = user.sub
 
+
     if (this.players.has(userId)) {
 
       const roomId = this.players.get(userId);
       const room = this.rooms.get(roomId);
+      room.addPlayer(userId)
+
       socket.join(roomId);
       socket.emit('inGame', {
         // board: room.gameManager.gameBoard.cells,
@@ -140,7 +142,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const roomId: string = this.RandomRoom();
     socket.join(roomId);
     const room = new Room(user.id, data.n, this.prismaService);
-
+    // room.addPlayer(user.id)
     this.rooms.set(roomId, room);
     this.players.set(user.id, roomId)
 
@@ -275,13 +277,15 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const room = this.rooms.get(roomId);
 
       const result = room.removePlayer(userId)
+      console.log("players", this.players)
+      console.log("Result", result)
 
       if (result === '1 player left') {
 
       }
       else if (result === '0 players left') {
         room.surrender(room.firstLogout)
-        this.io.to(roomId).emit("move", `Player ${room.firstLogout} surrendered`);
+        this.io.to(roomId).emit("game status", `Player ${room.firstLogout} surrendered`);
         this.io.socketsLeave(roomId);
         this.rooms.delete(roomId)
         this.players.delete(room.player1);
