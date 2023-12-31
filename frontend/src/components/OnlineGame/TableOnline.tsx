@@ -1,7 +1,5 @@
 import { SocketApiType } from "@/hooks/useConnect";
-import { Status } from "@/models/Board";
-import { Colors } from "@/models/Colors";
-import { Move } from "@/models/Game";
+import { Move } from "@/types/types";
 import React, { FC } from "react";
 
 type SchoreProps = {
