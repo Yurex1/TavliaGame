@@ -275,22 +275,28 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
       const room = this.rooms.get(roomId);
+      const roomPlayer1 = room.player1
+      const roomPlayer2 = room.player2
 
       const result = room.removePlayer(userId)
-      console.log("players", this.players)
-      console.log("Result", result)
+
 
       if (result === '1 player left') {
-
+        this.players.delete(userId)
       }
       else if (result === '0 players left') {
+        if (roomPlayer1) {
+
+          this.players.delete(roomPlayer1);
+        }
+        if (roomPlayer2) {
+
+          this.players.delete(roomPlayer2);
+        }
         room.surrender(room.firstLogout)
         this.io.to(roomId).emit("game status", `Player ${room.firstLogout} surrendered`);
         this.io.socketsLeave(roomId);
         this.rooms.delete(roomId)
-        this.players.delete(room.player1);
-        this.players.delete(room.player2);
-
       }
     }
     console.log("Event disconnect ");
