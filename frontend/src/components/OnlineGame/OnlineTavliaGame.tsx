@@ -6,6 +6,7 @@ import { Square } from "@/models/Square";
 import SocketApi from "@/api/socket-api";
 import { SocketApiType } from "@/hooks/useConnect";
 import { Move } from "@/types/types";
+import TableOnline from "./TableOnline";
 
 type OnlineTavliaGameProps = {
   socket: SocketApiType;
@@ -13,6 +14,7 @@ type OnlineTavliaGameProps = {
   userId: number;
   moverId: number | null;
   moveStatus: string;
+  gameStatus: null | string;
 };
 
 const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
@@ -20,6 +22,7 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
   history,
   userId,
   moverId,
+  gameStatus,
 }) => {
   const [game, setGame] = useState(new Game(socket.n!, socket.history));
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
@@ -73,9 +76,9 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
             </React.Fragment>
           ))}
         </div>
-        {/* <TableOnline
+        <TableOnline
           socket={socket}
-        /> */}
+        />
       </div>
     </>
   );
