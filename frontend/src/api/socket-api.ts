@@ -113,6 +113,10 @@ class SocketApi {
           this.setMoverId(this.moverId);
         }
       }
+      else {
+        this.moveStatus = "can move";
+        setMoveStatus(this.moveStatus);
+      }
     });
 
     this.socket.on("move status", (status: string) => {

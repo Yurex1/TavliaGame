@@ -23,13 +23,15 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
   userId,
   moverId,
   gameStatus,
+  moveStatus,
 }) => {
   const [game, setGame] = useState(new Game(socket.n!, socket.history));
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   function click(square: Square) {
+    console.log(moverId, userId, moveStatus, game.status);
     if (
       moverId == userId &&
-      socket.moveStatus == "can move" &&
+      moveStatus == "can move" &&
       game.status == Status.PLAYING
     ) {
       if (selectedSquare && selectedSquare == square) {
@@ -78,6 +80,7 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
         </div>
         <TableOnline
           socket={socket}
+          gameStatus={gameStatus}
         />
       </div>
     </>
