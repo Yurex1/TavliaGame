@@ -78,12 +78,12 @@ export class Room {
         else {
             throw new Error();
         }
-        console.log("Players: ", this.player1, this.player2)
+
 
     }
 
     public removePlayer(id: number) {
-        console.log("remove player, ", this.size)
+
         if (this.size === 1) {
             this.size = 0;
             return '0 players left'
