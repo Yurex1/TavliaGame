@@ -22,7 +22,7 @@ export default function Rank() {
   const usersList = array;
   const [list, setList] = useState([...usersList]);
   const [sortOrder, setSortOrder] = useState({ field: 'rank', order: 'asc' });
-  const [friend, ] = useState(false);
+  // const [friend, setFriend] = useState(false);
 
   const sortList = (field:'rank'|'name') => {
     const order = sortOrder.field === field && sortOrder.order === 'asc' ? 'desc' : 'asc';

@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import SquareComponent from "./SquareComponent";
 import { Square } from "@/models/Square";
-import { Game, Move } from "@/models/Game";
+import { Game } from "@/models/Game";
 import { Colors } from "@/models/Colors";
+import { Move } from "@/types/types";
 
 interface BoardProps {
   game: Game;
