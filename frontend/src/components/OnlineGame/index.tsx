@@ -2,10 +2,9 @@ import { useConnect } from "@/hooks/useConnect";
 import React, { FC } from "react";
 import OnlineTavliaGame from "./OnlineTavliaGame";
 import CreateRoomComponent from "./CreateRoomComponenet";
-import { Colors } from "@/models/Colors";
 import JoinRoomComponent from "./JoinRoomComponent";
 import MainMenu from "./MainMenu";
-import { Move } from "@/models/Game";
+import { Move } from "@/types/types";
 
 type OnlineGameProps = {
   n: number;

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import Login from "./Login";
 import Singup from "./Singup";
 import React from 'react'
