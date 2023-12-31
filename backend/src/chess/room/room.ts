@@ -10,23 +10,23 @@ interface Move {
 }
 
 export class Room {
-    private _size = 0;
+    public size = 0;
     public firstLogout: number | null = null;
+    public player1: number | null = null
     public player2: number | null = null;
     public gameManager: GameManager;
     private prismaService: PrismaService;
     public gameMoves: Move[] = [];
 
-    constructor(public player1: number, n: number, prismaService: PrismaService) {
-        this._size = 1;
+    constructor(player1: number, n: number, prismaService: PrismaService) {
+        this.player1 = player1
+        this.size = 1
         this.gameManager = new GameManager(n)
         this.prismaService = prismaService
 
     }
 
-    get size(): number {
-        return this._size;
-    }
+
 
 
     public position: string[8][8];
@@ -62,25 +62,44 @@ export class Room {
 
 
     public addPlayer(id: number) {
-        if (this.player2 === null) {
+        // console.log("Add player, ", this.size)
+        if (!this.size) {
+            return "No players in room";
+        }
+
+        if (!this.player1) {
+            this.player1 = id;
+            this.size = 2;
+        }
+        else if (!this.player2) {
             this.player2 = id;
-            this._size = 2;
+            this.size = 2;
         }
         else {
-            throw new ConflictException();
+            throw new Error();
         }
+        console.log("Players: ", this.player1, this.player2)
+
     }
 
     public removePlayer(id: number) {
-        if (this.size === 2) {
-            this._size = 1;
-            this.firstLogout = id;
-            return "1 player left"
-        }
-        else if (this.size === 1) {
-            this._size = 0;
+        console.log("remove player, ", this.size)
+        if (this.size === 1) {
+            this.size = 0;
             return '0 players left'
         }
+        else if (this.size === 2) {
+            this.size = 1;
+            this.firstLogout = id;
+            if (this.player1 === id) {
+                this.player1 = null;
+            }
+            else {
+                this.player2 = null;
+            }
+            return "1 player left"
+        }
+
     }
 
     public async saveGame() {
