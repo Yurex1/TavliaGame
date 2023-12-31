@@ -1,7 +1,7 @@
 import SocketApi from "@/api/socket-api";
-import { Move } from "@/models/Game";
 import { Square } from "@/models/Square";
-import { FC, useEffect } from "react";
+import { Move } from "@/types/types"; 
+import { useEffect } from "react";
 
 
 export type SocketApiType = {

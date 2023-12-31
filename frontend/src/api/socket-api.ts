@@ -1,14 +1,13 @@
 import API_URL from "@/constants";
 import { useConnectType } from "@/hooks/useConnect";
-import { Move } from "@/models/Game";
 import { Square } from "@/models/Square";
-import { set } from "react-hook-form";
+import { Move } from "@/types/types";
 import { Socket, io } from "socket.io-client";
 
 class SocketApi {
   static socket: null | Socket = null;
   static history: Move[] = [];
-  static setHistory: (history: Move[]) => void = ([]) => {};
+  static setHistory: (history: Move[]) => void = () => {};
   static setPageStatus: (pageStatus: string | null) => void = () => {};
   static moveMessage: string | null = null;
   static moveStatus: string = "can move";
@@ -21,7 +20,7 @@ class SocketApi {
   static lastmove: Move | null = null; // after move
   static setMoverId: (moverId: number | null) => void = () => {};
   static moverId: number | null = null; // on start or join game
-  static setSelectedSquare: (sqare: Square | null)=>void = () => {};
+  static setSelectedSquare: (sqare: Square | null) => void = () => {};
 
   static initSocket({
     n,
@@ -55,42 +54,54 @@ class SocketApi {
         whiteId: number,
         blackId: number
       ) => {
-        // if(this.n != n)
-        // {
-        //     this.status = "you already in game" + n + "x" + n;
-        //     return;
-        // }
-        // this.roomId = roomId;
-        // this.whiteId = whiteId;
-        // this.blackId = blackId;
-        // this.status = "start game";
-        // this.history = history;
-        // this.moverId = this.whiteId;
-        // if(history.length % 2 == 1)
-        // {
-        //     this.moverId = this.blackId;
-        // }
+        console.log("inGame");
+        if (this.n != n) {
+          setPageStatus("you already in game" + n + "x" + n);
+          return;
+        }
+        this.roomId = roomId;
+        this.whiteId = whiteId;
+        this.blackId = blackId;
+        this.moverId = this.whiteId;
+        this.setPageStatus("start game");
       }
     );
 
+    this.socket.on("page status", (status: string) => {
+      this.setPageStatus(status);
+    });
+
     this.socket.on("move", (move: Move) => {
       if (
-        !this.lastmove ||
-        this.lastmove.from.x != move.from.x ||
-        this.lastmove.from.y != move.from.y ||
-        this.lastmove.to.x != move.to.x ||
-        this.lastmove.to.y != move.to.y
+        move &&
+        move.from &&
+        move.to &&
+        move.from.y &&
+        move.from.x &&
+        move.to.y &&
+        move.to.x
       ) {
-        this.lastmove = move;
-        this.history.push(move);
-        this.setHistory(this.history);
-        this.moveStatus = "can move";
-        this.setSelectedSquare(null);
-        this.setMoveStatus(this.moveStatus);
-        this.moverId =
-          this.moverId === this.whiteId ? this.blackId : this.whiteId;
-        this.setMoverId(this.moverId);
-      }
+        const from = { x: move.from.y, y: move.from.x };
+        const to = { x: move.to.y, y: move.to.x };
+        console.log(from, to);
+        if (
+          !this.lastmove ||
+          this.lastmove.from.x != move.from.x ||
+          this.lastmove.from.y != move.from.y ||
+          this.lastmove.to.x != move.to.x ||
+          this.lastmove.to.y != move.to.y
+        ) {
+          this.lastmove = move;
+          this.history.push(move);
+          this.setHistory(this.history);
+          this.moveStatus = "can move";
+          this.setSelectedSquare(null);
+          this.setMoveStatus(this.moveStatus);
+          this.moverId =
+            this.moverId === this.whiteId ? this.blackId : this.whiteId;
+          this.setMoverId(this.moverId);
+        }
+      } else console.log("move is null");
     });
 
     this.socket.on("move status", (status: string) => {
@@ -122,6 +133,9 @@ class SocketApi {
         this.setMoverId(this.moverId);
       }
     );
+    this.socket?.on("page status", (status: string) => {
+        this.setPageStatus(status);
+      });
   }
 
   static joinRoom(roomId: string) {
@@ -141,16 +155,22 @@ class SocketApi {
         this.setMoverId(this.moverId);
       }
     );
+    this.socket?.on("page status", (status: string) => {
+        this.setPageStatus(status);
+      });
   }
 
-  static move(move: Move, setSelectedSquare: (sqare: Square|null)=>void) {
+  static move(move: Move, setSelectedSquare: (sqare: Square | null) => void) {
     this.socket?.emit("move", {
-      moveFrom:{ x: move.from.y, y: move.from.x},
-      moveTo:{ x: move.to.y, y: move.to.x},
+      moveFrom: { x: move.from.y, y: move.from.x },
+      moveTo: { x: move.to.y, y: move.to.x },
     });
     this.moveStatus = "wait for move";
     this.setMoveStatus(this.moveStatus);
     this.setSelectedSquare = setSelectedSquare;
+    this.socket?.on("page status", (status: string) => {
+        this.setPageStatus(status);
+      });
   }
 
   static getGame() {
