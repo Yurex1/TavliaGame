@@ -17,8 +17,6 @@ export class Game {
     if (n) {
       this.king =
         this.board.squares[(this.n - 1) / 2][(this.n - 1) / 2].figure!;
-        // console.log(history);
-        // return;
       history.map((move) => {
         const from = this.board.getSquare(move.from.x, move.from.y);
         const to = this.board.getSquare(move.to.x, move.to.y);

@@ -12,11 +12,12 @@ type OnlineGameProps = {
 };
 
 const OnlineGame: FC<OnlineGameProps> = ({n, userId}) => {
+  const [gameStatus, setGameStatus] = React.useState<string | null>(null);
   const [pageStatus, setPageStatus] = React.useState<string | null>(null);
   const [history, setHistory] = React.useState<Move[]>([]);
   const [moverId, setMoverId] = React.useState<number|null>(null);
   const [moveStatus, setMoveStatus] = React.useState<string>("can move");
-  const socket = useConnect({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus});
+  const socket = useConnect({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus, setGameStatus});
 
   if (pageStatus === null)
     return (
@@ -35,7 +36,7 @@ const OnlineGame: FC<OnlineGameProps> = ({n, userId}) => {
     );
   }
   if (pageStatus === "start game") {
-    return <OnlineTavliaGame moveStatus={moveStatus} userId = {userId} moverId = {moverId} socket = {socket} history = {history}/>;
+    return <OnlineTavliaGame gameStatus = {gameStatus} moveStatus={moveStatus} userId = {userId} moverId = {moverId} socket = {socket} history = {history}/>;
   }
   return <div className="cen">{pageStatus}</div>;
 };
