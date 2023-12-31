@@ -1,10 +1,11 @@
 import { Status } from "@/models/Board";
-import { Game, Move } from "@/models/Game";
+import { Game } from "@/models/Game";
 import React, { FC, useEffect, useState } from "react";
 import SquareComponent from "../GameTavlia/SquareComponent";
 import { Square } from "@/models/Square";
 import SocketApi from "@/api/socket-api";
 import { SocketApiType } from "@/hooks/useConnect";
+import { Move } from "@/types/types";
 
 type OnlineTavliaGameProps = {
   socket: SocketApiType;

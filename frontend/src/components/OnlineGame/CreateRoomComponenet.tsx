@@ -1,6 +1,5 @@
-import SocketApi from "@/api/socket-api";
 import { SocketApiType } from "@/hooks/useConnect";
-import React, { FC, useEffect } from "react";
+import React, { FC  } from "react";
 
 type CreateRoomProps = {
   socket: SocketApiType;

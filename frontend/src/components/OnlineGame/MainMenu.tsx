@@ -1,9 +1,4 @@
 import React, { FC } from "react";
-import RHFInput from "../Form/RHFinput";
-import Form from "../Form";
-import { useForm } from "react-hook-form";
-import SocketApi from "@/api/socket-api";
-import { Colors } from "@/models/Colors";
 
 type MainMenuProps = {
  setStatus: (status: string) => void;
