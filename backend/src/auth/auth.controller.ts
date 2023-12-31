@@ -95,8 +95,8 @@ export class AuthController {
 
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.authService.findOne(+id);
+  async findOne(@Param("id") id: string) {
+    return await this.authService.findOne(+id);
   }
 
   @Put(":id")
