@@ -17,6 +17,7 @@ export type SocketApiType = {
     move: (move: Move) => void,
     createGame: (setRoomId: (roomId: null|string ) => void) => void,
     joinRoom: (roomId: string) => void,
+    surrender: () => void,
 };
 
 export type useConnectType = {
@@ -26,11 +27,12 @@ export type useConnectType = {
     setHistory: (history: Move[]) => void,
     setMoverId: (moverId: number | null) => void,
     setMoveStatus: (moveStatus: string) => void,
+    setGameStatus: (gameStatus: string|null) => void,
 };
 
-export const useConnect = ({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus} : useConnectType) => {
+export const useConnect = ({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus, setGameStatus} : useConnectType) => {
   const connectSocket = () => {
-    SocketApi.initSocket({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus});
+    SocketApi.initSocket({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus, setGameStatus});
   };
 
   useEffect(() => {

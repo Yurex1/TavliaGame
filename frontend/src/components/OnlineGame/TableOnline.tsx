@@ -1,4 +1,5 @@
 import { SocketApiType } from "@/hooks/useConnect";
+import useUserId from "@/hooks/useUserId";
 import { Move } from "@/types/types";
 import React, { FC } from "react";
 
@@ -37,6 +38,9 @@ type TableProps = {
 };
 
 const Table: FC<TableProps> = ({ socket }) => {
+  const white = useUserId(socket.whiteId);
+  const black = useUserId(socket.blackId);
+  console.log(white?.data, black?.data);
   const whiteHistory: Move[] = [],
     blackHistory: Move[] = [];
   for (let i = 0; i < socket.history.length; i++) {
@@ -58,7 +62,7 @@ const Table: FC<TableProps> = ({ socket }) => {
         <History array={whiteHistory} />
         <History array={blackHistory} />
       </div>
-      <div className="restart">Surrender</div>
+      <div onClick = {socket.surrender}className="restart">Surrender</div>
     </div>
   );
 };
