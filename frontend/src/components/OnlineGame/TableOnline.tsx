@@ -35,12 +35,12 @@ const History: FC<HistoryProps> = ({ array }) => {
 
 type TableProps = {
   socket: SocketApiType;
+  gameStatus: string | null;
 };
 
-const Table: FC<TableProps> = ({ socket }) => {
+const Table: FC<TableProps> = ({ socket, gameStatus }) => {
   const white = useUserId(socket.whiteId);
   const black = useUserId(socket.blackId);
-  console.log(white?.data, black?.data);
   const whiteHistory: Move[] = [],
     blackHistory: Move[] = [];
   for (let i = 0; i < socket.history.length; i++) {
