@@ -28,11 +28,12 @@ export type useConnectType = {
     setMoverId: (moverId: number | null) => void,
     setMoveStatus: (moveStatus: string) => void,
     setGameStatus: (gameStatus: string|null) => void,
+    setWinerId: (winerId: number|null) => void,
 };
 
-export const useConnect = ({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus, setGameStatus} : useConnectType) => {
+export const useConnect = ({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus, setGameStatus, setWinerId} : useConnectType) => {
   const connectSocket = () => {
-    SocketApi.initSocket({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus, setGameStatus});
+    SocketApi.initSocket({n, userId, setPageStatus, setHistory, setMoverId, setMoveStatus, setGameStatus, setWinerId});
   };
 
   useEffect(() => {
