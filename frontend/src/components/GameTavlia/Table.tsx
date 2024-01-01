@@ -9,7 +9,7 @@ type SchoreProps = {
 
 const Schore: FC<SchoreProps> = ({ text }) => {
   return (
-    <div className="schore">
+    <div className="table-schore">
       <div className="text">{text}</div>
     </div>
   );
@@ -23,7 +23,7 @@ type HistoryProps = {
 
 const History: FC<HistoryProps> = ({ array }) => {
   return (
-    <div className="history">
+    <div className="table-history">
       {array.map((item, id) => (
         <div key={id}>
           {item.from.x + 1}
@@ -51,21 +51,21 @@ const Table: FC<TableProps> = ({ history, move, status, restart }) => {
   }
   return (
     <div className="table">
-      <div className="row">
-        {status == Status.PLAYING && <div className="status">Move: {move}</div>}
-        {status == Status.WIN && <div className="status">White win!</div>}
-        {status == Status.LOSE && <div className="status">Black win!</div>}
+      <div className="table-row">
+        {status == Status.PLAYING && <div className="table-status">Move: {move}</div>}
+        {status == Status.WIN && <div className="table-status">White win!</div>}
+        {status == Status.LOSE && <div className="table-status">Black win!</div>}
       </div>
-      <div className="row">
+      <div className="table-row">
         <Schore text="White" />
         <Schore text="Black" />
       </div>
-      <div className="HISTORY">History:</div>
-      <div className="row">
+      <div className="table-status">History:</div>
+      <div className="table-row h-100">
         <History array={whiteHistory} />
         <History array={blackHistory} />
       </div>
-      <div onClick={restart} className="restart">
+      <div onClick={restart} className="table-button">
         Restart
       </div>
     </div>
