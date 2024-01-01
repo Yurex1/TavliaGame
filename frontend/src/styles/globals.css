@@ -9,23 +9,31 @@
   font-family: 'Roboto Mono', monospace;
   cursor: default;
 }
+
 button{
   border: none;
 }
+
 body{
   background-color: rgb(232, 211, 186);
 }
 
-/* side bar */
-/* -------------------------------------------- */
-aside{
-  background-color: #FFFBE9;
-  width: 20vw;
+.h-100{
+  height: 100%;
+}
+
+.main{
+  width: 80vw;
+  min-height: 100vh;
+  margin-left: 20vw;
   height: 100vh;
+}
+
+.center{
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: fixed;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .cen{
@@ -55,192 +63,7 @@ aside{
   background-color: #ad8b739b;
 }
 
-
-.name{
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  background-color: #C0A080;
-  font-size: 40px;
-}
-
-.aside-item{
-  padding: 10px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  background-color: #ffffff00;
-  border-bottom: #C0A080 solid 1px;
-}
-
-.aside-item:hover{
-  background-color: rgb(225, 197, 155);
-}
-
-.icon{
-  height: 50px;
-  width: 50px;
-  background-color: transparent;
-  margin-right: 10px;
-  margin-left: 0px;
-}
-
-/* main */
-/* -------------------------------------------- */
-
-.main{
-  width: 80vw;
-  min-height: 100vh;
-  margin-left: 20vw;
-  height: 100vh;
-}
-
-/* games */
-/* -------------------------------------------- */
-
-.games{
-  width: 70vw;
-  height: 100vh;
-  margin: 0 auto;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  display: flex;
-  /* margin-top: 30px; */
-}
-
-.main-game{
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.game-img{
-  width: 20vw;
-  height: 20vw;
-  border: 1px solid black;
-}
-
-.game-button{
-  width: 15vw;
-  min-height: 5vh;
-  padding: 0.5vh;
-  background-color: #C0A080;
-  border-radius: 5px ;
-  font-size: 20px;
-  margin-top: 20px;
-  box-shadow: 2px 2px 2px black;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-}
-
-.game-button:hover{
-  background-color: #ad8b739b;
-}
-
-
-.dropdown {
-  position: relative;
-  width: 15vw;
-}
-
-.menu {
-  position: absolute;
-  margin: 5px 0;
-  padding: 0;
-  border: 1px solid  #C0A080;
-  width: 15vw;
-  background-color: #FFFBE9;
-}
-
-.menu > div:hover{
-  background-color: rgb(225, 197, 155);
-}
-
-.menu-link {
-  width: 100%;
-  height: 100%;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-/* game */
-/* -------------------------------------------- */
-
-.game{
-  height: 100vh;
-  width: 80vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.board{
-  margin-right: 5vw;
-  width: 50vw;
-  height: 50vw;
-  display: flex;
-  flex-wrap: wrap;
-  border: black solid 1px;
-}
-
-.square7{
-  width: calc(100% / 7 );
-  height: calc(100% / 7);
-}
-
-.square11{
-  width: calc(100% / 11);
-  height:calc(100% / 11);
-}
-
-.square9{
-  width: calc(100% / 9);
-  height: calc(100%/ 9);
-}
-
-.square{
-  background-color: #FFFBE9;
-  border: black solid 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.square img{
-  width: 75%;
-  height: 75%;
-}
-
-.finish, .start{
-  background-color: rgb(102, 85, 72);
-}
-
-.helper{
-  background-color: #CEAB93;
-}
-
-.target{
-  background-color: #E3CAA5;
-}
-
-.selected{
-  background-color:  rgb(76, 51, 37);
-}
-
-.avalible{
-  height: 2vh;
-  width: 2vh;
-  border-radius: 50%;
-  background-color: rgb(140, 125, 91);
-}
+/* dropdown */
 
 .auth{
   border-radius: 2%;
@@ -290,34 +113,12 @@ input{
 }
 
 @media only screen and (max-width: 1100px) {
-  aside{
-    background-color: #FFFBE9;
-    width: 50px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: fixed;
+  .main{
+    width: calc(100vw - 50px);
+    margin-left: 50px;
   }
-  .aside-item{
-    height: 50px;
-    padding: 10px;
-    font-size: 0px;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    background-color: #ffffff00;
-    border-bottom: #C0A080 solid 1px;
-  }
-  .icon{
-    height: 35px;
-    width: 35px;
-  }
-  .notformobile{
-    font-size: 0px;
-  }
-  
 }
+
 .link{
   background: transparent;
   text-decoration: underline;

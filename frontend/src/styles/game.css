@@ -1,0 +1,145 @@
+.game {
+  min-height: 100vh;
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  margin-right: 5vw;
+  width: 50vw;
+  height: 50vw;
+  display: flex;
+  flex-wrap: wrap;
+  border: black solid 1px;
+}
+
+.avalible {
+  height: 25%;
+  width: 25%;
+  border-radius: 50%;
+  background-color: rgb(140, 125, 91);
+}
+
+.table {
+  width: 20vw;
+  height: 50vw;
+  background-color: #fffbe9;
+  border: black solid 1px;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-row {
+  display: flex;
+}
+
+.one{
+  height: 100%;
+}
+
+.table-status, .table-button{
+  width: 100%;
+  border: 0.5px solid black;
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-schore {
+  width: 50%;
+  padding: 7px;
+  border: 0.5px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.table-history {
+  width: 50%;
+  height: 100%;
+  border: 0.5px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table-button:hover {
+  background-color: rgb(225, 197, 155);
+}
+
+
+@media only screen and (max-width: 1100px) {
+  .game {
+    width: calc(100vw - 50px);
+  }
+}
+
+
+@media only screen and (max-width: 800px) {
+  .game {
+    flex-direction: column;
+    padding: 5vh 5vw;
+  }
+  .board{
+    margin-right: 0;
+    margin-bottom: 5vh;
+    width: calc(80vw - 50px);
+    height: calc(80vw - 50px);
+  }
+
+  .table{
+    width: calc(80vw - 50px);
+  }
+}
+
+
+.square7 {
+  width: calc(100% / 7);
+  height: calc(100% / 7);
+}
+
+.square11 {
+  width: calc(100% / 11);
+  height: calc(100% / 11);
+}
+
+.square9 {
+  width: calc(100% / 9);
+  height: calc(100% / 9);
+}
+
+.square {
+  background-color: #fffbe9;
+  border: black solid 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.square img {
+  width: 75%;
+  height: 75%;
+}
+
+.finish,
+.start {
+  background-color: rgb(102, 85, 72);
+}
+
+.helper {
+  background-color: #ceab93;
+}
+
+.target {
+  background-color: #e3caa5;
+}
+
+.selected {
+  background-color: rgb(76, 51, 37);
+}
+
