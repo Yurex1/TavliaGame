@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import "@/styles/rank.css";
 import "@/styles/instruction.css";
+import "@/styles/table.css";
 import Auth from "@/components/Auth";
 import SideBare from "@/components/SideBar";
 import type { AppProps } from "next/app";
