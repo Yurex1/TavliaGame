@@ -22,6 +22,7 @@ class SocketApi {
   static moverId: number | null = null; // on start or join game
   static setSelectedSquare: (sqare: Square | null) => void = () => {};
   static setGameStatus: (gameStatus: string | null) => void = () => {};
+  static setWinerId: (winerId: number | null) => void = () => {};
   static initSocket({
     n,
     userId,
@@ -30,7 +31,9 @@ class SocketApi {
     setMoverId,
     setMoveStatus,
     setGameStatus,
+    setWinerId,
   }: useConnectType) {
+    this.setWinerId = setWinerId;
     this.setGameStatus = setGameStatus;
     this.setPageStatus = setPageStatus;
     this.setHistory = setHistory;
@@ -82,7 +85,7 @@ class SocketApi {
     );
 
     this.socket.on("page status", (status: string) => {
-      this.setPageStatus(status);
+      setPageStatus(status);
     });
 
     this.socket.on("move", (move: Move) => {
@@ -128,6 +131,10 @@ class SocketApi {
 
     this.socket.on("game status", (status: string) => {
         this.setGameStatus(status);
+    });
+
+    this.socket.on("winer", (winerId: number) => {
+      this.setWinerId(winerId);
     });
 
     this.socket.on("disconnect", () => {});
