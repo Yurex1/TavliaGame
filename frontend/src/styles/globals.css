@@ -289,7 +289,7 @@ input{
   margin: 10px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1100px) {
   aside{
     background-color: #FFFBE9;
     width: 50px;
@@ -332,4 +332,8 @@ input{
 .xbutt{
   background-color: transparent;
   font-size: 22px;
+}
+.top-items a {
+  white-space: nowrap;
+  overflow: hidden;
 }
