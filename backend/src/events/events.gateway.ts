@@ -174,7 +174,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // this.secondUserId = data.userId;
     const room = this.rooms.get(data.roomId);
 
-    if (!room) {
+    if (!room || !room?.size) {
       socket.emit("page status", "No room with this roomId");
       return;
     }
