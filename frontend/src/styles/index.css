@@ -111,7 +111,8 @@
     width: calc(30vw + 20px);
   }
   .menu{
-    width: 50vw;
+    width: calc(30vw + 20px);
+    margin-left: 10px;
   }
   .menu > div:hover{
     background-color: rgb(225, 197, 155);
