@@ -6,9 +6,9 @@ type MainMenuProps = {
 
 const MainMenu: FC<MainMenuProps> = ({setStatus}) => {
   return(
-    <div className="cen">
+    <div className="main-menu center column">
         <div
-          className="btn"
+          className="game-button center"
           onClick={() => {
             setStatus("create");
           }}
@@ -16,7 +16,7 @@ const MainMenu: FC<MainMenuProps> = ({setStatus}) => {
           Create Game
         </div>
         <div
-          className="btn"
+          className="game-button center"
           onClick={() => {
             setStatus("join");
           }}

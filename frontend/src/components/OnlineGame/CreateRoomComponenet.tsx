@@ -3,23 +3,25 @@ import React, { FC  } from "react";
 
 type CreateRoomProps = {
   socket: SocketApiType;
+  restart: () => void;
 };
 
 const CreateRoomComponent: FC<CreateRoomProps> = ({
   socket,
+  restart,
 }) => {
   const [roomId, setRoomId] = React.useState<string | null>(null);
 
 
   return (
-    <div className="cen">
-      <div className="auth">
-        <div onClick={() => {socket.createGame(setRoomId)}} className="btn">
+    <div className="main-menu center column">
+
+        <div onClick={() => {socket.createGame(setRoomId)}} className="form-button ">
           {" "}
           Get roomId
         </div>
         <input className="" defaultValue={roomId ? roomId : ""} />
-      </div>
+        <div onClick={restart} className="form-button center">Back</div>
     </div>
   );
 };
