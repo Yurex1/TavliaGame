@@ -92,11 +92,7 @@ class SocketApi {
       if (
         move &&
         move.from &&
-        move.to &&
-        move.from.y &&
-        move.from.x &&
-        move.to.y &&
-        move.to.x
+        move.to 
       ) {
         if (
           !this.lastmove ||
