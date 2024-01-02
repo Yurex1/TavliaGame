@@ -1,5 +1,5 @@
 import API_URL from "@/constants";
-import { User } from "@/types/User";
+import { User } from "@/types/types";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
