@@ -16,7 +16,7 @@ const CreateRoomComponent: FC<CreateRoomProps> = ({
   return (
     <div className="main-menu center column">
 
-        <div onClick={() => {socket.createGame(setRoomId)}} className="form-button ">
+        <div onClick={() => {socket.createGame(setRoomId)}} className="form-button center">
           {" "}
           Get roomId
         </div>

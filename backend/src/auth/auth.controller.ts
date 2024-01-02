@@ -73,7 +73,6 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Put('friends')
   addFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
-
     //@ts-ignore
     return this.authService.addFriend(req.user.sub, id, res)
   }
@@ -100,14 +99,18 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Put(":id")
-  update(@Param("id") id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
+  @Put('user-update')
+  update(@Req() req: Request, @Body() updateAuthDto: UpdateAuthDto) {
+    //@ts-ignore
+    const user: number = req.user.sub;
+    return this.authService.update(user, updateAuthDto);
   }
 
   @UseGuards(AuthGuard)
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.authService.remove(+id);
+  @Delete("user-delete")
+  remove(@Req() req: Request) {
+    //@ts-ignore
+    const id: number = req.user.sub;
+    return this.authService.remove(id);
   }
 }
