@@ -2,6 +2,7 @@ import { ConflictException } from "@nestjs/common";
 import GameManager from "./gameManager";
 import { PrismaService } from "src/prisma.service";
 import { MoveResult } from "./Board";
+import { User } from "@prisma/client";
 
 
 interface Move {
@@ -12,14 +13,18 @@ interface Move {
 export class Room {
     public size = 0;
     public firstLogout: number | null = null;
+    public player1EverJoined: number | null = null;
+    public player2EverJoined: number | null = null
     public player1: number | null = null
     public player2: number | null = null;
     public gameManager: GameManager;
     private prismaService: PrismaService;
     public gameMoves: Move[] = [];
+    private whoWinIfSurrender: User | null = null;
 
     constructor(player1: number, n: number, prismaService: PrismaService) {
         this.player1 = player1
+        this.player1EverJoined = player1;
         this.size = 1
         this.gameManager = new GameManager(n)
         this.prismaService = prismaService
@@ -47,6 +52,9 @@ export class Room {
 
     public whoWin() {
         const isKingWin = this.gameManager.isKingWin();
+        if (this.whoWinIfSurrender) {
+            return this.whoWinIfSurrender;
+        }
         if (isKingWin) {
             if (this.player2) {
                 return this.player2;
@@ -93,6 +101,9 @@ export class Room {
         }
         else if (!this.player2) {
             this.player2 = id;
+            if (!this.player2EverJoined) {
+                this.player2EverJoined = this.player2
+            }
             this.size = 2;
         }
         else {
@@ -163,7 +174,7 @@ export class Room {
 
             return false;
         }
-        let loser, winner;
+        let loser: User, winner: User;
         if (loserId === this.player1) {
             loser = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
             winner = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
@@ -171,6 +182,8 @@ export class Room {
             loser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
             winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
         }
+        console.log('winner: ', winner)
+        console.log('loser: ', loser)
         await this.prismaService.game.create({
             data:
             {
@@ -191,8 +204,9 @@ export class Room {
             },
 
         });
-        await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: winner.rank + 25 } })
-        await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: loser.rank - 25 } })
+        await this.prismaService.user.update({ where: { id: winner.id }, data: { rank: winner.rank + 25 } })
+        await this.prismaService.user.update({ where: { id: loser.id }, data: { rank: loser.rank - 25 } })
+        this.whoWinIfSurrender = winner;
         return true;
     }
 }
