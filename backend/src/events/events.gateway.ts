@@ -73,7 +73,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket['user'] = user;
     const userId = user.sub
 
-
+    console.log('th', this.players)
     if (this.players.has(userId)) {
 
       const roomId = this.players.get(userId);
@@ -145,7 +145,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // room.addPlayer(user.id)
     this.rooms.set(roomId, room);
     this.players.set(user.id, roomId)
-
+    console.log("create player", this.players)
     socket.emit('getRoomId', roomId);
     // this.io.emit("createNewGame", { roomId: roomId });
   }
@@ -283,7 +283,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
       if (result === '1 player left') {
-        this.players.delete(userId)
+        // this.players.delete(userId)
       }
       else if (result === '0 players left') {
         if (roomPlayer1) {
