@@ -221,6 +221,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       room.saveGame();
       this.io.to(roomId).emit("move", { from: data.moveFrom, to: data.moveTo });
       this.io.to(roomId).emit("game status", "End of the game");
+      this.io.to(roomId).emit("game status", `winner ${room.whoWin()}`);
       this.io.socketsLeave(roomId);
       this.rooms.delete(roomId)
       this.players.delete(room.player1);
@@ -257,7 +258,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
 
-    this.io.to(roomId).emit("game status", "Player surrendered");
+    this.io.to(roomId).emit("game status", `winner, ${room.whoWin()}`);
     this.io.socketsLeave(roomId);
     this.rooms.delete(roomId)
     this.players.delete(room.player1);
@@ -295,6 +296,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         }
         room.surrender(room.firstLogout)
         this.io.to(roomId).emit("game status", `Player ${room.firstLogout} surrendered`);
+        this.io.to(roomId).emit("game status", `winner ${room.player1 === room.firstLogout ? room?.player2 : room?.player1}`);
         this.io.socketsLeave(roomId);
         this.rooms.delete(roomId)
       }
