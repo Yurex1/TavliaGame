@@ -10,7 +10,7 @@ type SchoreProps = {
 
 const Schore: FC<SchoreProps> = ({ text }) => {
   return (
-    <div className="table-schore">
+    <div className="table-schore center">
       <div>{text}</div>
     </div>
   );

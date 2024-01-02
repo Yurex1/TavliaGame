@@ -4,6 +4,7 @@ import "@/styles/instruction.css";
 import "@/styles/sideBar.css";
 import "@/styles/index.css";
 import "@/styles/game.css";
+import "@/styles/form.css";
 import Auth from "@/components/Auth";
 import SideBare from "@/components/SideBar";
 import type { AppProps } from "next/app";
