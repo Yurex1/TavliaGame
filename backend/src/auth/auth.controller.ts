@@ -93,17 +93,19 @@ export class AuthController {
     return (await this.authService.getAllFriends(req.user.sub, res));
   }
 
-
+  @UseGuards(AuthGuard)
   @Get(":id")
   async findOne(@Param("id") id: string) {
     return await this.authService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Put(":id")
   update(@Param("id") id: string, @Body() updateAuthDto: UpdateAuthDto) {
     return this.authService.update(+id, updateAuthDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.authService.remove(+id);
