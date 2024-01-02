@@ -51,6 +51,8 @@ export const useConnect = ({n, userId, setPageStatus, setHistory, setMoverId, se
   const joinRoom = (roomId: string) => {
     SocketApi.joinRoom(roomId);
   }
-
-  return {...SocketApi.getGame(), move: move, createGame: createGame, joinRoom: joinRoom} as SocketApiType;
+  const surrender = () => {
+    SocketApi.surrender();
+  }
+  return {...SocketApi.getGame(), surrender, move, createGame, joinRoom} as SocketApiType;
 };
