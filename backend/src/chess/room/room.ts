@@ -60,7 +60,7 @@ export class Room {
                 return this.player1;
             }
             else {
-                throw new Error('player 1 wins, but null')
+                throw new Error('player 1 wins, but nulll')
             }
         }
     }
