@@ -99,6 +99,9 @@ export class AuthService {
       if (user.friends.includes(friendsId)) {
         return res.status(400).json("User is already your friend")
       }
+      if (id === friendsId) {
+        return res.status(400).json("You cannot add yourself as a friend")
+      }
 
 
       const currentFriends = user.friends ?? [];
