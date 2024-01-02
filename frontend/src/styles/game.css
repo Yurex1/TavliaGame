@@ -24,6 +24,16 @@
   flex-direction: column;
 }
 
+.game-page-batton{
+  width: 15vw;
+  min-height: 5vh;
+  padding: 0.5vh;
+  background-color: #c0a080;
+  border-radius: 5px;
+  font-size: 20px;
+  box-shadow: 2px 2px 2px black;
+}
+
 .table-row {
   display: flex;
   flex-wrap: wrap;
@@ -148,4 +158,10 @@
   width: 25%;
   border-radius: 50%;
   background-color: rgb(140, 125, 91);
+}
+
+
+.main-menu{
+  width: 100%;
+  height: 100vh;
 }

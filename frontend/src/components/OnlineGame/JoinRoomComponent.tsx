@@ -6,22 +6,23 @@ import { SocketApiType } from "@/hooks/useConnect";
 
 type JoinRoomComponentProps = {
   socket: SocketApiType;
+  restart: () => void;
 };
 
 const JoinRoomComponent: FC<JoinRoomComponentProps> = ({
-  socket
+  socket,
+  restart,
 }) => {
   const methods = useForm();
   const joinRoom = (data: { roomId: string }) => {
     socket.joinRoom(data.roomId);
   };
   return (
-    <div className="cen">
-      <div className="auth">
+    <div className="main-menu center column">
         <Form methods={methods} submitText="Join" onSubmit={joinRoom}>
           <RHFInput placeholder="room id" type="text" name="roomId" />
         </Form>
-      </div>
+        <div onClick={restart} className="form-button center">Back</div>
     </div>
   );
 };

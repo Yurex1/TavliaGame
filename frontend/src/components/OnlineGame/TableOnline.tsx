@@ -10,7 +10,7 @@ type SchoreProps = {
 
 const Schore: FC<SchoreProps> = ({ text }) => {
   return (
-    <div className="table-schore">
+    <div className="table-schore center">
       <div>{text}</div>
     </div>
   );
@@ -73,7 +73,7 @@ const Table: FC<TableProps> = ({ socket, gameStatus, moverId, winerId }) => {
     <div className="table">
      
         {winerId ? (
-          <div className="table-status">{winerId == socket.whiteId ? <>{white} win!</> : <>{black} win!</>} {gameStatus=="Player surrendered" && (winerId == socket.whiteId ? <>{black} surrendered!</> : <>{white} surrendered!</>)}</div>
+          <div className="table-status">{winerId == socket.whiteId ? <>{white} win!</> : <>{black} win!</>} {gameStatus!="End of the game" && (winerId == socket.whiteId ? <>{black} surrendered!</> : <>{white} surrendered!</>)}</div>
         ) : (
           <div className="table-status">{mover} moving</div>
         )}
