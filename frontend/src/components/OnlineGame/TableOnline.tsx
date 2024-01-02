@@ -10,7 +10,7 @@ type SchoreProps = {
 
 const Schore: FC<SchoreProps> = ({ text }) => {
   return (
-    <div className="schore">
+    <div className="table-schore">
       <div>{text}</div>
     </div>
   );
@@ -22,7 +22,7 @@ type HistoryProps = {
 
 const History: FC<HistoryProps> = ({ array }) => {
   return (
-    <div className="history">
+    <div className="table-history">
       {array.map((item, id) => (
         <div key={id}>
           {item.from.x + 1}
@@ -71,23 +71,22 @@ const Table: FC<TableProps> = ({ socket, gameStatus, moverId, winerId }) => {
   }
   return (
     <div className="table">
-      <div className="row">
+     
         {winerId ? (
-          <div className="status">{winerId == socket.whiteId ? <>{white} win!</> : <>{black} win!</>} {gameStatus=="Player surrendered" && (winerId == socket.whiteId ? <>{black} surrendered!</> : <>{white} surrendered!</>)}</div>
+          <div className="table-status">{winerId == socket.whiteId ? <>{white} win!</> : <>{black} win!</>} {gameStatus=="Player surrendered" && (winerId == socket.whiteId ? <>{black} surrendered!</> : <>{white} surrendered!</>)}</div>
         ) : (
-          <div className="status">{mover} moving</div>
+          <div className="table-status">{mover} moving</div>
         )}
-      </div>
-      <div className="row">
+      <div className="table-row">
         <Schore text={`White: ${white}` } />
         <Schore text={`Black: ${black}` } />
       </div>
-      <div className="HISTORY">History:</div>
-      <div className="row">
+      <div className="table-status">History:</div>
+      <div className="table-row one">
         <History array={whiteHistory} />
         <History array={blackHistory} />
       </div>
-      <div onClick={socket.surrender} className="restart">
+      <div onClick={socket.surrender} className="table-button">
         Surrender
       </div>
     </div>

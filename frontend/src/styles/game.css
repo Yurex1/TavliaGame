@@ -14,29 +14,26 @@
   flex-wrap: wrap;
   border: black solid 1px;
 }
-
-.avalible {
-  height: 25%;
-  width: 25%;
-  border-radius: 50%;
-  background-color: rgb(140, 125, 91);
-}
-
 .table {
   width: 20vw;
   height: 50vw;
   background-color: #fffbe9;
   border: black solid 1px;
+  border-bottom: black solid 1px;
   display: flex;
   flex-direction: column;
 }
 
 .table-row {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .one{
-  height: 100%;
+  flex: 1;
+  overflow: auto;
+  border-top: 0.5px solid black;
+  border-bottom: 0.5px solid black;
 }
 
 .table-status, .table-button{
@@ -61,8 +58,11 @@
 
 .table-history {
   width: 50%;
-  height: 100%;
-  border: 0.5px solid black;
+  padding: 7px;
+  flex-grow: 1;
+  border-right: 0.5px solid black;
+  border-left: 0.5px solid black;
+ 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,3 +143,9 @@
   background-color: rgb(76, 51, 37);
 }
 
+.avalible {
+  height: 25%;
+  width: 25%;
+  border-radius: 50%;
+  background-color: rgb(140, 125, 91);
+}
