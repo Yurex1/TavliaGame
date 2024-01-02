@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Login from "./Login";
 import Singup from "./Singup";
 import React from 'react'
@@ -9,17 +9,32 @@ type AuthProps = {
 
 const Auth: FC<AuthProps> = ({ setShowAuth }) => {
   const [mode, setMode] = useState<"login" | "signup">("login");
+  const authRef = useRef(null);
   function onClick() {
     setMode((prev) => (prev === "login" ? "signup" : "login"));
   }
   function beba(){
     setShowAuth(false);
   }
+
+  const handleClickOutside = (event:  MouseEvent) => {
+    // @ts-expect-error becouse of typescript
+    if (authRef.current && !authRef.current.contains(event.target as Node)) {
+      setShowAuth(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div className="auth-wraper">
       
-      <div className="auth">
-        <button onClick={beba} style={{marginLeft:"95%"}} className="xbutt">
+      <div className="auth" ref={authRef} >
+        <button onClick={beba} style={{marginLeft:"95%"}} className="x-button">
           X
         </button>
         {mode === "login" ? (
@@ -27,7 +42,7 @@ const Auth: FC<AuthProps> = ({ setShowAuth }) => {
         ) : (
           <Singup setShowAuth={setShowAuth} />
         )}
-        <a onClick={onClick} className="link">
+        <a onClick={onClick} className="auth-link">
           {mode === "login" ? "I don't have an account" : "I already have an account"}
         </a>
         

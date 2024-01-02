@@ -13,10 +13,10 @@ export default function Rank() {
   const [list, setList] = useState<RankType[]>([]);
 
   const fun = async () => {
-    let array: RankType[] = [];
+    const array: RankType[] = [];
     const res = (await axios.get(API_URL + "auth/findAll")).data;
-    res.map((item: any) => {
-      array.push({ id: item.id, rank: item.rank, name: item.login });
+    res.map((item: RankType) => {
+      array.push({ id: item.id, rank: item.rank, name: item.name });
     });
     setList(array);
   };
