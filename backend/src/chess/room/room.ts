@@ -47,7 +47,7 @@ export class Room {
 
     public whoWin() {
         const isKingWin = this.gameManager.isKingWin();
-        if (isKingWin) {
+        if (!isKingWin) {
             if (this.player2) {
                 return this.player2;
             }
