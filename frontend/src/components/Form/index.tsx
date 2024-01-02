@@ -19,9 +19,9 @@ const Form: FC<PropsWithChildren<FormProps>> = ({
 }) => {
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form >
         {children}
-        <input type="submit" value={submitText} />
+        <div className="form-button сутеук" onClick={methods.handleSubmit(onSubmit)}>{submitText}</div>
       </form>
     </FormProvider>
   );
