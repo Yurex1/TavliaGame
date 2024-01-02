@@ -107,8 +107,10 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.authService.remove(+id);
+  @Delete("user-delete")
+  remove(@Req() req: Request) {
+    //@ts-ignore
+    const id: number = req.user.sub;
+    return this.authService.remove(id);
   }
 }
