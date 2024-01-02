@@ -45,6 +45,26 @@ export class Room {
         return moveResult
     }
 
+    public whoWin() {
+        const isKingWin = this.gameManager.isKingWin();
+        if (isKingWin) {
+            if (this.player2) {
+                return this.player2;
+            }
+            else {
+                throw new Error('player 2 wins, but null')
+            }
+        }
+        else {
+            if (this.player1) {
+                return this.player1;
+            }
+            else {
+                throw new Error('player 1 wins, but null')
+            }
+        }
+    }
+
 
     public youMove(playerId: number) {
 
