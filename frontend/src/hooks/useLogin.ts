@@ -16,7 +16,7 @@ const useLogin = ({setError, setShowAuth }: {setError: (error: string) => void, 
       setShowAuth(false);
       queryClient.invalidateQueries(["user"]);
     },
-    onError: (error) => {
+    onError: () => {
       setError("incorect username or password");  
     }
   });
