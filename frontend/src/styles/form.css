@@ -38,7 +38,7 @@ input {
 }
 
 .form-button {
-  width: 15vw;
+  min-width: 15vw;
   margin: 10px;
   font-size: 20px;
   padding: 0.5vh;
@@ -58,4 +58,10 @@ input {
 .x-button {
   background-color: transparent;
   font-size: 22px;
+}
+
+
+.error {
+  color: red;
+  font-size: 10px;
 }
