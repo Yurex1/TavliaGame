@@ -24,7 +24,7 @@ const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
   } else {
     return (
       <div onClick= {() => {logout()}} className="aside-item">
-        <img className="icon" src = "arrow.png"/>
+        <img className="icon" src = "logOut.png"/>
         <div className="text">Log Out</div>
       </div>
     );

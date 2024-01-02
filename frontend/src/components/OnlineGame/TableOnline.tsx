@@ -46,17 +46,17 @@ const Table: FC<TableProps> = ({ socket, gameStatus, moverId, winerId }) => {
   const [black, setBleck] = React.useState<string>("");
   const [mover, setMover] = React.useState<string>("");
   const whiteFun = async () => {
-    const res = (await axios.get(`${API_URL}auth/${socket.whiteId}`)).data;
+    const res = (await axios.get(`${API_URL}auth/${socket.whiteId}`  , {headers: {Authorization: "Bearer " + localStorage.getItem('token')?.toString()}})).data;
     setWhite(res.login);
   };
   whiteFun();
   const blackFun = async () => {
-    const res = (await axios.get(`${API_URL}auth/${socket.blackId}`)).data;
+    const res = (await axios.get(`${API_URL}auth/${socket.blackId}`  , {headers: {Authorization: "Bearer " + localStorage.getItem('token')?.toString()}})).data;
     setBleck(res.login);
   };
   blackFun();
   const moverIdFun = async () => {
-    const res = (await axios.get(`${API_URL}auth/${moverId}`)).data;
+    const res = (await axios.get(`${API_URL}auth/${moverId}`  , {headers: {Authorization: "Bearer " + localStorage.getItem('token')?.toString()}})).data;
     setMover(res.login);
   };
   useEffect(() => {
