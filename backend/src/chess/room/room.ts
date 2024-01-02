@@ -13,6 +13,8 @@ interface Move {
 export class Room {
     public size = 0;
     public firstLogout: number | null = null;
+    public player1EverJoined: number | null = null;
+    public player2EverJoined: number | null = null
     public player1: number | null = null
     public player2: number | null = null;
     public gameManager: GameManager;
@@ -22,6 +24,7 @@ export class Room {
 
     constructor(player1: number, n: number, prismaService: PrismaService) {
         this.player1 = player1
+        this.player1EverJoined = player1;
         this.size = 1
         this.gameManager = new GameManager(n)
         this.prismaService = prismaService
@@ -98,6 +101,9 @@ export class Room {
         }
         else if (!this.player2) {
             this.player2 = id;
+            if (!this.player2EverJoined) {
+                this.player2EverJoined = this.player2
+            }
             this.size = 2;
         }
         else {
