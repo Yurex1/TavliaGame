@@ -21,7 +21,7 @@ export default function Game() {
   else if(user.data){
     return(
       <>
-        <div className='cen'>
+        <div className='message'>
           Loading...
         </div>
       </>
@@ -30,7 +30,7 @@ export default function Game() {
   else{
     return(
       <>
-        <div className='cen'>
+        <div className='message'>
           Please login{')'}
         </div>
       </>

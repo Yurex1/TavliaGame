@@ -18,6 +18,11 @@ aside{
   border-bottom: #C0A080 solid 1px;
 }
 
+.top-items a {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .name{
   padding: 10px;
   display: flex;

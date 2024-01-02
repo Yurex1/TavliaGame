@@ -66,7 +66,7 @@ class SocketApi {
         blackId: number;
       }) => {
         if (this.n != n) {
-          setPageStatus("you already in game" + { n } + "x" + { n });
+          setPageStatus(`you already in game ${ n }x${ n }`);
           return;
         }
         this.history = history;
@@ -133,8 +133,13 @@ class SocketApi {
         this.setGameStatus(status);
     });
 
-    this.socket.on("winer", (winerId: number) => {
+    this.socket.on("winner", (winerId: number) => {
       this.setWinerId(winerId);
+    });
+
+    this.socket.on("surrender", (winerId: number) => {
+      setWinerId(winerId);
+      setGameStatus("surrender");
     });
 
     this.socket.on("disconnect", () => {});
