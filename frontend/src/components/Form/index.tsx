@@ -21,7 +21,7 @@ const Form: FC<PropsWithChildren<FormProps>> = ({
     <FormProvider {...methods}>
       <form >
         {children}
-        <div className="form-button сутеук" onClick={methods.handleSubmit(onSubmit)}>{submitText}</div>
+        <div className="form-button center" onClick={methods.handleSubmit(onSubmit)}>{submitText}</div>
       </form>
     </FormProvider>
   );
