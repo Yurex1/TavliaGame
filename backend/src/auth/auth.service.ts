@@ -123,6 +123,7 @@ export class AuthService {
   }
 
   async removeFriend(id: number, friendsId: number, res: Response) {
+    console.log(id, friendsId)
     const user = await this.prismaService.user.findUnique({ where: { id: id } });
     if (!user) {
       return res.status(404).json("No user with this id");
@@ -132,12 +133,12 @@ export class AuthService {
     }
 
     const updatedFriendsList = user.friends.filter(friendId => friendId !== friendsId);
+    console.log("upd: ", updatedFriendsList);
 
-    const result = this.prismaService.user.update({
-      where: { id: id }, data: {
-        friends: updatedFriendsList
-      }
-    })
+    await this.prismaService.user.update({
+      where: { id: id },
+      data: { friends: updatedFriendsList }
+    });
     return res.status(200).json({ message: "Friend removed successfully" });
   }
 
