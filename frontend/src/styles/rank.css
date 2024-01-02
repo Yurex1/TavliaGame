@@ -1,0 +1,77 @@
+.rank {
+    height: 100vh;
+    width: 100%;
+    padding: 5vh 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rank > .wrapper {
+    height: 90vh;
+    width: 100%;
+    background-color: #FFFBE9;
+    padding: 5vh 5vw;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .rank-standing {
+    overflow-y: auto;
+    border: 1px solid #C0A080;
+    height: 74vh;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .rank-item {
+    display: flex;
+    flex-direction: row;
+    font-size: large;
+    height: 5vh;
+    border-bottom: 1px solid #C0A080;
+    align-items: center;
+  }
+
+  .id {
+    width: 10%;
+    text-align: center;
+  }
+
+  .user-name {
+    width: 80%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+  }
+
+  .user-rank {
+    width: 10%;
+    text-align: center;
+  }
+
+  .rank-buttons {
+    display: flex;
+    flex-direction: row;
+    height: 6vh;
+    background-color: #FFFBE9;
+    border-radius: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .rank-button {
+    /* flex: 1; */
+    height: 100%;
+    width: 10%;
+    background-color: #FFFBE9;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .rank-button:hover {
+    background-color: #C0A080;
+  }

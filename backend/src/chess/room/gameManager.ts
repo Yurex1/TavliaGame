@@ -1,4 +1,4 @@
-import Board from "./Board";
+import Board, { MoveResult } from "./Board";
 
 export default class GameManager {
     gameBoard: Board;
@@ -15,20 +15,14 @@ export default class GameManager {
 
     public ChangePlayerMoves = () => this.currentPlayer = 1 - this.currentPlayer;
 
-    public processMove = (from: { x: number, y: number }, to: { x: number, y: number }) => {
+    public processMove = (from: { x: number, y: number }, to: { x: number, y: number }): MoveResult => {
+        [from.x, from.y] = [from.y, from.x];
+        [to.x, to.y] = [to.y, to.x];
         const result = this.gameBoard.makeMove(from, to, this.currentPlayer);
-        if (!result) {
-            return false;
-        }
-        if (result === "Eng game") {
-
-            return "Eng game"
-        }
-        else {
+        if (result.result === 'OK') {
             this.ChangePlayerMoves();
-            return true;
         }
-
+        return result
     }
 
     public isGameEnded() {

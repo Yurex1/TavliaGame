@@ -12,17 +12,25 @@ const Auth: FC<AuthProps> = ({ setShowAuth }) => {
   function onClick() {
     setMode((prev) => (prev === "login" ? "signup" : "login"));
   }
+  function beba(){
+    setShowAuth(false);
+  }
   return (
     <div className="auth-wraper">
+      
       <div className="auth">
+        <button onClick={beba} style={{marginLeft:"95%"}} className="xbutt">
+          X
+        </button>
         {mode === "login" ? (
           <Login setShowAuth={setShowAuth} />
         ) : (
           <Singup setShowAuth={setShowAuth} />
         )}
-        <button onClick={onClick}>
+        <a onClick={onClick} className="link">
           {mode === "login" ? "I don't have an account" : "I already have an account"}
-        </button>
+        </a>
+        
       </div>
     </div>
   );
