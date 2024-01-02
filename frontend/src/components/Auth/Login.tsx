@@ -1,10 +1,11 @@
-import { User } from "@/types/User";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import Form from "../Form";
 import RHFInput from "../Form/RHFinput";
 import useLogin from "@/hooks/useLogin";
 import React from 'react'
+import { User } from "@/types/types";
+
 
 type loginProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -19,8 +20,8 @@ const Login: FC<loginProps> = ({ setShowAuth }) => {
   };
   return (
     <Form methods={methods} submitText="Log in" onSubmit={onSubmit}>
-      <RHFInput placeholder="name" name="username" type="text" />
-      <RHFInput placeholder="password" name="password" type="password" />
+      <RHFInput placeholder="Name" name="username" type="text" />
+      <RHFInput placeholder="Password" name="password" type="password" />
     </Form>
   );
 };
