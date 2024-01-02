@@ -18,16 +18,17 @@ export class AuthService {
     private jwtService: JwtService
   ) { }
 
-  async signIn(data: { username; pass }, res: Response) {
+  async signIn(data: { username, pass }, res: Response) {
 
     if (data.username === undefined || data.pass === undefined) {
       throw new BadRequestException("Username or password is undefined");
     }
 
-    const user: User = await this.prismaService.user.findFirst({
+    const user: User | null = await this.prismaService.user.findFirst({
       where: { login: data.username },
     });
-    if (user === null || !bcrypt.compare(user?.password, data.pass)) {
+    console.log(data, await bcrypt.compare(user.password, data.pass))
+    if (user === null || !await bcrypt.compare(data.pass, user.password,)) {
       throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.login };
@@ -49,8 +50,10 @@ export class AuthService {
           data.password,
           await bcrypt.genSalt()
         );
+        console.log(data)
         data.password = password;
-        return this.prismaService.user.create({ data });
+        console.log(data)
+        return await this.prismaService.user.create({ data });
       });
   }
 
