@@ -19,7 +19,7 @@ const useRegister = ({setError, setShowAuth }: {setError: (error: string) => voi
       setShowAuth(false);
       queryClient.invalidateQueries(["user"]);
     },
-    onError: (error) => {
+    onError: () => {
       setError("User with this login or email has already been created.");
     }
   });
