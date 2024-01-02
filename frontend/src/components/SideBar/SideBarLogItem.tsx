@@ -15,13 +15,16 @@ const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
   const logout = useLogout();
   if (!user.data) {
     return (
+      
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
+        <img className="icon" src = "arrow.png"/>
         <div  className="text">Log In</div>
       </button>
     );
   } else {
     return (
       <div onClick= {() => {logout()}} className="aside-item">
+        <img className="icon" src = "arrow.png"/>
         <div className="text">Log Out</div>
       </div>
     );
