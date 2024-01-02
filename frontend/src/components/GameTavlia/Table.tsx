@@ -19,8 +19,6 @@ type HistoryProps = {
   array: Move[];
 };
 
-
-
 const History: FC<HistoryProps> = ({ array }) => {
   return (
     <div className="table-history">
@@ -51,17 +49,17 @@ const Table: FC<TableProps> = ({ history, move, status, restart }) => {
   }
   return (
     <div className="table">
-      <div className="table-row">
-        {status == Status.PLAYING && <div className="table-status">Move: {move}</div>}
-        {status == Status.WIN && <div className="table-status">White win!</div>}
-        {status == Status.LOSE && <div className="table-status">Black win!</div>}
-      </div>
+      {status == Status.PLAYING && (
+        <div className="table-status">Move: {move}</div>
+      )}
+      {status == Status.WIN && <div className="table-status">White win!</div>}
+      {status == Status.LOSE && <div className="table-status">Black win!</div>}
       <div className="table-row">
         <Schore text="White" />
         <Schore text="Black" />
       </div>
       <div className="table-status">History:</div>
-      <div className="table-row h-100">
+      <div className="table-row one">
         <History array={whiteHistory} />
         <History array={blackHistory} />
       </div>

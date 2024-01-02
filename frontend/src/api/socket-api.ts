@@ -188,7 +188,6 @@ class SocketApi {
 
   static surrender() {
     this.socket?.emit("surrender");
-    this.setPageStatus("surrender");
   }
 
   static move(move: Move, setSelectedSquare: (sqare: Square | null) => void) {
@@ -214,7 +213,6 @@ class SocketApi {
       moverId: this.moverId,
       userId: this.userId,
       moveStatus: this.moveStatus,
-      surrender: this.surrender,
     };
     return game;
   }
