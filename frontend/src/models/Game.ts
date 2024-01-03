@@ -1,13 +1,7 @@
+import { Move } from "@/types/types";
 import { Board, Status } from "./Board";
 import { Colors } from "./Colors";
 import { Figure } from "./figures/Figure";
-
-export type Move = {
-  fromX: number;
-  fromY: number;
-  toX: number;
-  toY: number;
-};
 
 export class Game {
   readonly n: number;
@@ -24,8 +18,8 @@ export class Game {
       this.king =
         this.board.squares[(this.n - 1) / 2][(this.n - 1) / 2].figure!;
       history.map((move) => {
-        const from = this.board.getSquare(move.fromX, move.fromY);
-        const to = this.board.getSquare(move.toX, move.toY);
+        const from = this.board.getSquare(move.from.x, move.from.y);
+        const to = this.board.getSquare(move.to.x, move.to.y);
         from.moveFigure(to);
       });
     }
