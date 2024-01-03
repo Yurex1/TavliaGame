@@ -53,7 +53,7 @@ export class Room {
     public whoWin() {
         const isKingWin = this.gameManager.isKingWin();
         if (this.whoWinIfSurrender) {
-            return this.whoWinIfSurrender;
+            return this.whoWinIfSurrender.id;
         }
         if (isKingWin) {
             if (this.player2) {
@@ -134,10 +134,11 @@ export class Room {
     }
 
     public async saveGame() {
+        const winner = this.whoWin();
         await this.prismaService.game.create({
             data:
             {
-
+                winner: winner,
                 users: {
                     connect: [
                         { id: this.player1 },
@@ -152,6 +153,7 @@ export class Room {
                         toY: move.to.y
                     })),
                 },
+
             },
 
         });
@@ -183,8 +185,10 @@ export class Room {
             winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
         }
         await this.prismaService.game.create({
+
             data:
             {
+                winner: this.whoWin(),
                 users: {
                     connect: [
                         { id: this.player1 },

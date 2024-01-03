@@ -29,9 +29,10 @@ model User {
 }
 
 model Game {
-  id    Int    @id @default(autoincrement())
-  users User[]
-  Move  Move[]
+  id     Int    @id @default(autoincrement())
+  winner Int
+  users  User[]
+  Move   Move[]
 }
 
 model Move {
