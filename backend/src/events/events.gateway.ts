@@ -178,8 +178,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       socket.emit("page status", "No room with this roomId");
       return;
     }
-    else if (room.size >= 2) {
+    if (room.size >= 2) {
       socket.emit("page status", "This room already has 2 players");
+      return;
+    }
+    if (room.player1 === null && room.player2 === user.id || room.player2 === null && room.player1 === user.id) {
+      socket.emit('status', 'Can\'t add one player 2 times');
       return;
     }
     socket.join(data.roomId);
