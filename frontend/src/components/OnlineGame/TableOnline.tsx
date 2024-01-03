@@ -46,23 +46,40 @@ const Table: FC<TableProps> = ({ socket, gameStatus, moverId, winerId }) => {
   const [black, setBleck] = React.useState<string>("");
   const [mover, setMover] = React.useState<string>("");
   const whiteFun = async () => {
-    const res = (await axios.get(`${API_URL}auth/${socket.whiteId}`  , {headers: {Authorization: "Bearer " + localStorage.getItem('token')?.toString()}})).data;
+    const res = (
+      await axios.get(`${API_URL}auth/${socket.whiteId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")?.toString(),
+        },
+      })
+    ).data;
     setWhite(res.login);
   };
   whiteFun();
   const blackFun = async () => {
-    const res = (await axios.get(`${API_URL}auth/${socket.blackId}`  , {headers: {Authorization: "Bearer " + localStorage.getItem('token')?.toString()}})).data;
+    const res = (
+      await axios.get(`${API_URL}auth/${socket.blackId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")?.toString(),
+        },
+      })
+    ).data;
     setBleck(res.login);
   };
   blackFun();
   const moverIdFun = async () => {
-    const res = (await axios.get(`${API_URL}auth/${moverId}`  , {headers: {Authorization: "Bearer " + localStorage.getItem('token')?.toString()}})).data;
+    const res = (
+      await axios.get(`${API_URL}auth/${moverId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")?.toString(),
+        },
+      })
+    ).data;
     setMover(res.login);
   };
   useEffect(() => {
-    if(moverId)
-    moverIdFun();
-  }, [moverId])
+    if (moverId) moverIdFun();
+  }, [moverId]);
   const whiteHistory: Move[] = [],
     blackHistory: Move[] = [];
   for (let i = 0; i < socket.history.length; i++) {
@@ -71,15 +88,23 @@ const Table: FC<TableProps> = ({ socket, gameStatus, moverId, winerId }) => {
   }
   return (
     <div className="table">
-     
-        {winerId ? (
-          <div className="table-status"> {gameStatus!="End of the game" ? (winerId == socket.whiteId ? <>{black} win! <br/> {white} surrendered!</> : <>{white} win! <br/> {black} surrendered!</>) : (winerId == socket.whiteId ? <>{white} win!</> : <>{black} win!</>) }</div>
-        ) : (
-          <div className="table-status">{mover} moving</div>
-        )}
+      {winerId ? (
+        <div className="table-status center">
+          {winerId == socket.whiteId ? <>{white} win !</> : <>{black} win! </>}
+
+          {gameStatus == "surrender" ? (
+            <>
+              <br />
+              {winerId == socket.whiteId ? <>{black} surrendered!</> : <>{white} surrendered!</>}
+            </>
+          ):null}
+        </div>
+      ) : (
+        <div className="table-status">{mover} moving</div>
+      )}
       <div className="table-row">
-        <Schore text={`White: ${white}` } />
-        <Schore text={`Black: ${black}` } />
+        <Schore text={`White: ${white}`} />
+        <Schore text={`Black: ${black}`} />
       </div>
       <div className="table-status">History:</div>
       <div className="table-row one">
