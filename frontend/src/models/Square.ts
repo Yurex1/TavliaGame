@@ -52,10 +52,22 @@ export class Square {
             target.figure.square = target;
             this.figure = null;
             target.killEnemy();
-            this.board.checkWin();
-            this.board.game.history.push({from:{x: this.x, y: this.y}, to:{x: target.x, y: target.y}});
             this.board.game.changeColor();
+            this.board.game.history.push({from:{x: this.x, y: this.y}, to:{x: target.x, y: target.y}});
+            this.board.checkWin();
         }
+    }
+
+    public haveMove(): boolean{
+        if(this.figure == null) return false;
+        for(let i = 0; i < this.board.n; i++){
+            for(let j = 0; j < this.board.n; j++){
+                if(this.figure?.canMove(this.board.getSquare(i, j))){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private killEnemy(){
