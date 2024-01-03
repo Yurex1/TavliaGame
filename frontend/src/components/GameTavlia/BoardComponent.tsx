@@ -1,23 +1,29 @@
 import { Status } from "@/models/Board";
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import SquareComponent from "./SquareComponent";
 import { Square } from "@/models/Square";
-import { Game, Move } from "@/models/Game";
+import { Game } from "@/models/Game";
 import { Colors } from "@/models/Colors";
+import { Move } from "@/types/types";
 
 interface BoardProps {
   game: Game;
-  setMove : (move: Colors) => void;
-  setHistory : (history: Move[]) => void;
-  setStatus : (status: Status) => void;
+  setMove: (move: Colors) => void;
+  setHistory: (history: Move[]) => void;
+  setStatus: (status: Status) => void;
 }
 
-const BoardComponent: FC<BoardProps> = ({ game, setMove, setHistory, setStatus}) => {
+const BoardComponent: FC<BoardProps> = ({
+  game,
+  setMove,
+  setHistory,
+  setStatus,
+}) => {
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
 
   function click(square: Square) {
-    if(game.status != Status.PLAYING) return;
+    if (game.status != Status.PLAYING) return;
     if (selectedSquare && selectedSquare == square) {
       game.board.highlightSquares(null);
       setSelectedSquare(null);
@@ -48,24 +54,24 @@ const BoardComponent: FC<BoardProps> = ({ game, setMove, setHistory, setStatus})
   }, [game.history]);
 
   return (
-    <>  
+    <>
       <div className="board">
-      {game.board.squares.map((row, i) => (
-        <React.Fragment key={i}>
-          {row.map((square) => (
-            <SquareComponent
-              click={click}
-              selected={
-                square.x == selectedSquare?.x && square.y == selectedSquare?.y
-              }
-              square={square}
-              key={square.id}
-            />
-          ))}
-        </React.Fragment>
-      ))}
-    </div></>
-
+        {game.board.squares.map((row, i) => (
+          <React.Fragment key={i}>
+            {row.map((square) => (
+              <SquareComponent
+                click={click}
+                selected={
+                  square.x == selectedSquare?.x && square.y == selectedSquare?.y
+                }
+                square={square}
+                key={square.id}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+    </>
   );
 };
 

@@ -81,20 +81,25 @@ export default class Board {
 
 
     areAllHeighboringPositionCoveredByBlack() {
-        let kingPosition: { x: number | null, y: number | null } = { x: null, y: null }
+        let kingPosition = { x: -1, y: -1 };
         for (let i = 0; i < this.n; i++) {
             for (let j = 0; j < this.n; j++) {
-                if (this.cells[i][j].FigureType === 3) {
-                    kingPosition.x = i,
-                        kingPosition.y = j;
+                if (this.cells[i][j].FigureType === FigureType.King) {
+                    kingPosition = { x: i, y: j };
                     break;
                 }
             }
-            if (kingPosition.x !== null) {
+            if (kingPosition.x !== -1) {
                 break;
             }
         }
-        const isCoveredByBlack = (x, y) => this.cells[x][y].FigureType === FigureType.Defender;
+
+        if (kingPosition.x === -1 || kingPosition.y === -1) {
+
+            return false;
+        }
+
+        const isCoveredByBlack = (x, y) => this.cells[x][y].FigureType === FigureType.Attacker;
         const positionsToCheck = [
             { x: kingPosition.x - 1, y: kingPosition.y },
             { x: kingPosition.x + 1, y: kingPosition.y },
@@ -102,24 +107,15 @@ export default class Board {
             { x: kingPosition.x, y: kingPosition.y + 1 },
         ];
 
-        let allNeighboringPositionsCovered = true;
-
-        for (const position of positionsToCheck) {
+        return positionsToCheck.every(position => {
             const { x, y } = position;
-
-
-            if (x >= 0 && x < this.n && y >= 0 && y < this.n && !isCoveredByBlack(x, y)) {
-                allNeighboringPositionsCovered = false;
-                break;
-            }
-        }
-        if (allNeighboringPositionsCovered) {
-            return true;
-        }
-        return false;
+            return x >= 0 && x < this.n && y >= 0 && y < this.n && isCoveredByBlack(x, y);
+        });
     }
 
+
     isWhite(cell: { x: number, y: number }): boolean {
+
         return this.cells[cell.x][cell.y].FigureType === FigureType.King || this.cells[cell.x][cell.y].FigureType === FigureType.Defender;
     }
 
@@ -129,14 +125,13 @@ export default class Board {
 
     isFigureDies(cell: { x: number, y: number }): boolean {
         if (this.cells[cell.x][cell.y].FigureType === FigureType.Attacker) {
-            if (cell.x > 0 && cell.x < this.n && this.isWhite({ x: cell.x + 1, y: cell.y }) && this.isWhite({ x: cell.x - 1, y: cell.y })) {
+
+            if (cell.x > 1 && cell.x < this.n - 1 && this.isWhite({ x: cell.x + 1, y: cell.y }) && this.isWhite({ x: cell.x - 1, y: cell.y })) {
                 this.cells[cell.x][cell.y].FigureType = FigureType.Empty
                 return true;
             }
-            else if (cell.y > 0 && cell.y < this.n && this.isWhite({ x: cell.x, y: cell.y + 1 }) && this.isWhite({ x: cell.x, y: cell.y - 1 })) {
-                console.log("type1 ", this.cells[cell.x][cell.y].FigureType)
+            else if (cell.y > 1 && cell.y < this.n - 1 && this.isWhite({ x: cell.x, y: cell.y + 1 }) && this.isWhite({ x: cell.x, y: cell.y - 1 })) {
                 this.cells[cell.x][cell.y].FigureType = FigureType.Empty
-                console.log("type2 ", this.cells[cell.x][cell.y].FigureType)
                 return true;
             }
         }
@@ -162,11 +157,11 @@ export default class Board {
         this.cells[to.x][to.y].FigureType = this.cells[from.x][from.y].FigureType;
         this.cells[from.x][from.y].FigureType = FigureType.Empty;
 
-        const die = [[0, 1], [1, 0], [0, -1], [-1, 0]].map(([dx, dy]) => [to.x + dx, to.y + dy]).filter(([nx, ny]) => nx >= 0 && nx < this.n && ny >= 0 && ny < this.n && this.isFigureDies({ x: nx, y: ny })).map(([x, y]) => ({ x, y }))
+        const die = [[0, 1], [1, 0], [0, -1], [-1, 0]].map(([dx, dy]) => [to.x + dx, to.y + dy]).filter(([nx, ny]) => nx >= 0 && nx < this.n && ny >= 0 && ny < this.n && this.isFigureDies({ x: nx, y: ny })).map(([y, x]) => ({ x, y }))
 
         this.test()
 
-        if (this.cells[0][0].FigureType === 3 || this.cells[0][this.n - 1].FigureType === 3 || this.cells[this.n - 1][0].FigureType === 3 || this.cells[this.n - 1][this.n - 1].FigureType === 3) {
+        if (this.cells[0][0].FigureType === FigureType.King || this.cells[0][this.n - 1].FigureType === FigureType.King || this.cells[this.n - 1][0].FigureType === FigureType.King || this.cells[this.n - 1][this.n - 1].FigureType === FigureType.King) {
             this.isEndGame = true;
             this.KingWins = true;
             return { result: "END GAME" };
