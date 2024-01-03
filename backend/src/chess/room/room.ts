@@ -46,6 +46,29 @@ export class Room {
         return moveResult
     }
 
+    public whoWin() {
+        const isKingWin = this.gameManager.isKingWin();
+        if (this.whoWinIfSurrender) {
+            return this.whoWinIfSurrender;
+        }
+        if (isKingWin) {
+            if (this.player2) {
+                return this.player2;
+            }
+            else {
+                throw new Error('player 2 wins, but null')
+            }
+        }
+        else {
+            if (this.player1) {
+                return this.player1;
+            }
+            else {
+                throw new Error('player 1 wins, but nulll')
+            }
+        }
+    }
+
 
     public youMove(playerId: number) {
 
@@ -85,10 +108,11 @@ export class Room {
     }
 
     public async saveGame() {
+        const winner = this.whoWin();
         await this.prismaService.game.create({
             data:
             {
-
+                winner: winner,
                 users: {
                     connect: [
                         { id: this.player1 },
@@ -103,6 +127,7 @@ export class Room {
                         toY: move.to.y
                     })),
                 },
+
             },
 
         });
@@ -129,8 +154,10 @@ export class Room {
             winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
         }
         await this.prismaService.game.create({
+
             data:
             {
+                winner: this.whoWin(),
                 users: {
                     connect: [
                         { id: this.player1 },
