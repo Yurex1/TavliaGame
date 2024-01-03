@@ -6,7 +6,7 @@ import { PrismaService } from "src/prisma.service";
 
 @Injectable()
 export class EventsService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
 
   create(createEventDto: CreateEventDto) {
     return "This action adds a new event";
@@ -27,4 +27,8 @@ export class EventsService {
   remove(id: number) {
     return `This action removes a #${id} event`;
   }
+  async getAllGames(id: number) {
+    return await this.prismaService.user.findUnique({ where: { id }, include: { games: { include: { Move: true, users: true } }, } });
+  }
+
 }
