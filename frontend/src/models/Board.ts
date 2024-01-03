@@ -6,10 +6,10 @@ import { Helper } from "./figures/Helper";
 import { Game } from "./Game";
 import { FigureNames } from "./figures/Figure";
 
-export enum Status{
-    PLAYING = "playing", 
-    WIN = "win",
-    LOSE = "lose",
+export enum Status {
+  PLAYING = "playing",
+  WIN = "win",
+  LOSE = "lose",
 }
 export class Board {
   readonly n: number;
@@ -83,20 +83,45 @@ export class Board {
 
   public checkWin() {
     const king = this.game.king;
-    if(!king) return;
+    if (!king) return;
     const square = king.square;
     if (king?.square.color == Colors.FINISH) {
       this.game.status = Status.WIN;
       return;
-
     }
     let count = 0;
-    const x = square.x, y = square.y;
-    if(x == 0 || this.getSquare(x - 1 , y).figure?.name == FigureNames.TARGET) count++;
-    if(x == this.n - 1 || this.getSquare(x + 1 , y).figure?.name == FigureNames.TARGET) count++;
-    if(y == 0 || this.getSquare(x , y - 1).figure?.name == FigureNames.TARGET) count++;
-    if(y == this.n - 1 || this.getSquare(x , y + 1).figure?.name == FigureNames.TARGET) count++;
-    if(count == 4)
-        this.game.status = Status.LOSE;
+    const x = square.x,
+      y = square.y;
+    if (x == 0 || this.getSquare(x - 1, y).figure?.name == FigureNames.TARGET)
+      count++;
+    if (
+      x == this.n - 1 ||
+      this.getSquare(x + 1, y).figure?.name == FigureNames.TARGET
+    )
+      count++;
+    if (y == 0 || this.getSquare(x, y - 1).figure?.name == FigureNames.TARGET)
+      count++;
+    if (
+      y == this.n - 1 ||
+      this.getSquare(x, y + 1).figure?.name == FigureNames.TARGET
+    )
+      count++;
+    if (count == 4) {
+      this.game.status = Status.LOSE;
+      return;
+    }
+    for (let i = 0; i < this.n; i++) {
+      for(let j = 0; j < this.n; j++) {
+        if (this.getSquare(i, j).figure?.color == this.game.color) {
+          if(this.getSquare(i, j).haveMove()){
+            return;
+          }
+        }
+      }
+    }
+    if(this.game.color == Colors.WHITE)
+      this.game.status = Status.LOSE;
+    else
+      this.game.status = Status.WIN;
   }
 }
