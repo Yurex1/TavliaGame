@@ -27,7 +27,8 @@ export class AuthService {
     const user: User = await this.prismaService.user.findFirst({
       where: { login: data.username },
     });
-    if (user === null || !bcrypt.compare(user?.password, data.pass)) {
+
+    if (user === null || !await bcrypt.compare(data.pass, user.password,)) {
       throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.login };

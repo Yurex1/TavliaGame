@@ -20,6 +20,7 @@ import { AuthGuard } from "./auth.guard";
 import { Request, Response } from "express";
 import { SignInDto } from "../auth/dto/login-user.dto";
 
+
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
@@ -105,8 +106,13 @@ export class AuthController {
     return this.authService.update(+id, updateAuthDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.authService.remove(+id);
+  @UseGuards(AuthGuard)
+  @Delete("user-delete")
+  remove(@Req() req: Request) {
+    //@ts-ignore
+    const id: number = req.user.sub;
+    return this.authService.remove(id);
   }
+
+
 }
