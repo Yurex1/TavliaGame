@@ -182,8 +182,6 @@ export class Room {
             loser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
             winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
         }
-        console.log('winner: ', winner)
-        console.log('loser: ', loser)
         await this.prismaService.game.create({
             data:
             {
