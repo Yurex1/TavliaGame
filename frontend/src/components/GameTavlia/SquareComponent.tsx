@@ -16,6 +16,8 @@ const SquareComponent:FC<SquareProps> = ({square, selected, click}) => {
             >
             {square.figure?.logo && <img src={square.figure.logo} alt=""/> }
             {square.avaliable  && <div className="avalible"></div>}
+            {!square.x && <b className="y">{String.fromCharCode(square.y + 65)}</b>}
+            {!square.y && <b className="x">{square.x + 1}</b>}
         </div>
     );
 }
