@@ -90,7 +90,7 @@ export class Room {
 
 
     public addPlayer(id: number) {
-        // console.log("Add player, ", this.size)
+
         if (!this.size) {
             return "No players in room";
         }
