@@ -19,10 +19,14 @@ import { Room } from "src/chess/room/room";
 import { AuthGuard } from "src/auth/auth.guard";
 import { JwtService } from "@nestjs/jwt";
 import { jwtConstants } from '../auth/constants';
+import { PrismaClientRustPanicError } from "@prisma/client/runtime/library";
 
 
 
 @WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
   namespace: "events",
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -35,11 +39,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() io: Namespace;
   private logger = new Logger();
 
-  private rooms: Map<string, Room> = new Map();
-  private players: Map<number, string> = new Map();
-  // private firstUserId: number | null = null;
-  // private secondUserId: number | null = null;
-  // private isGameAlreadyInDatabase: boolean = false;
+  private rooms: Map<string, Room> = new Map(); // roomId to room
+  private players: Map<number, string> = new Map(); // userId to roomId
 
 
   RandomRoom = (): string => {
@@ -65,24 +66,30 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
       socket['user'] = user;
     } catch {
-      socket.emit('status', 'token expired')
+      socket.emit('page status', 'token expired')
       socket.disconnect();
       return;
     }
     socket['user'] = user;
     const userId = user.sub
 
+
     if (this.players.has(userId)) {
 
       const roomId = this.players.get(userId);
       const room = this.rooms.get(roomId);
+      room.addPlayer(userId)
+
       socket.join(roomId);
       socket.emit('inGame', {
-        roomId,
-        board: room.gameManager.gameBoard.cells,
-        youMove: room.youMove(userId),
-        playerMove: room.playerMove(),
+        // board: room.gameManager.gameBoard.cells,
+        // youMove: room.youMove(userId),
+        // playerMove: room.playerMove(),
         history: room.gameMoves,
+        n: room.gameManager.n,
+        roomId,
+        whiteId: room.player2,
+        blackId: room.player1,
       })
     }
   }
@@ -108,21 +115,34 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
   @SubscribeMessage("createRoom")
-  async createRoom(socket: Socket, data: { n: number, userId: number }) {
+  async createRoom(socket: Socket, data: { n: number }) {
 
-    if (data.n === null || data.n === undefined || data.userId === null || data.userId === undefined) {
-      socket.emit('status', 'one of values is null or undefined');
+    if (data.n === null || data.n === undefined) {
+      socket.emit('page status', 'one of values is null or undefined');
       return;
     }
-    const user = await this.prismaService.user.findUnique({ where: { id: data.userId } })
+    const neededSizes = [7, 9, 11];
+
+    if (!neededSizes.includes(data.n)) {
+      socket.emit('page status', 'size is incorrect');
+      return;
+    }
+    const userId = socket['user']?.sub;
+    if (!userId) {
+      socket.emit('page status', 'token is invalid');
+      return;
+    }
+
+    const user = await this.prismaService.user.findUnique({ where: { id: userId } })
     if (!user) {
-      socket.emit('status', 'no user with this id');
+      socket.emit('page status', 'no user with this id');
       return;
     }
     // this.firstUserId = data.userId;
     const roomId: string = this.RandomRoom();
     socket.join(roomId);
     const room = new Room(user.id, data.n, this.prismaService);
+    // room.addPlayer(user.id)
     this.rooms.set(roomId, room);
     this.players.set(user.id, roomId)
 
@@ -132,37 +152,47 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 
   @SubscribeMessage("joinRoom")
-  async joinRoom(socket: Socket, data: { roomId: string, userId: number }) {
-    if (data.roomId === null || data.roomId === undefined || data.userId === null || data.userId === undefined) {
-      socket.emit('status', 'one of values is null or undefined');
+  async joinRoom(socket: Socket, data: { roomId: string }) {
+    if (data.roomId === null || data.roomId === undefined) {
+      socket.emit('page status', 'one of values is null or undefined');
       return;
     }
-    const user = await this.prismaService.user.findUnique({ where: { id: data.userId } })
+    const userId = socket['user'].sub;
+    if (!userId) {
+      socket.emit('page status', 'token is invalid');
+      return;
+    }
+    const user = await this.prismaService.user.findUnique({ where: { id: userId } })
     if (!user) {
-      socket.emit('status', 'no user with this id');
+      socket.emit('page status', 'no user with this id');
       return;
     }
     if (this.players.has(user.id)) {
-      socket.emit('status', 'Can\'t join when previous game is not ended');
+      socket.emit('page status', 'Can\'t join when previous game is not ended');
       return;
     }
     // this.secondUserId = data.userId;
     const room = this.rooms.get(data.roomId);
-    if (!room) {
-      socket.emit("status", "No room with this roomId");
+
+    if (!room || !room?.size) {
+      socket.emit("page status", "No room with this roomId");
       return;
-    } else if (room.size >= 2) {
-      socket.emit("status", "This room already has 2 players");
+    }
+    else if (room.size >= 2) {
+      socket.emit("page status", "This room already has 2 players");
       return;
     }
     socket.join(data.roomId);
     room.addPlayer(user.id);
     this.players.set(user.id, data.roomId);
     if (room.size === 2) {
-      this.io.to(data.roomId).emit("status", "start game");
+      this.io.to(data.roomId).emit("start game", {
+        "whiteId": room.player2,
+        "blackId": room.player1,
+      });
     }
     else {
-      this.io.to(data.roomId).emit(`Player joined room`);
+      this.io.to(data.roomId).emit('page status', `Player joined room`);
     }
   }
 
@@ -177,23 +207,28 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const room = this.rooms.get(roomId);
     if (!room) {
       this.io.emit("status", "No room with this roomId");
-      throw new NotFoundException();
+      return;
     }
 
     const move = room.makeMove(data.moveFrom, data.moveTo);
     if (move.result === "OK") {
-      this.io.to(roomId).emit("move", { from: data.moveFrom, to: data.moveTo, die: move.die });
+      this.io.to(roomId).emit("move", {
+        from: data.moveFrom,
+        to: data.moveTo, die: move.die
+      });
     }
     else if (move.result === "END GAME") {
       room.saveGame();
-      this.io.to(roomId).emit("move", "End of the game");
+      this.io.to(roomId).emit("move", { from: data.moveFrom, to: data.moveTo });
+      this.io.to(roomId).emit("game status", "End of the game");
+      this.io.to(roomId).emit("winner", room.whoWin());
       this.io.socketsLeave(roomId);
       this.rooms.delete(roomId)
       this.players.delete(room.player1);
       this.players.delete(room.player2);
     }
     else if (move.result === 'WRONG') {
-      socket.emit('move', "Incorrect move")
+      socket.emit('move status', "Incorrect move")
     }
   }
 
@@ -205,45 +240,64 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } else {
       roomId = Array.from(socket.rooms)[0];
     }
-    const userId = socket['user'];
+    const userId = socket['user'].sub;
     const room = this.rooms.get(roomId);
     if (!room) {
       this.io.emit("status", "No room with this roomId");
-      throw new NotFoundException();
+      return;
     }
     if (!this.players.has(userId)) {
       socket.emit('status', 'This user is not in the game')
     }
-    room.surrender(userId)
-    this.io.to(roomId).emit("move", "Player surrendered");
+
+    const res = await room.surrender(userId);
+
+    if (!res) {
+      socket.emit("game status", "Can't surrender");
+
+      return;
+    }
+
+    this.io.to(roomId).emit("surrender", room.whoWin());
     this.io.socketsLeave(roomId);
     this.rooms.delete(roomId)
     this.players.delete(room.player1);
     this.players.delete(room.player2);
   }
 
-  handleDisconnect(client: Socket) {
-    this.io.to(this.rooms[client.id]).emit('status', "Client disconnected: ", client.id)
-    const userId = client['user']?.sub;
-    if (this.players.has(userId)) {
-      let roomId;
-      if (Array.from(client.rooms)[0] === client.id) {
-        roomId = Array.from(client.rooms)[1];
-      } else {
-        roomId = Array.from(client.rooms)[0];
-      }
-      const room = this.rooms.get(roomId);
-      const result = room.removePlayer(userId)
-      if (result === '1 player left') {
+  handleDisconnect(socket: Socket) {
 
+    const userId = socket['user']?.sub;
+
+    if (this.players.has(userId)) {
+      this.io.to(this.players.get(userId)).emit('status', `Client disconnected: ${socket.id}`)
+
+      const roomId = this.players.get(userId)
+
+
+      const room = this.rooms.get(roomId);
+      const roomPlayer1 = room.player1
+      const roomPlayer2 = room.player2
+
+      const result = room.removePlayer(userId)
+
+
+      if (result === '1 player left') {
+        // this.players.delete(userId)
       }
       else if (result === '0 players left') {
+        if (room.player1EverJoined) {
+          this.players.delete(room.player1EverJoined);
+        }
+        if (room.player2EverJoined) {
+          this.players.delete(room.player2EverJoined);
+        }
         room.surrender(room.firstLogout)
-        this.io.to(roomId).emit("move", `Player ${room.firstLogout} surrendered`);
+        this.io.to(roomId).emit("game status", `Player ${room.firstLogout} surrendered`);
+        this.io.to(roomId).emit("winner", room.player1 === room.firstLogout ? room?.player2 : room?.player1);
         this.io.socketsLeave(roomId);
         this.rooms.delete(roomId)
-        this.players.delete(room.player1);
-        this.players.delete(room.player2);
+
       }
     }
     console.log("Event disconnect ");

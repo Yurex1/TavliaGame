@@ -18,13 +18,13 @@ export class AuthService {
     private jwtService: JwtService
   ) { }
 
-  async signIn(data: { username; pass }, res: Response) {
+  async signIn(data: { username, pass }, res: Response) {
 
     if (data.username === undefined || data.pass === undefined) {
       throw new BadRequestException("Username or password is undefined");
     }
 
-    const user: User = await this.prismaService.user.findFirst({
+    const user: User | null = await this.prismaService.user.findFirst({
       where: { login: data.username },
     });
 
@@ -50,8 +50,10 @@ export class AuthService {
           data.password,
           await bcrypt.genSalt()
         );
+
         data.password = password;
-        return this.prismaService.user.create({ data });
+
+        return await this.prismaService.user.create({ data });
       });
   }
 
@@ -100,6 +102,9 @@ export class AuthService {
       if (user.friends.includes(friendsId)) {
         return res.status(400).json("User is already your friend")
       }
+      if (id === friendsId) {
+        return res.status(400).json("You cannot add yourself as a friend")
+      }
 
 
       const currentFriends = user.friends ?? [];
@@ -121,6 +126,7 @@ export class AuthService {
   }
 
   async removeFriend(id: number, friendsId: number, res: Response) {
+
     const user = await this.prismaService.user.findUnique({ where: { id: id } });
     if (!user) {
       return res.status(404).json("No user with this id");
@@ -131,11 +137,11 @@ export class AuthService {
 
     const updatedFriendsList = user.friends.filter(friendId => friendId !== friendsId);
 
-    const result = this.prismaService.user.update({
-      where: { id: id }, data: {
-        friends: updatedFriendsList
-      }
-    })
+
+    await this.prismaService.user.update({
+      where: { id: id },
+      data: { friends: updatedFriendsList }
+    });
     return res.status(200).json({ message: "Friend removed successfully" });
   }
 

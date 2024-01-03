@@ -59,7 +59,6 @@ export class AuthController {
     return this.authService.createUser(createAuthDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get('findAll')
   findAll() {
     return this.authService.findAll();
@@ -75,7 +74,6 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Put('friends')
   addFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
-
     //@ts-ignore
     return this.authService.addFriend(req.user.sub, id, res)
   }
@@ -95,15 +93,18 @@ export class AuthController {
     return (await this.authService.getAllFriends(req.user.sub, res));
   }
 
-
+  @UseGuards(AuthGuard)
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.authService.findOne(+id);
+  async findOne(@Param("id") id: string) {
+    return await this.authService.findOne(+id);
   }
 
-  @Put(":id")
-  update(@Param("id") id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
+  @UseGuards(AuthGuard)
+  @Put('user-update')
+  update(@Req() req: Request, @Body() updateAuthDto: UpdateAuthDto) {
+    //@ts-ignore
+    const user: number = req.user.sub;
+    return this.authService.update(user, updateAuthDto);
   }
 
   @UseGuards(AuthGuard)
