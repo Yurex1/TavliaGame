@@ -27,7 +27,7 @@ export class AuthService {
     const user: User | null = await this.prismaService.user.findFirst({
       where: { login: data.username },
     });
-    console.log(data, await bcrypt.compare(user.password, data.pass))
+
     if (user === null || !await bcrypt.compare(data.pass, user.password,)) {
       throw new UnauthorizedException();
     }
@@ -50,9 +50,9 @@ export class AuthService {
           data.password,
           await bcrypt.genSalt()
         );
-        console.log(data)
+
         data.password = password;
-        console.log(data)
+
         return await this.prismaService.user.create({ data });
       });
   }
@@ -126,7 +126,7 @@ export class AuthService {
   }
 
   async removeFriend(id: number, friendsId: number, res: Response) {
-    console.log(id, friendsId)
+
     const user = await this.prismaService.user.findUnique({ where: { id: id } });
     if (!user) {
       return res.status(404).json("No user with this id");
@@ -136,7 +136,7 @@ export class AuthService {
     }
 
     const updatedFriendsList = user.friends.filter(friendId => friendId !== friendsId);
-    console.log("upd: ", updatedFriendsList);
+
 
     await this.prismaService.user.update({
       where: { id: id },
