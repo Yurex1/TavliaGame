@@ -18,6 +18,20 @@ body {
   background-color: rgb(232, 211, 186);
 }
 
+.y {
+  font-size: 1rem;
+  position: absolute;
+  top: -1.5rem;
+  /* right: 5px; */
+}
+
+.x {
+  font-size: 1rem;
+  position: absolute;
+  /* bottom: 0px; */
+  left: -1.5rem;
+}
+
 .main {
   width: 80vw;
   min-height: 100vh;
