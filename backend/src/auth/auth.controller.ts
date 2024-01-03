@@ -95,8 +95,9 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get(":id")
-  async findOne(@Param("id") id: string) {
-    return await this.authService.findOne(+id);
+  findOne(@Param("id") id: string) {
+
+    return this.authService.findOne(+id);
   }
 
   @UseGuards(AuthGuard)
@@ -109,7 +110,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Delete("user-delete")
-  remove(@Req() req: Request) {
+  removeUser(@Req() req: Request) {
     //@ts-ignore
     const id: number = req.user.sub;
     return this.authService.remove(id);
