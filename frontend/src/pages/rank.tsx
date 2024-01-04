@@ -4,7 +4,6 @@ import axios from "axios";
 import API_URL from "@/constants";
 
 type RankType = {
-  id: number;
   rank: number;
   name: string;
 };
@@ -14,9 +13,9 @@ export default function Rank() {
 
   const fun = async () => {
     const array: RankType[] = [];
-    const res = (await axios.get(API_URL + "auth/findAll")).data;
+    const res = (await axios.get(API_URL + "auth/all-ranks")).data;
     res.map((item: RankType) => {
-      array.push({ id: item.id, rank: item.rank, name: item.name });
+      array.push({rank: item.rank, name: item.name });
     });
     setList(array);
   };
@@ -58,9 +57,8 @@ export default function Rank() {
             </button>
           </div>
           <ul className="rank-standing">
-            {renderList.map((item) => (
-              console.log(item),
-              <li key={item.id} className="rank-item">
+            {renderList.map((item, index) => (
+              <li key={index} className="rank-item">
                 <div className="user-rank">{item.rank}</div>
                 <div className="user-name">{item.name}</div>
               </li>
