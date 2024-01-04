@@ -21,7 +21,7 @@ export class AuthService {
   async signIn(data: { username, pass }, res: Response) {
 
     if (data.username === undefined || data.pass === undefined) {
-      throw new BadRequestException("Username or password is undefined");
+      return res.status(400).json('Username or password is undefined');
     }
 
     const user: User | null = await this.prismaService.user.findFirst({
@@ -29,7 +29,7 @@ export class AuthService {
     });
     console.log('user', user)
     if (user === null || !await bcrypt.compare(data.pass, user.password,)) {
-      throw new UnauthorizedException();
+      return res.status(401).json("No such user or incorrect password");
     }
     const payload = { sub: user.id, username: user.login };
     const access_token = await this.jwtService.signAsync(payload);
@@ -68,6 +68,7 @@ export class AuthService {
   }
 
   async update(id: number, updateAuthDto: UpdateAuthDto) {
+
     return await this.prismaService.user
       .update({
         where: { id: id },
@@ -76,7 +77,8 @@ export class AuthService {
       .then(() => {
         return `User successfully updated`;
       })
-      .catch(() => {
+      .catch((err) => {
+
         return `Error occured while updating user`;
       });
   }
