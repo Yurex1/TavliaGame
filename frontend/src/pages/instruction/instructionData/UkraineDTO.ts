@@ -1,7 +1,6 @@
 import InstructionDTO from "./instructionDTO";
 
-const UkraineDTO = () => {
-  return {
+export const UkraineDTO = {
     Title: "Інструкція",
     FirstSubTitle: "Основні Відомості про Гру",
     FirstSubTitleFirstLable:
@@ -20,6 +19,3 @@ const UkraineDTO = () => {
     SecondSubTitleNinthLable: "Варвари перемагають, оточивши короля з усіх 4 сторін.",
     SecondSubTitleTenthLable: "Неможливість зробити хід - це поразка.", 
 } as InstructionDTO;
-};
-
-export default UkraineDTO;

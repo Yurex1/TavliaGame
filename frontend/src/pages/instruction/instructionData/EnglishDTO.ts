@@ -1,7 +1,6 @@
 import InstructionDTO from "./instructionDTO";
 
-const EnglishDto = () => {
-  return {
+export const EnglishDto = {
     Title: "Instruction",
     FirstSubTitle: "Basic Information About the Game",
     FirstSubTitleFirstLable:
@@ -20,6 +19,3 @@ const EnglishDto = () => {
     SecondSubTitleNinthLable: "Barbarians win when they surround the king from all 4 sides.",
     SecondSubTitleTenthLable: "Being unable to make a move is a loss.", 
 } as InstructionDTO;
-};
-
-export default EnglishDto;
