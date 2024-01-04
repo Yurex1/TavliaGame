@@ -67,6 +67,12 @@ export class AuthController {
     return this.authService.findAll();
   }
 
+  @Get('all-ranks')
+  getAllRanks() {
+    return this.authService.getAllRanks()
+  }
+
+
   @UseGuards(AuthGuard)
   @Get("profile")
   getProfile(@Req() req: Request) {
