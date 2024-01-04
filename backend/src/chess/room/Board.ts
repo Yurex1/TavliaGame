@@ -171,8 +171,45 @@ export default class Board {
             this.KingWins = false;
             return { result: "END GAME" };
         }
+        if (!this.hasOpponentAtLeastOnePossibleMove(player)) {
+            this.isEndGame = true;
+            if (player === 1) {
+                this.KingWins = true;
+            }
+            else {
+                this.KingWins = false;
+            }
+            return { result: "END GAME" };
+        }
 
         return { result: "OK", die }
+    }
+
+    public hasOpponentAtLeastOnePossibleMove(currentPlayer: number) {
+
+        if (currentPlayer === 1) {  // white
+            for (let i = 0; i < this.n; i++) {
+                for (let j = 0; j < this.n; j++) {
+                    if (this.cells[i][j].FigureType === FigureType.Attacker) {
+                        if (this.cells[i][j].possibleMoves(this).length !== 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            for (let i = 0; i < this.n; i++) { // black
+                for (let j = 0; j < this.n; j++) {
+                    if (this.cells[i][j].FigureType === FigureType.Defender || this.cells[i][j].FigureType === FigureType.King) {
+                        if (this.cells[i][j].possibleMoves(this).length !== 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private isValidMove(from: { x: number, y: number }, to: { x: number, y: number }, player: number): boolean {
