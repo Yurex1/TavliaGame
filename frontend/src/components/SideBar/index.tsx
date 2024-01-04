@@ -1,7 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect} from "react";
 import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
 import React from "react";
+import { useLanguage } from "@/hooks/useLanguage";
 
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -32,7 +33,7 @@ const sideBarConfig: SideBarConfig[] = [
 ];
 
 const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
-  const [language , setLanguage] = useState<string>("En");
+  const {language, setLanguage} = useLanguage();
   useEffect(() => {
     const tempLanguage = localStorage.getItem("language");
     if(tempLanguage){
