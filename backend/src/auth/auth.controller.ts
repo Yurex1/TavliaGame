@@ -19,6 +19,7 @@ import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { AuthGuard } from "./auth.guard";
 import { Request, Response } from "express";
 import { SignInDto } from "../auth/dto/login-user.dto";
+import { validate } from "class-validator";
 
 
 @Controller("auth")
@@ -59,6 +60,8 @@ export class AuthController {
     return this.authService.createUser(createAuthDto);
   }
 
+
+  @UseGuards(AuthGuard)
   @Get('findAll')
   findAll() {
     return this.authService.findAll();
@@ -96,7 +99,6 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get(":id")
   findOne(@Param("id") id: string) {
-
     return this.authService.findOne(+id);
   }
 
