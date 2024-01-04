@@ -29,6 +29,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post("login")
   async signIn(@Body() signInDto: SignInDto, @Res() res: Response) {
+    console.log("S",)
     try {
       await this.authService.signIn(
         {
