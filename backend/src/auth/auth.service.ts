@@ -67,6 +67,13 @@ export class AuthService {
       .catch(() => `User with login: ${id} was not found`);
   }
 
+  async getAllRanks() {
+    const allUsers = await this.prismaService.user.findMany();
+    return allUsers.map((el) => {
+      return ({ name: el.name, rank: el.rank })
+    });
+  }
+
   async update(id: number, updateAuthDto: UpdateAuthDto) {
 
     return await this.prismaService.user
