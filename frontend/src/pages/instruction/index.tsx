@@ -1,81 +1,80 @@
 import React from "react";
+import { useLanguage } from "@/hooks/useLanguage";
+import instructionData from "./instructionData";
 
 export default function Instruction() {
+  const {language} = useLanguage();
+  const DTO =  instructionData(language);
+
   return (
     <>
       <div className="instruction">
         <div className="instruction-wrapper">
           <div>
-            <h1 className="instruction-title">Instructions</h1>
-
+            <h1 className="instruction-title">{DTO.Title}</h1>
             <div className="instruction-section">
-              <h3 className="instruction-subtitle">Basic Information About the Game</h3>
+              <h3 className="instruction-subtitle">{DTO.FirstSubTitle}</h3>
               <ol>
-                <li>
-                  Tavliya is one of the oldest board games, originating from
-                  Scandinavia. Unfortunately, the exact rules of the game have
-                  not survived to our times, so we will use some of the most
-                  probable ones.
-                </li>
-                <li>
-                  Different board sizes are used for the game: 7x7, 9x9, and
-                  11x11.
-                </li>
-                <li>
-                  Regardless of the board size, the rules of the game are the
-                  same.
-                </li>
+                <li>{DTO.FirstSubTitleFirstLable}</li>
+                <li>{DTO.FirstSubTitleSecondLable}</li>
+                <li>{DTO.FirstSubTitleThirdLable}</li>
               </ol>
             </div>
             <div className="instruction-section">
-              <h3 className="instruction-subtitle">Game Mechanics</h3>
+              <h3 className="instruction-subtitle">{DTO.SecondSubTitle}</h3>
               <ol>
                 <li>
-                  The game is an imitation of how barbarians ambushed the king
-                  with his defenders.
+                  {DTO.SecondSubTitleFirstLable}
                   <div className="center">
-                    <img className="instruction-image" src="instruction/game-board.jpg" />
+                    <img
+                      className="instruction-image"
+                      src="instruction/game-board.jpg"
+                    />
                   </div>
                 </li>
-                <li>The game starts with the king.</li>
-                <li>
-                  The king is placed in the center of the board, surrounded by
-                  his knights.
+                <li>{DTO.SecondSubTitleSecondLable}</li>
+                <li>{DTO.SecondSubTitleThirdLable}</li>
+                <li>{DTO.SecondSubTitleFourthLable}</li>
+                <li dangerouslySetInnerHTML={{__html: DTO.SecondSubTitleFifthLable}}>
                 </li>
-                <li>
-                  Barbarians are positioned on four sides of the board, with
-                  twice the number of barbarians compared to knights.
+                <div className="center">
+                    <img
+                      className="instruction-image"
+                      src="instruction/move.jpg"
+                    />
+                  </div>
+                <li dangerouslySetInnerHTML={{__html:DTO.SecondSubTitleSixthLable}}>
                 </li>
+                <div className="center">
+                    <img
+                      className="instruction-image"
+                      src="instruction/kill-before.jpg"
+                    />
+                    <img
+                      className="instruction-image"
+                      src="instruction/kill-after.jpg"
+                    />
+                  </div>
                 <li>
-                  <b>All</b> pieces move horizontally or vertically to any
-                  number of free cells.
+                  {DTO.SecondSubTitleSeventhLable}
                   <div className="center">
-                    <img className="instruction-image" src="instruction/move.jpg" />
+                    <img
+                      className="instruction-image"
+                      src="instruction/king-win.jpg"
+                    />
                   </div>
                 </li>
+                <li>{DTO.SecondSubTitleEighthLable}</li>
                 <li>
-                  To capture an opponent`s piece, it must be surrounded with{" "}
-                  <b>your</b> moves from two opposite sides.
+                  {DTO.SecondSubTitleNinthLable}
                   <div className="center">
-                    <img className="instruction-image" src="instruction/kill-before.jpg" />
-                    <img className="instruction-image" src="instruction/kill-after.jpg" />
+                    <img
+                      className="instruction-image"
+                      src="instruction/black-win.jpg"
+                    />
                   </div>
                 </li>
-                <li>
-                  The king wins if he escapes from the ambush, reaching one of
-                  the 4 corner cells.
-                  <div className="center">
-                    <img className="instruction-image" src="instruction/king-win.jpg" />
-                  </div>
-                </li>
-                <li>No one, except the king, can occupy corner cells.</li>
-                <li>
-                  Barbarians win when they surround the king from all 4 sides.
-                  <div className="center">
-                    <img className="instruction-image" src="instruction/black-win.jpg" />
-                  </div>
-                </li>
-                <li>Being unable to make a move is a loss.</li>
+                <li>{DTO.SecondSubTitleTenthLable}</li>
               </ol>
             </div>
           </div>
