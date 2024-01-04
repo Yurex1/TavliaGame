@@ -3,37 +3,15 @@ import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
 import React from "react";
 import { useLanguage } from "@/hooks/useLanguage";
+import SideBarData from "./SideBarData";
 
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
 };
 
-type SideBarConfig = {
-  text: string;
-  hrefText: string;
-  img_url: string;
-};
-
-const sideBarConfig: SideBarConfig[] = [
-  {
-    text: "Play",
-    hrefText: "../",
-    img_url: "Lightning.png",
-  },
-  {
-    text: "Rank",
-    hrefText: "../rank",
-    img_url: "rank.png",
-  },
-  {
-    text: "Instruction",
-    hrefText: "../instruction",
-    img_url: "info.png",
-  },
-];
-
 const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
   const {language, setLanguage} = useLanguage();
+  const DTO = SideBarData(language);
   useEffect(() => {
     const tempLanguage = localStorage.getItem("language");
     if(tempLanguage){
@@ -60,11 +38,11 @@ const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
       <div className="top-items">
         <a href="../" className="name">
           <div>
-            <b>T</b>
-            <b className="notformobile">avlia</b>
+            <b className="formobile">T</b>
+            <b className="notformobile">{DTO.Title}</b>
           </div>
         </a>
-        {sideBarConfig.map((item, index) => (
+        {DTO.Config.map((item, index) => (
           <SideBarItem
             key={index}
             text={item.text}
@@ -72,7 +50,7 @@ const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
             img_url={item.img_url}
           />
         ))}
-        <SideBarLogItem setShowAuth={setShowAuth} />
+        <SideBarLogItem Login = {DTO.Login} Logout = {DTO.Logout} setShowAuth={setShowAuth} />
       </div>
       <div className = "language center" onClick={change}>
         <div className="language-text">language:</div>{language}
