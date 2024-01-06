@@ -2,6 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import Login from "./Login";
 import Singup from "./Singup";
 import React from 'react'
+import authData from "@/Data/Auth";
 
 type AuthProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -30,6 +31,7 @@ const Auth: FC<AuthProps> = ({ setShowAuth }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const DTO = authData();
   return (
     <div className="auth-wraper">
       
@@ -43,7 +45,7 @@ const Auth: FC<AuthProps> = ({ setShowAuth }) => {
           <Singup setShowAuth={setShowAuth} />
         )}
         <a onClick={onClick} className="auth-link">
-          {mode === "login" ? "I don't have an account" : "I already have an account"}
+          {mode === "login" ? DTO.DontHaveAnAccount : DTO.AlreadyHaveAnAccount}
         </a>
         
       </div>
