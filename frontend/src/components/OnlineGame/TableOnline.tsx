@@ -1,3 +1,4 @@
+import gameData from "@/Data/Game";
 import API_URL from "@/constants";
 import { SocketApiType } from "@/hooks/useConnect";
 import { Move } from "@/types/types";
@@ -42,6 +43,7 @@ type TableProps = {
 };
 
 const Table: FC<TableProps> = ({ socket, gameStatus, moverId, winerId }) => {
+  const DTO = gameData().OnlineTable;
   const [white, setWhite] = React.useState<string>("");
   const [black, setBleck] = React.useState<string>("");
   const [mover, setMover] = React.useState<string>("");
@@ -90,29 +92,29 @@ const Table: FC<TableProps> = ({ socket, gameStatus, moverId, winerId }) => {
     <div className="table">
       {winerId ? (
         <div className="table-status center">
-          {winerId == socket.whiteId ? <>{white} win !</> : <>{black} win! </>}
+          {winerId == socket.whiteId ? <>{white} {DTO.Win}</> : <>{black} {DTO.Win}</>}
 
           {gameStatus == "surrender" ? (
             <>
               <br />
-              {winerId == socket.whiteId ? <>{black} surrendered!</> : <>{white} surrendered!</>}
+              {winerId == socket.whiteId ? <>{black} {DTO.Surendered}</> : <>{white} {DTO.Surendered}</>}
             </>
           ):null}
         </div>
       ) : (
-        <div className="table-status">{mover} moving</div>
+        <div className="table-status">{mover} {DTO.Moving}</div>
       )}
       <div className="table-row">
-        <Schore text={`White: ${white}`} />
-        <Schore text={`Black: ${black}`} />
+        <Schore text={`${DTO.White}${white}`} />
+        <Schore text={`${DTO.Black}${black}`} />
       </div>
-      <div className="table-status">History:</div>
+      <div className="table-status">{DTO.GameHistory}</div>
       <div className="table-row one">
         <History array={whiteHistory} />
         <History array={blackHistory} />
       </div>
       <div onClick={socket.surrender} className="table-button">
-        Surrender
+        {DTO.Surrender}
       </div>
     </div>
   );
