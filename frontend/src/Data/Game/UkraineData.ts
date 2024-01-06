@@ -14,5 +14,14 @@ export const UkraineData = {
     BlackWin: "Чорні перемогли!",
     GameHistory: "Історія гри:",
     RestartGame: "Перезапустити гру",
+  },
+  OnlineTable: {
+    Win: "переміг!",
+    White: "Білі: ",
+    Black: "Чорні: ",
+    Surendered: "здався",
+    Moving : "ходить",
+    GameHistory: "Історія гри:",
+    Surrender: "Здатися",
   }
 } as GameData;
