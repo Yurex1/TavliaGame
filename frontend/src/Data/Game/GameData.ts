@@ -8,6 +8,16 @@ type Table = {
     RestartGame: string;
 }
 
+type OnlineTable = {
+    Win: string;
+    Surendered: string;
+    Moving : string;
+    White: string;
+    Black: string;
+    GameHistory: string;
+    Surrender: string;
+}
+
 type GameData = {
     GetRoomId: string;
     RoomId: string;
@@ -15,6 +25,7 @@ type GameData = {
     CreateRoom: string;
     JoinRoom: string;
     Table: Table;
+    OnlineTable: OnlineTable;
 }
 
 export default GameData;
