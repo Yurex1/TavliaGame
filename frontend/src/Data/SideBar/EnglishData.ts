@@ -21,4 +21,5 @@ export const EnglishData = {
   ],
   Login: "Log In",
   Logout: "Log Out",
+  Language: "Language: ",
 } as SideBarData;
