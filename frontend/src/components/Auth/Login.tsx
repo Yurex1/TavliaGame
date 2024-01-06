@@ -5,6 +5,7 @@ import RHFInput from "../Form/RHFinput";
 import useLogin from "@/hooks/useLogin";
 import React from 'react'
 import { User } from "@/types/types";
+import authData from "@/Data/Auth";
 
 
 type loginProps = {
@@ -18,10 +19,11 @@ const Login: FC<loginProps> = ({ setShowAuth }) => {
   const onSubmit = async (data: User) => {
     await login.mutate(data);
   };
+  const DTO = authData();
   return (
-    <Form methods={methods} submitText="Log in" onSubmit={onSubmit}>
-      <RHFInput placeholder="Login" name="username" type="text" />
-      <RHFInput placeholder="Password" name="password" type="password" />
+    <Form methods={methods} submitText={DTO.Login} onSubmit={onSubmit}>
+      <RHFInput placeholder={DTO.Name} name="username" type="text" />
+      <RHFInput placeholder={DTO.Password} name="password" type="password" />
       {error && <div className="error">{error}</div>}
     </Form>
   );
