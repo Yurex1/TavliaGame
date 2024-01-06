@@ -30,8 +30,8 @@ export default class Figure {
     }
 
     possibleMoves(board: Board): Array<{ x: number, y: number }> {
-        let temp_x = this.position.y;
-        let temp_y = this.position.x;
+        const temp_x = this.position.y;
+        const temp_y = this.position.x;
         const result: Array<{ x: number, y: number }> = [];
         for (let i = temp_x + 1; i < board.n; i++) {
             if (board.cells[i][temp_y].FigureType === FigureType.Empty) {
