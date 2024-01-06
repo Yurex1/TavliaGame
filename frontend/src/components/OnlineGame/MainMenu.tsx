@@ -1,3 +1,4 @@
+import gameData from "@/Data/Game";
 import React, { FC } from "react";
 
 type MainMenuProps = {
@@ -5,6 +6,7 @@ type MainMenuProps = {
 };
 
 const MainMenu: FC<MainMenuProps> = ({setStatus}) => {
+  const DTO = gameData();
   return(
     <div className="main-menu center column">
         <div
@@ -13,7 +15,7 @@ const MainMenu: FC<MainMenuProps> = ({setStatus}) => {
             setStatus("create");
           }}
         >
-          Create Game
+          {DTO.CreateRoom}
         </div>
         <div
           className="form-button center"
@@ -21,7 +23,7 @@ const MainMenu: FC<MainMenuProps> = ({setStatus}) => {
             setStatus("join");
           }}
         >
-          Join Game
+          {DTO.JoinRoom}
         </div>
       </div>
   );

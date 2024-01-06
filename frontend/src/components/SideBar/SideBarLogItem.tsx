@@ -6,11 +6,13 @@ import React from 'react'
 
 type SideBareLogItemProps = {
   setShowAuth: (showAuth: boolean) => void;
+  Login: string;
+  Logout: string;
 };
 
 
 
-const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
+const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth, Login, Logout}) => {
   const user = useUser();
   const logout = useLogout();
   if (!user.data) {
@@ -18,14 +20,14 @@ const SideBareLogItem:FC<SideBareLogItemProps> = ({setShowAuth}) => {
       
       <button onClick = {() => {setShowAuth(true)}} className="aside-item">
         <img className="icon" src = "arrow.png"/>
-        <div  className="text">Log In</div>
+        <div  className="text">{Login}</div>
       </button>
     );
   } else {
     return (
       <div onClick= {() => {logout()}} className="aside-item">
         <img className="icon" src = "logOut.png"/>
-        <div className="text">Log Out</div>
+        <div className="text">{Logout}</div>
       </div>
     );
   }
