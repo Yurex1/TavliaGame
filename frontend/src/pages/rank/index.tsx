@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import API_URL from "@/constants";
+import rankData from "@/Data/Rank";
 
 type RankType = {
   rank: number;
@@ -22,7 +23,7 @@ export default function Rank() {
   if(list.length === 0)
     fun();
   const [sortOrder, setSortOrder] = useState({ field: "rank", order: "asc" });
-
+  const DTO = rankData();
   const sortList = (field: "rank" | "name") => {
     const order =
       sortOrder.field === field && sortOrder.order === "asc" ? "desc" : "asc";
@@ -35,7 +36,6 @@ export default function Rank() {
           ? a[field].localeCompare(b[field])
           : b[field].localeCompare(a[field]);
       }
-      return 0;
     });
 
     setList(sortedList);
@@ -50,10 +50,10 @@ export default function Rank() {
         <div className="wrapper">
           <div className="rank-buttons">
             <button onClick={() => sortList("rank")} className="rank-button">
-              Rank
+              {DTO.Rank}
             </button>
             <button onClick={() => sortList("name")} className="rank-button">
-              Name
+              {DTO.Name}
             </button>
           </div>
           <ul className="rank-standing">
