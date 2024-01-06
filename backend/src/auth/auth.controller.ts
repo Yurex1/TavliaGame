@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
@@ -19,7 +18,6 @@ import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { AuthGuard } from "./auth.guard";
 import { Request, Response } from "express";
 import { SignInDto } from "../auth/dto/login-user.dto";
-import { validate } from "class-validator";
 
 
 @Controller("auth")
@@ -32,7 +30,7 @@ export class AuthController {
     try {
       await this.authService.signIn(
         {
-          username: signInDto.username,
+          login: signInDto.login,
           pass: signInDto.password,
         },
         res
@@ -44,10 +42,10 @@ export class AuthController {
       if (error.status === 401) {
         res
           .status(HttpStatus.UNAUTHORIZED)
-          .json({ message: "Incorrect username or password" });
+          .json({ message: "Incorrect login or password" });
       }
       else if (error.status === 400) {
-        res.status(HttpStatus.BAD_REQUEST).json({ message: "username or password is undefined" })
+        res.status(HttpStatus.BAD_REQUEST).json({ message: "Login or password is undefined" })
       }
       else {
         res.status(HttpStatus.SEE_OTHER).json({ message: "Error occured" })
@@ -60,7 +58,6 @@ export class AuthController {
     return this.authService.createUser(createAuthDto);
   }
 
-
   @UseGuards(AuthGuard)
   @Get('findAll')
   findAll() {
@@ -72,18 +69,17 @@ export class AuthController {
     return this.authService.getAllRanks()
   }
 
-
   @UseGuards(AuthGuard)
   @Get("profile")
   getProfile(@Req() req: Request) {
-    //@ts-ignore
+    //@ts-expect-error req.user is definetely defined
     return req.user
   }
 
   @UseGuards(AuthGuard)
   @Put('friends')
   addFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
-    //@ts-ignore
+    //@ts-expect-error req.user.sub is definetely defined
     return this.authService.addFriend(req.user.sub, id, res)
   }
 
@@ -91,14 +87,14 @@ export class AuthController {
   @Delete('friends')
   removeFriend(@Req() req: Request, @Body("id") id: number, @Res() res: Response) {
 
-    //@ts-ignore
+    //@ts-expect-error req.user.sub is definetely defined
     return this.authService.removeFriend(req.user.sub, id, res)
   }
 
   @UseGuards(AuthGuard)
   @Get('friends')
   async getAllFriends(@Req() req: Request, @Res() res: Response) {
-    //@ts-ignore
+    //@ts-expect-error req.user.sub is definetely defined
     return (await this.authService.getAllFriends(req.user.sub, res));
   }
 
@@ -111,7 +107,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Put('user-update')
   update(@Req() req: Request, @Body() updateAuthDto: UpdateAuthDto) {
-    //@ts-ignore
+    //@ts-expect-error req.user.sub is definetely defined
     const user: number = req.user.sub;
     return this.authService.update(user, updateAuthDto);
   }
@@ -119,10 +115,8 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Delete("user-delete")
   removeUser(@Req() req: Request) {
-    //@ts-ignore
+    //@ts-expect-error req.user.sub is definetely defined
     const id: number = req.user.sub;
     return this.authService.remove(id);
   }
-
-
 }
