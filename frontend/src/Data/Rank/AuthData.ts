@@ -1,4 +1,4 @@
-type AuthData = {
+type DropDownData = {
     Name: string;
     Email: string;
     Password: string;
@@ -8,4 +8,4 @@ type AuthData = {
     DontHaveAnAccount: string;
 }
 
-export default AuthData;
+export default DropDownData;
