@@ -1,9 +1,8 @@
 import {
-  BadRequestException,
+  HttpStatus,
   Injectable,
-  UnauthorizedException,
 } from "@nestjs/common";
-import { CreateAuthDto } from "./dto/create-user.dto";
+
 import { UpdateAuthDto } from "./dto/update-auth.dto";
 import { PrismaService } from "src/prisma.service";
 import { User, Prisma } from "@prisma/client";
@@ -18,20 +17,17 @@ export class AuthService {
     private jwtService: JwtService
   ) { }
 
-  async signIn(data: { username, pass }, res: Response) {
-
-    if (data.username === undefined || data.pass === undefined) {
-      return res.status(400).json('Username or password is undefined');
+  async signIn(data: { login, pass }, res: Response) {
+    if (data.login === undefined || data.pass === undefined) {
+      return res.status(HttpStatus.BAD_REQUEST).json('Login or password is undefined');
     }
-
     const user: User | null = await this.prismaService.user.findFirst({
-      where: { login: data.username },
+      where: { login: data.login },
     });
-    console.log('user', user)
     if (user === null || !await bcrypt.compare(data.pass, user.password,)) {
-      return res.status(401).json("No such user or incorrect password");
+      return res.status(HttpStatus.UNAUTHORIZED).json("No such user or incorrect password");
     }
-    const payload = { sub: user.id, username: user.login };
+    const payload = { sub: user.id, login: user.login };
     const access_token = await this.jwtService.signAsync(payload);
 
     return access_token;
@@ -50,9 +46,7 @@ export class AuthService {
           data.password,
           await bcrypt.genSalt()
         );
-
         data.password = password;
-
         return await this.prismaService.user.create({ data });
       });
   }
@@ -70,12 +64,11 @@ export class AuthService {
   async getAllRanks() {
     const allUsers = await this.prismaService.user.findMany();
     return allUsers.map((el) => {
-      return ({ name: el.name, rank: el.rank })
+      return ({ login: el.login, rank: el.rank })
     });
   }
 
   async update(id: number, updateAuthDto: UpdateAuthDto) {
-
     return await this.prismaService.user
       .update({
         where: { id: id },
@@ -85,8 +78,7 @@ export class AuthService {
         return `User successfully updated`;
       })
       .catch((err) => {
-
-        return `Error occured while updating user`;
+        return `Error occured while updating user ${err}`;
       });
   }
 
@@ -102,65 +94,53 @@ export class AuthService {
   }
 
   async addFriend(id: number, friendsId: number, res: Response) {
-    try {
-      const user = await this.prismaService.user.findUnique({ where: { id: id } });
-      const friend = await this.prismaService.user.findUnique({ where: { id: friendsId } });
-      if (!user || !friend) {
-        return res.status(404).json("User was not found")
-      }
-      if (user.friends.includes(friendsId)) {
-        return res.status(400).json("User is already your friend")
-      }
-      if (id === friendsId) {
-        return res.status(400).json("You cannot add yourself as a friend")
-      }
-
-
-      const currentFriends = user.friends ?? [];
-
-      const updatedUser = await this.prismaService.user.update({
-        where: { id: id },
-        data: {
-
-          friends: [...currentFriends, friendsId],
-        },
-      });
-      return res.status(200).json(updatedUser)
-
-    }
-    catch (error) {
-
-      throw error;
-    }
-  }
-
-  async removeFriend(id: number, friendsId: number, res: Response) {
 
     const user = await this.prismaService.user.findUnique({ where: { id: id } });
+    const friend = await this.prismaService.user.findUnique({ where: { id: friendsId } });
+    if (!user || !friend) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: "User was not found" })
+    }
+    if (user.friends.includes(friendsId)) {
+      return res.status(HttpStatus.CONFLICT).json({ message: "User is already your friend" })
+    }
+    if (id === friendsId) {
+      return res.status(HttpStatus.CONFLICT).json({ message: "You cannot add yourself as a friend" })
+    }
+    const currentFriends = user.friends ?? [];
+    const updatedUser = await this.prismaService.user.update({
+      where: { id: id },
+      data: {
+
+        friends: [...currentFriends, friendsId],
+      },
+    });
+    return res.status(HttpStatus.OK).json(updatedUser)
+  }
+
+
+
+  async removeFriend(id: number, friendsId: number, res: Response) {
+    const user = await this.prismaService.user.findUnique({ where: { id: id } });
     if (!user) {
-      return res.status(404).json("No user with this id");
+      return res.status(HttpStatus.BAD_REQUEST).json("No user with this id");
     }
     if (!user.friends.includes(friendsId)) {
-      return res.status(400).json("User doesn't have this friend");
+      return res.status(HttpStatus.BAD_REQUEST).json("User doesn't have this friend");
     }
-
     const updatedFriendsList = user.friends.filter(friendId => friendId !== friendsId);
-
-
     await this.prismaService.user.update({
       where: { id: id },
       data: { friends: updatedFriendsList }
     });
-    return res.status(200).json({ message: "Friend removed successfully" });
+    return res.status(HttpStatus.OK).json({ message: "Friend removed successfully" });
   }
 
   async getAllFriends(id: number, res: Response) {
     const user = await this.prismaService.user.findUnique({ where: { id: id } });
     if (!user) {
-      return res.status(404).json("No user with this id");
+      return res.status(HttpStatus.BAD_REQUEST).json("No user with this id");
     }
-
-    return res.status(200).json(user.friends);
+    return res.status(HttpStatus.ACCEPTED).json(user.friends);
   }
 
 }
