@@ -6,6 +6,7 @@ import useRegister from "@/hooks/useRegister";
 import React from "react";
 import { User } from "@/types/types";
 import authData from "@/Data/Auth";
+import { isEmail } from "@/config/IsEmail";
 
 type SingupProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -24,6 +25,14 @@ const Singup: FC<SingupProps> = ({ setShowAuth }) => {
       data.login === ""
     ) {
       setError("All fields must be filled");
+      return;
+    }
+    if(!isEmail(data.email)){
+      setError("Invalid email");
+      return;
+    }
+    if(data.password.length < 8){
+      setError("Password must be at least 8 characters");
       return;
     }
     await singup(data);
