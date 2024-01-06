@@ -1,5 +1,5 @@
 // app.controller.ts
-import { Controller, Post, Body, Get, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, Req, UseGuards } from "@nestjs/common";
 import { EventsGateway } from "./events.gateway";
 import { EventsService } from "./events.service";
 import { AuthGuard } from "src/auth/auth.guard";
@@ -11,7 +11,7 @@ export class EventsController {
   @UseGuards(AuthGuard)
   @Get('allGames')
   getAllGames(@Req() req: Request) {
-    //@ts-ignore
+    //@ts-expect-error req.user.sub is definitely
     return this.eventsService.getAllGames(req.user.sub);
   }
 }

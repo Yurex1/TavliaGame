@@ -1,4 +1,4 @@
-import { ConflictException } from "@nestjs/common";
+
 import GameManager from "./gameManager";
 import { PrismaService } from "src/prisma.service";
 import { MoveResult } from "./Board";
@@ -179,9 +179,9 @@ export class Room {
         let loser: User, winner: User;
         if (loserId === this.player1) {
             loser = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
-            winner = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
+            winner = await this.prismaService.user.findUnique({ where: { id: this.player2 } });
         } else {
-            loser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });;
+            loser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });
             winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
         }
         await this.prismaService.game.create({
