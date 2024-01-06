@@ -6,4 +6,13 @@ export const UkraineData = {
   Back: "Назад",
   CreateRoom: "Створити гру",
   JoinRoom: "Приєднатися до гри",
+  Table: {
+    White: "Білі",
+    Black: "Чорні",
+    Moveing: "ходять",
+    WhiteWin: "Білі перемогли!",
+    BlackWin: "Чорні перемогли!",
+    GameHistory: "Історія гри:",
+    RestartGame: "Перезапустити гру",
+  }
 } as GameData;
