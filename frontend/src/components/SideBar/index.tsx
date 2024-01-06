@@ -3,7 +3,8 @@ import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
 import React from "react";
 import { useLanguage } from "@/hooks/useLanguage";
-import SideBarData from "./SideBarData";
+import sideBarData from "@/Data/SideBar";
+
 
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -11,7 +12,7 @@ type SideBareProps = {
 
 const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
   const {language, setLanguage} = useLanguage();
-  const DTO = SideBarData(language);
+  const DTO = sideBarData();
   useEffect(() => {
     const tempLanguage = localStorage.getItem("language");
     if(tempLanguage){
