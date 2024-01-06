@@ -1,6 +1,6 @@
-import InstructionDTO from "./instructionDTO";
+import InstructionData from "./InstructionData";
 
-export const EnglishDto = {
+export const EnglishData = {
     Title: "Instruction",
     FirstSubTitle: "Basic Information About the Game",
     FirstSubTitleFirstLable:
@@ -18,4 +18,4 @@ export const EnglishDto = {
     SecondSubTitleEighthLable: "No one, except the king, can occupy corner cells.",
     SecondSubTitleNinthLable: "Barbarians win when they surround the king from all 4 sides.",
     SecondSubTitleTenthLable: "Being unable to make a move is a loss.", 
-} as InstructionDTO;
+} as InstructionData;
