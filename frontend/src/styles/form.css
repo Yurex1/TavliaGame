@@ -41,7 +41,7 @@ input {
   min-width: 15vw;
   margin: 10px;
   font-size: 20px;
-  padding: 0.5vh;
+  padding: 1vh 1vw;
   background-color: #c0a080;
   box-shadow: 2px 2px 2px black;
   border-radius: 5px;
