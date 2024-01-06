@@ -14,5 +14,14 @@ export const EnglishData = {
     BlackWin: "Black win!",
     GameHistory: "Game history:",
     RestartGame: "Restart game",
+  },
+  OnlineTable: {
+    Win: "win!",
+    Surendered: "surendered",
+    Moving : "moving",
+    White: "White: ",
+    Black: "Black: ",
+    GameHistory: "Game history:",
+    Surrender: "Surender",
   }
 } as GameData;
