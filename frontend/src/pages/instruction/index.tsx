@@ -1,11 +1,8 @@
 import React from "react";
-import { useLanguage } from "@/hooks/useLanguage";
-import instructionData from "./instructionData";
+import instruction from "@/Data/Instruction";
 
 export default function Instruction() {
-  const {language} = useLanguage();
-  const DTO =  instructionData(language);
-
+  const DTO = instruction();
   return (
     <>
       <div className="instruction">
@@ -35,26 +32,32 @@ export default function Instruction() {
                 <li>{DTO.SecondSubTitleSecondLable}</li>
                 <li>{DTO.SecondSubTitleThirdLable}</li>
                 <li>{DTO.SecondSubTitleFourthLable}</li>
-                <li dangerouslySetInnerHTML={{__html: DTO.SecondSubTitleFifthLable}}>
-                </li>
+                <li
+                  dangerouslySetInnerHTML={{
+                    __html: DTO.SecondSubTitleFifthLable,
+                  }}
+                ></li>
                 <div className="center">
-                    <img
-                      className="instruction-image"
-                      src="instruction/move.jpg"
-                    />
-                  </div>
-                <li dangerouslySetInnerHTML={{__html:DTO.SecondSubTitleSixthLable}}>
-                </li>
+                  <img
+                    className="instruction-image"
+                    src="instruction/move.jpg"
+                  />
+                </div>
+                <li
+                  dangerouslySetInnerHTML={{
+                    __html: DTO.SecondSubTitleSixthLable,
+                  }}
+                ></li>
                 <div className="center">
-                    <img
-                      className="instruction-image"
-                      src="instruction/kill-before.jpg"
-                    />
-                    <img
-                      className="instruction-image"
-                      src="instruction/kill-after.jpg"
-                    />
-                  </div>
+                  <img
+                    className="instruction-image"
+                    src="instruction/kill-before.jpg"
+                  />
+                  <img
+                    className="instruction-image"
+                    src="instruction/kill-after.jpg"
+                  />
+                </div>
                 <li>
                   {DTO.SecondSubTitleSeventhLable}
                   <div className="center">
