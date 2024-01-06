@@ -1,4 +1,4 @@
-type InstructionDTO = {
+type InstructionData = {
     Title: string,
     FirstSubTitle: string
     FirstSubTitleFirstLable: string,
@@ -17,4 +17,4 @@ type InstructionDTO = {
     SecondSubTitleTenthLable: string,
 }
 
-export default InstructionDTO;
+export default InstructionData;
