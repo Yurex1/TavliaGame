@@ -1,6 +1,6 @@
-import InstructionDTO from "./instructionDTO";
+import InstructionData from "./InstructionData"
 
-export const UkraineDTO = {
+export const UkraineData = {
     Title: "Інструкція",
     FirstSubTitle: "Основні Відомості про Гру",
     FirstSubTitleFirstLable:
@@ -18,4 +18,4 @@ export const UkraineDTO = {
     SecondSubTitleEighthLable: "Ніхто, крім короля, не може займати кутові клітини.",
     SecondSubTitleNinthLable: "Варвари перемагають, оточивши короля з усіх 4 сторін.",
     SecondSubTitleTenthLable: "Неможливість зробити хід - це поразка.", 
-} as InstructionDTO;
+} as InstructionData;
