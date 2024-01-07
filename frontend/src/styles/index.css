@@ -1,4 +1,5 @@
 .games {
+  user-select: none;
   width: 80vw;
   height: 100vh;
   padding: 5vh, 5vw;
