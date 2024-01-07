@@ -4,7 +4,7 @@ import {
 } from "@nestjs/common";
 
 import { UpdateAuthDto } from "./dto/update-auth.dto";
-import { PrismaService } from "src/prisma.service";
+import { PrismaService } from "../prisma.service";
 import { User, Prisma } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
