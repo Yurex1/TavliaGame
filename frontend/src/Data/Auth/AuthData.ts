@@ -6,6 +6,7 @@ type AuthData = {
     Login: string;
     AlreadyHaveAnAccount: string;
     DontHaveAnAccount: string;
+    Problam : string[];
 }
 
 export default AuthData;
