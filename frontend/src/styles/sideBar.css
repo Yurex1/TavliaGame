@@ -1,4 +1,5 @@
 aside{
+  user-select: none;
   background-color: #FFFBE9;
   width: 20vw;
   height: 100vh;
