@@ -13,7 +13,7 @@ type SingupProps = {
 };
 
 const Singup: FC<SingupProps> = ({ setShowAuth }) => {
-  const [error, setError] = React.useState<string>("");
+  const [error, setError] = React.useState<number>(-1);
   const methods = useForm();
   const { mutateAsync: singup } = useRegister({ setError, setShowAuth });
   const onSubmit = async (data: User) => {
@@ -24,15 +24,15 @@ const Singup: FC<SingupProps> = ({ setShowAuth }) => {
       data.password === "" ||
       data.login === ""
     ) {
-      setError("All fields must be filled");
+      setError(1);
       return;
     }
     if(!isEmail(data.email)){
-      setError("Invalid email");
+      setError(2);
       return;
     }
     if(data.password.length < 8){
-      setError("Password must be at least 8 characters");
+      setError(3);
       return;
     }
     await singup(data);
@@ -43,7 +43,7 @@ const Singup: FC<SingupProps> = ({ setShowAuth }) => {
       <RHFInput placeholder={DTO.Name} name="login" type="text" />
       <RHFInput placeholder={DTO.Email} name="email" type="email" />
       <RHFInput placeholder={DTO.Password} name="password" type="password" />
-      {error && <div className="error">{error}</div>}
+      {error != -1 && <div className="error">{DTO.Problam[error]}</div>}
     </Form>
   );
 };
