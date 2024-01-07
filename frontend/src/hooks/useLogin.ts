@@ -7,17 +7,17 @@ const login = async (user: User) => {
   return await axios.post(API_URL + "auth/login", user, {withCredentials: true});
 };
 
-const useLogin = ({setError, setShowAuth }: {setError: (error: string) => void, setShowAuth: (showAuth: boolean) => void}) => {
+const useLogin = ({setError, setShowAuth }: {setError: (error: number) => void, setShowAuth: (showAuth: boolean) => void}) => {
   const queryClient = useQueryClient();
   return useMutation(login, {
     onSuccess: (data) => {
       localStorage.setItem("token", data.data);
-      setError("");
+      setError(-1);
       setShowAuth(false);
       queryClient.invalidateQueries(["user"]);
     },
     onError: () => {
-      setError("incorect username or password");  
+      setError(0);  
     }
   });
 };
