@@ -29,26 +29,32 @@ export class AuthService {
     }
     const payload = { sub: user.id, login: user.login };
     const access_token = await this.jwtService.signAsync(payload);
-
-    return access_token;
+    res.json(access_token)
+    // return access_token;
   }
 
-  async createUser(data: Prisma.UserCreateInput) {
-    return this.prismaService.user
-      .findFirstOrThrow({
-        where: { OR: [{ login: data.login }, { email: data.email }] },
-      })
-      .then(() => {
-        return "User with this login or email has already been created.";
-      })
-      .catch(async () => {
-        const password = await bcrypt.hash(
-          data.password,
-          await bcrypt.genSalt()
-        );
-        data.password = password;
-        return await this.prismaService.user.create({ data });
+  async createUser(data: Prisma.UserCreateInput, res: Response) {
+    try {
+      const newUser = await this.prismaService.user.findFirst({
+        where: {
+          OR: [{ email: data.email }, { login: data.login }]
+        }
       });
+      if (newUser) {
+        res.status(HttpStatus.CONFLICT).json('User with the same login/email has already been created');
+        return;
+      }
+      const password = await bcrypt.hash(
+        data.password,
+        await bcrypt.genSalt()
+      );
+      data.password = password;
+      const user = await this.prismaService.user.create({ data });
+      res.json(user);
+    }
+    catch {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json('Internal Server Error')
+    }
   }
 
   async findAll() {
