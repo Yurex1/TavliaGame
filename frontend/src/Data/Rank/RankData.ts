@@ -1,6 +1,6 @@
 type RankData = {
     Rank: string;
-    Name: string;
+    Login: string;
 }
 
 export default RankData;
