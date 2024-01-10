@@ -1,11 +1,11 @@
 import { useConnect } from "@/hooks/useConnect";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import OnlineTavliaGame from "./OnlineTavliaGame";
 import CreateRoomComponent from "./CreateRoomComponenet";
 import JoinRoomComponent from "./JoinRoomComponent";
 import MainMenu from "./MainMenu";
 import { Move } from "@/types/types";
-// import ComponentData from "../ComponentData";
+import gameData from "@/Data/Game";
 
 type OnlineGameProps = {
   n: number;
@@ -13,7 +13,7 @@ type OnlineGameProps = {
 };
 
 const OnlineGame: FC<OnlineGameProps> = ({ n, userId }) => {
-  // const DTO = ComponentData();
+  const DTO = gameData();
   const [gameStatus, setGameStatus] = React.useState<string | null>(null);
   const [winerId, setWinerId] = React.useState<number | null>(null);
   const [pageStatus, setPageStatus] = React.useState<string | null>(null);
@@ -65,7 +65,7 @@ const OnlineGame: FC<OnlineGameProps> = ({ n, userId }) => {
       <div className="message">
         {pageStatus}
         <div onClick={restart} className="form-button center">
-          {/* {DTO.Back} */}
+          {DTO.Back}
         </div>
       </div>
     </>

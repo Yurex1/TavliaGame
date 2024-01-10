@@ -1,8 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
 import GameTavlia from "@/components/GameTavlia";
+import gameData from "@/Data/Game";
 
-export default function Game2x2() {
+export default function GameOneDesk() {
+  const DTO = gameData();
   const router = useRouter();
   const  { n }  = router.query;
   if(n)
@@ -20,7 +22,7 @@ export default function Game2x2() {
     return(
       <>
         <div className='wrapper'>
-          Loading...
+          {DTO.Loading}
         </div>
       </>
     );
