@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
-import { PrismaService } from "./prisma.service";
 import { EventsModule } from "./events/events.module";
 
 @Module({
@@ -10,4 +9,4 @@ import { EventsModule } from "./events/events.module";
   providers: [AppService],
   imports: [AuthModule, EventsModule],
 })
-export class AppModule {}
+export class AppModule { }
