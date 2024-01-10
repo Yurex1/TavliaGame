@@ -126,6 +126,7 @@ class SocketApi {
     });
 
     this.socket.on("game status", (status: string) => {
+        this.moveStatus = "game over";
         this.setGameStatus(status);
     });
 
@@ -134,8 +135,9 @@ class SocketApi {
     });
 
     this.socket.on("surrender", (winerId: number) => {
-      setWinerId(winerId);
-      setGameStatus("surrender");
+      this.setWinerId(winerId);
+      this.setMoveStatus("game over");
+      this.setGameStatus("surrender");
     });
 
     this.socket.on("disconnect", () => {});

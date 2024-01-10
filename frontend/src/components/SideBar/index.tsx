@@ -1,37 +1,65 @@
-import {  FC,  } from "react";
+import { FC, useEffect } from "react";
 import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
+import React from "react";
+import { useLanguage } from "@/hooks/useLanguage";
+import sideBarData from "@/Data/SideBar";
+
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
-}
-import React from 'react'
+};
 
+const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
+  const { language, setLanguage } = useLanguage();
+  const DTO = sideBarData();
+  useEffect(() => {
+    const tempLanguage = localStorage.getItem("language");
+    if (tempLanguage) {
+      setLanguage(tempLanguage);
+    }
+  }, []);
 
-const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
+  const change = () => {
+    if (language == "En") {
+      localStorage.setItem("language", "Ua");
+    } else {
+      localStorage.setItem("language", "En");
+    }
+    const tempLanguage = localStorage.getItem("language");
+    if (tempLanguage) {
+      setLanguage(tempLanguage);
+    }
+  };
+
   return (
     <aside>
       <div className="top-items">
         <a href="../" className="name">
-          {/* <div className='img'></div> */}
           <div>
-            <b>T</b>
-            <b className="notformobile">avlia</b>
+            <b className="formobile">T</b>
+            <b className="notformobile">{DTO.Title}</b>
           </div>
         </a>
-
-        <SideBarItem text="Play" hrefText="../" img_url={"Lightning.png"}  />
-        {/* <SideBarItem text="Profile" hrefText="../" img_url={"prof.png"} /> */}
-        <SideBarItem text="Rank" hrefText="../rank" img_url={"rank.png"} />
-        <SideBarItem text="Instruction" hrefText="../instruction" img_url={"info.png"} />
-        {/* <SideBarItem text="Friends" hrefText="../" img_url={"friends.png"} /> */}
-        {/* <SideBarItem text="Settings" hrefText="../" img_url={"sett.png"} /> */}
-        <SideBarLogItem setShowAuth = {setShowAuth}/>
+        {DTO.Config.map((item, index) => (
+          <SideBarItem
+            key={index}
+            text={item.text}
+            hrefText={item.hrefText}
+            img_url={item.img_url}
+          />
+        ))}
+        <SideBarLogItem
+          Login={DTO.Login}
+          Logout={DTO.Logout}
+          setShowAuth={setShowAuth}
+        />
       </div>
-      {/* <div className="down-items">
-        <SideBarItem text="Help" hrefText="../" img_url={"help.png"} />
-      </div> */}
+      <div className="language center" onClick={change}>
+        <div className="language-text">{DTO.Language}</div>
+        <b>{language}</b>
+      </div>
     </aside>
   );
-}
+};
 
 export default SideBare;

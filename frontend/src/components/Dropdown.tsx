@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
+import dropDownData from "@/Data/DropDown";
 
 export default function Dropdown({n} : {n : number}) {
   const [open, setOpen] = useState(false);
@@ -22,17 +23,17 @@ export default function Dropdown({n} : {n : number}) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  const DTO = dropDownData();
   return (
     <div className="dropdown" ref={dropdownRef}>
       <button className="game-button" onClick={handleOpen}>
-        <b>Play {n}x{n}</b>
+        <b>{DTO.Play} {n}x{n}</b>
       </button>
       {open && (
         <div className="menu">
           <div className="menu-items">
             <Link className="menu-link" href={`/game?n=${n}`}>
-              <b>Play Online</b>
+              <b>{DTO.PlayOnline}</b>
             </Link>
           </div>
           {/* <div className="menu-items">
@@ -41,8 +42,8 @@ export default function Dropdown({n} : {n : number}) {
             </Link>
           </div> */}
           <div className="menu-items">
-            <Link className="menu-link" href={`/game2x2?n=${n}`}>
-              <b>Play two in one desk</b>
+            <Link className="menu-link" href={`/gameOneDesk?n=${n}`}>
+              <b>{DTO.PlayOnOneDesk}</b>
             </Link>
           </div>
         </div>
