@@ -6,7 +6,7 @@ import rankData from "@/Data/Rank";
 
 type RankType = {
   rank: number;
-  name: string;
+  login: string;
 };
 
 export default function Rank() {
@@ -16,7 +16,7 @@ export default function Rank() {
     const array: RankType[] = [];
     const res = (await axios.get(API_URL + "auth/all-ranks")).data;
     res.map((item: RankType) => {
-      array.push({rank: item.rank, name: item.name });
+      array.push({rank: item.rank, login: item.login });
     });
     setList(array);
   };
@@ -24,7 +24,7 @@ export default function Rank() {
     fun();
   const [sortOrder, setSortOrder] = useState({ field: "rank", order: "asc" });
   const DTO = rankData();
-  const sortList = (field: "rank" | "name") => {
+  const sortList = (field: "rank" | "login") => {
     const order =
       sortOrder.field === field && sortOrder.order === "asc" ? "desc" : "asc";
 
@@ -52,15 +52,15 @@ export default function Rank() {
             <button onClick={() => sortList("rank")} className="rank-button">
               {DTO.Rank}
             </button>
-            <button onClick={() => sortList("name")} className="rank-button">
-              {DTO.Name}
+            <button onClick={() => sortList("login")} className="rank-button">
+              {DTO.Login}
             </button>
           </div>
           <ul className="rank-standing">
             {renderList.map((item, index) => (
               <li key={index} className="rank-item">
                 <div className="user-rank">{item.rank}</div>
-                <div className="user-name">{item.name}</div>
+                <div className="user-name">{item.login}</div>
               </li>
             ))}
           </ul>
