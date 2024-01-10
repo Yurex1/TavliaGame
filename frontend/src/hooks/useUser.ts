@@ -1,6 +1,13 @@
 import API_URL from "@/constants";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
+
+
+interface CustomError {
+    response?: {
+      status?: number;
+    };
+  }
 
 const getUser = async () => {
     if(localStorage.getItem('token') === null) return null;
@@ -8,7 +15,12 @@ const getUser = async () => {
 }
 
 const useUser= () => {
-    return useQuery(['user'], getUser);
+    return useQuery(['user'], getUser, {onError: (error : AxiosError<CustomError>) => {
+        if(error.response?.status == 401)
+        {
+            localStorage.removeItem('token');
+        }
+    }});
 };
 
 export default useUser;
