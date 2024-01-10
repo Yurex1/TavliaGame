@@ -22,7 +22,7 @@ const Login: FC<loginProps> = ({ setShowAuth }) => {
   const DTO = authData();
   return (
     <Form methods={methods} submitText={DTO.Login} onSubmit={onSubmit}>
-      <RHFInput placeholder={DTO.Name} name="username" type="text" />
+      <RHFInput placeholder={DTO.Name} name="login" type="text" />
       <RHFInput placeholder={DTO.Password} name="password" type="password" />
       {error != -1 && <div className="error">{DTO.Problam[error]}</div>}
     </Form>
