@@ -1,25 +1,17 @@
 import {
   WebSocketGateway,
   SubscribeMessage,
-  MessageBody,
   WebSocketServer,
-  WsResponse,
   OnGatewayConnection,
   OnGatewayDisconnect,
-  WsException,
 } from "@nestjs/websockets";
-import { Logger, NotFoundException, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Logger, UnauthorizedException } from "@nestjs/common";
 import { EventsService } from "./events.service";
-import { CreateEventDto } from "./dto/create-event.dto";
-import { UpdateEventDto } from "./dto/update-event.dto";
-import { Socket, Namespace, Server } from "socket.io";
-import { io } from "socket.io-client";
+import { Socket, Namespace } from "socket.io";
 import { PrismaService } from "src/prisma.service";
 import { Room } from "src/chess/room/room";
-import { AuthGuard } from "src/auth/auth.guard";
 import { JwtService } from "@nestjs/jwt";
 import { jwtConstants } from '../auth/constants';
-import { PrismaClientRustPanicError } from "@prisma/client/runtime/library";
 
 
 
@@ -41,7 +33,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private rooms: Map<string, Room> = new Map(); // roomId to room
   private players: Map<number, string> = new Map(); // userId to roomId
-
 
   RandomRoom = (): string => {
     let x: string = "";
@@ -72,7 +63,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     socket['user'] = user;
     const userId = user.sub
-
 
     if (this.players.has(userId)) {
 
@@ -113,7 +103,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     })
   }
 
-
   @SubscribeMessage("createRoom")
   async createRoom(socket: Socket, data: { n: number }) {
 
@@ -149,7 +138,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     socket.emit('getRoomId', roomId);
     // this.io.emit("createNewGame", { roomId: roomId });
   }
-
 
   @SubscribeMessage("joinRoom")
   async joinRoom(socket: Socket, data: { roomId: string }) {
@@ -255,7 +243,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     const res = await room.surrender(userId);
-
     if (!res) {
       socket.emit("game status", "Can't surrender");
 
@@ -270,22 +257,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(socket: Socket) {
-
     const userId = socket['user']?.sub;
-
     if (this.players.has(userId)) {
       this.io.to(this.players.get(userId)).emit('status', `Client disconnected: ${socket.id}`)
-
       const roomId = this.players.get(userId)
-
-
       const room = this.rooms.get(roomId);
-      const roomPlayer1 = room.player1
-      const roomPlayer2 = room.player2
 
       const result = room.removePlayer(userId)
-
-
       if (result === '1 player left') {
         // this.players.delete(userId)
       }
@@ -301,7 +279,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.io.to(roomId).emit("winner", room.player1 === room.firstLogout ? room?.player2 : room?.player1);
         this.io.socketsLeave(roomId);
         this.rooms.delete(roomId)
-
       }
     }
     console.log("Event disconnect ");
