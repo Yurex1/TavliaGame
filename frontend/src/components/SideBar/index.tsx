@@ -1,38 +1,35 @@
-import { FC, useEffect} from "react";
+import { FC, useEffect } from "react";
 import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
 import React from "react";
 import { useLanguage } from "@/hooks/useLanguage";
 import sideBarData from "@/Data/SideBar";
 
-
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
 };
 
 const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
-  const {language, setLanguage} = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const DTO = sideBarData();
   useEffect(() => {
     const tempLanguage = localStorage.getItem("language");
-    if(tempLanguage){
+    if (tempLanguage) {
       setLanguage(tempLanguage);
     }
-  },[]);
+  }, []);
 
   const change = () => {
-    if(language == "En")
-    {
+    if (language == "En") {
       localStorage.setItem("language", "Ua");
-    }
-    else{
+    } else {
       localStorage.setItem("language", "En");
     }
     const tempLanguage = localStorage.getItem("language");
-    if(tempLanguage){
+    if (tempLanguage) {
       setLanguage(tempLanguage);
     }
-  }
+  };
 
   return (
     <aside>
@@ -51,10 +48,15 @@ const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
             img_url={item.img_url}
           />
         ))}
-        <SideBarLogItem Login = {DTO.Login} Logout = {DTO.Logout} setShowAuth={setShowAuth} />
+        <SideBarLogItem
+          Login={DTO.Login}
+          Logout={DTO.Logout}
+          setShowAuth={setShowAuth}
+        />
       </div>
-      <div className = "language center" onClick={change}>
-        <div className="language-text">language:</div>{language}
+      <div className="language center" onClick={change}>
+        <div className="language-text">{DTO.Language}</div>
+        <b>{language}</b>
       </div>
     </aside>
   );
