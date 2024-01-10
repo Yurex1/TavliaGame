@@ -17,9 +17,7 @@ const Singup: FC<SingupProps> = ({ setShowAuth }) => {
   const methods = useForm();
   const { mutateAsync: singup } = useRegister({ setError, setShowAuth });
   const onSubmit = async (data: User) => {
-    data.name = data.login;
     if (
-      data.name === "" ||
       data.email === "" ||
       data.password === "" ||
       data.login === ""
