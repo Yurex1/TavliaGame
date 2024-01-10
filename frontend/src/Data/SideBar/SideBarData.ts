@@ -9,6 +9,7 @@ type SideBarData = {
     Config: SideBarConfig[];
     Login: string;
     Logout: string;
+    Language: string;
 }
 
 export default SideBarData;

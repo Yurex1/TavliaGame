@@ -42,7 +42,7 @@ export default function Dropdown({n} : {n : number}) {
             </Link>
           </div> */}
           <div className="menu-items">
-            <Link className="menu-link" href={`/game2x2?n=${n}`}>
+            <Link className="menu-link" href={`/gameOneDesk?n=${n}`}>
               <b>{DTO.PlayOnOneDesk}</b>
             </Link>
           </div>
