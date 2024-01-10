@@ -23,5 +23,7 @@ export const UkraineData = {
     Moving : "ходить",
     GameHistory: "Історія гри:",
     Surrender: "Здатися",
-  }
+  },
+  Loading: "Завантаження...",
+  PleaseLogin: "Будь ласка, увійдіть)",
 } as GameData;
