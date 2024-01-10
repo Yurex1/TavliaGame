@@ -2,8 +2,10 @@ import React from "react";
 import { useRouter } from "next/router";
 import OnlineGame from "@/components/OnlineGame";
 import useUser from "@/hooks/useUser";
+import gameData from "@/Data/Game";
 
 export default function Game() {
+  const DTO = gameData();
   const router = useRouter();
   const  { n }  = router.query;
   const user = useUser();
@@ -22,7 +24,7 @@ export default function Game() {
     return(
       <>
         <div className='message'>
-          Loading...
+          {DTO.Loading}
         </div>
       </>
     );
@@ -31,7 +33,7 @@ export default function Game() {
     return(
       <>
         <div className='message'>
-          Please login{')'}
+          {DTO.PleaseLogin}
         </div>
       </>
     );

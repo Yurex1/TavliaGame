@@ -21,4 +21,5 @@ export const UkraineData = {
   ],
   Login: "Увійти",
   Logout: "Вийти",
+  Language: "Мова: ",
 } as SideBarData;

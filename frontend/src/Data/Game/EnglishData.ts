@@ -23,5 +23,7 @@ export const EnglishData = {
     Black: "Black: ",
     GameHistory: "Game history:",
     Surrender: "Surender",
-  }
+  },
+  Loading: "Loading...",
+  PleaseLogin: "Please login)",
 } as GameData;

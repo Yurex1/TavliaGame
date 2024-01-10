@@ -26,6 +26,8 @@ type GameData = {
     JoinRoom: string;
     Table: Table;
     OnlineTable: OnlineTable;
+    Loading: string;
+    PleaseLogin: string;
 }
 
 export default GameData;
