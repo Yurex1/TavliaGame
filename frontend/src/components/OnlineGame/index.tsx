@@ -1,5 +1,5 @@
 import { useConnect } from "@/hooks/useConnect";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import OnlineTavliaGame from "./OnlineTavliaGame";
 import CreateRoomComponent from "./CreateRoomComponenet";
 import JoinRoomComponent from "./JoinRoomComponent";
