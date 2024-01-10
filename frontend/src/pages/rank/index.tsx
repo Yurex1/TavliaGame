@@ -2,10 +2,11 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import API_URL from "@/constants";
+import rankData from "@/Data/Rank";
 
 type RankType = {
   rank: number;
-  name: string;
+  login: string;
 };
 
 export default function Rank() {
@@ -15,15 +16,15 @@ export default function Rank() {
     const array: RankType[] = [];
     const res = (await axios.get(API_URL + "auth/all-ranks")).data;
     res.map((item: RankType) => {
-      array.push({rank: item.rank, name: item.name });
+      array.push({rank: item.rank, login: item.login });
     });
     setList(array);
   };
   if(list.length === 0)
     fun();
   const [sortOrder, setSortOrder] = useState({ field: "rank", order: "asc" });
-
-  const sortList = (field: "rank" | "name") => {
+  const DTO = rankData();
+  const sortList = (field: "rank" | "login") => {
     const order =
       sortOrder.field === field && sortOrder.order === "asc" ? "desc" : "asc";
 
@@ -35,7 +36,6 @@ export default function Rank() {
           ? a[field].localeCompare(b[field])
           : b[field].localeCompare(a[field]);
       }
-      return 0;
     });
 
     setList(sortedList);
@@ -50,17 +50,17 @@ export default function Rank() {
         <div className="wrapper">
           <div className="rank-buttons">
             <button onClick={() => sortList("rank")} className="rank-button">
-              Rank
+              {DTO.Rank}
             </button>
-            <button onClick={() => sortList("name")} className="rank-button">
-              Name
+            <button onClick={() => sortList("login")} className="rank-button">
+              {DTO.Login}
             </button>
           </div>
           <ul className="rank-standing">
             {renderList.map((item, index) => (
               <li key={index} className="rank-item">
                 <div className="user-rank">{item.rank}</div>
-                <div className="user-name">{item.name}</div>
+                <div className="user-name">{item.login}</div>
               </li>
             ))}
           </ul>
