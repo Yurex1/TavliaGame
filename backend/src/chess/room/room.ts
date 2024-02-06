@@ -1,73 +1,214 @@
-import { ConflictException } from "@nestjs/common";
 
-enum ChessPiece {
-    Pawn,
-    Rook,
-    Knight,
-    Bishop,
-    Queen,
-    King,
-}
+import GameManager from "./gameManager";
+import { PrismaService } from "src/prisma.service";
+import { MoveResult } from "./Board";
+import { User } from "@prisma/client";
 
-enum Player {
-    White,
-    Black,
-}
 
-class ChessBoard {
-}
-
-class PlayerMove {
+interface Move {
+    from: { x: number, y: number },
+    to: { x: number, y: number },
 }
 
 export class Room {
-    private _size = 0;
-    private players: { [key in Player]: string };
+    public size = 0;
+    public firstLogout: number | null = null;
+    public player1EverJoined: number | null = null;
+    public player2EverJoined: number | null = null
+    public player1: number | null = null
+    public player2: number | null = null;
+    public gameManager: GameManager;
+    private prismaService: PrismaService;
+    public gameMoves: Move[] = [];
+    private whoWinIfSurrender: User | null = null;
 
-    constructor(player1: string, player2: string) {
-        this.players = {
-            [Player.White]: player1,
-            [Player.Black]: null,
-        };
-        this._size = 1
+    constructor(player1: number, n: number, prismaService: PrismaService) {
+        this.player1 = player1
+        this.player1EverJoined = player1;
+        this.size = 1
+        this.gameManager = new GameManager(n)
+        this.prismaService = prismaService
+
     }
 
 
-    get size(): number {
-        return this._size;
-    }
 
-
-    private board: ChessBoard;
-
-
-
-    public playerMoves = 1;
-
-    public ChangePlayerMoves = () => this.playerMoves ^ 1;
 
     public position: string[8][8];
 
-    public makeMove(move: PlayerMove): void {
+    public makeMove(from: { x: number, y: number }, to: { x: number, y: number },): MoveResult {
+        if (this.gameManager.isGameEnded()) {
+            return { result: "END GAME" }
+        }
+        const moveResult = this.gameManager.processMove(from, to);
+        if (moveResult.result !== 'WRONG') {
+            this.gameMoves.push({
+                from, to
+            })
+        }
 
+        return moveResult
     }
 
-    public addPlayer(id: string) {
-        if (this.players[Player.Black] === null) {
-            this.players[Player.Black] = id;
-            this._size = 2;
+    public whoWin() {
+        const isKingWin = this.gameManager.isKingWin();
+        if (this.whoWinIfSurrender) {
+            return this.whoWinIfSurrender.id;
+        }
+        if (isKingWin) {
+            if (this.player2) {
+                return this.player2;
+            }
+            else {
+                throw new Error('player 2 wins, but null')
+            }
         }
         else {
-            throw new ConflictException();
+            if (this.player1) {
+                return this.player1;
+            }
+            else {
+                throw new Error('player 1 wins, but nulll')
+            }
         }
     }
 
-    public getGameState(): ChessBoard {
-        return this.board;
+
+    public youMove(playerId: number) {
+
+        if (playerId === this.player1) {
+            return this.gameManager.currentPlayer === 0;
+        }
+        else {
+            return this.gameManager.currentPlayer === 1;
+        }
     }
 
-    public getCurrentPlayer(): string {
-        return this.players[Player.White]; // Повертаємо ідентифікатор поточного гравця (може бути користувачем або іншим ідентифікатором)
+    public playerMove() {
+        return this.gameManager.currentPlayer;
     }
 
+
+    public addPlayer(id: number) {
+
+        if (!this.size) {
+            return "No players in room";
+        }
+
+        if (!this.player1) {
+            this.player1 = id;
+            this.size = 2;
+        }
+        else if (!this.player2) {
+            this.player2 = id;
+            if (!this.player2EverJoined) {
+                this.player2EverJoined = this.player2
+            }
+            this.size = 2;
+        }
+        else {
+            throw new Error();
+        }
+
+
+    }
+
+    public removePlayer(id: number) {
+
+        if (this.size === 1) {
+            this.size = 0;
+            return '0 players left'
+        }
+        else if (this.size === 2) {
+            this.size = 1;
+            this.firstLogout = id;
+            if (this.player1 === id) {
+                this.player1 = null;
+            }
+            else {
+                this.player2 = null;
+            }
+            return "1 player left"
+        }
+
+    }
+
+    public async saveGame() {
+        const winner = this.whoWin();
+        await this.prismaService.game.create({
+            data:
+            {
+                winner: winner,
+                users: {
+                    connect: [
+                        { id: this.player1 },
+                        { id: this.player2 }
+                    ]
+                },
+                Move: {
+                    create: this.gameMoves.map(move => ({
+                        fromX: move.from.x,
+                        fromY: move.from.y,
+                        toX: move.to.x,
+                        toY: move.to.y
+                    })),
+                },
+
+            },
+
+        });
+        const firstUser = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
+        const secondUser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });
+        const KingWins = this.gameManager.isKingWin();
+        if (KingWins) {
+            await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: firstUser.rank + 25 } })
+            await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: secondUser.rank - 25 } })
+        }
+        else {
+            await this.prismaService.user.update({ where: { id: this.player1 }, data: { rank: firstUser.rank - 25 } })
+            await this.prismaService.user.update({ where: { id: this.player2 }, data: { rank: secondUser.rank + 25 } })
+        }
+    }
+
+    public async surrender(loserId: number): Promise<boolean> {
+
+        if (!this.player1 || !this.player2) {
+
+            return false;
+        }
+        let loser: User, winner: User;
+        if (loserId === this.player1) {
+            loser = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
+            winner = await this.prismaService.user.findUnique({ where: { id: this.player2 } });
+        } else {
+            loser = await this.prismaService.user.findUnique({ where: { id: this.player2 } });
+            winner = await this.prismaService.user.findUnique({ where: { id: this.player1 } });
+        }
+        await this.prismaService.game.create({
+
+            data:
+            {
+                winner: this.whoWin(),
+                users: {
+                    connect: [
+                        { id: this.player1 },
+                        { id: this.player2 }
+                    ]
+                },
+                Move: {
+                    create: this.gameMoves.map(move => ({
+                        fromX: move.from.x,
+                        fromY: move.from.y,
+                        toX: move.to.x,
+                        toY: move.to.y
+                    })),
+                },
+            },
+
+        });
+        await this.prismaService.user.update({ where: { id: winner.id }, data: { rank: winner.rank + 25 } })
+        await this.prismaService.user.update({ where: { id: loser.id }, data: { rank: loser.rank - 25 } })
+        this.whoWinIfSurrender = winner;
+        return true;
+    }
 }
