@@ -1,10 +1,12 @@
-import { User } from "@/types/User";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import Form from "../Form";
 import RHFInput from "../Form/RHFinput";
 import useLogin from "@/hooks/useLogin";
 import React from 'react'
+import { User } from "@/types/types";
+import authData from "@/Data/Auth";
+
 
 type loginProps = {
   setShowAuth: (showAuth: boolean) => void;
@@ -12,15 +14,17 @@ type loginProps = {
 
 const Login: FC<loginProps> = ({ setShowAuth }) => {
   const methods = useForm();
-  const { mutateAsync: login } = useLogin();
+  const [error, setError] = React.useState<number>(-1);
+  const login = useLogin({setError, setShowAuth});
   const onSubmit = async (data: User) => {
-    await login(data);
-    setShowAuth(false);
+    await login.mutate(data);
   };
+  const DTO = authData();
   return (
-    <Form methods={methods} submitText="Log in" onSubmit={onSubmit}>
-      <RHFInput placeholder="name" name="username" type="text" />
-      <RHFInput placeholder="password" name="password" type="password" />
+    <Form methods={methods} submitText={DTO.Login} onSubmit={onSubmit}>
+      <RHFInput placeholder={DTO.Name} name="login" type="text" />
+      <RHFInput placeholder={DTO.Password} name="password" type="password" />
+      {error != -1 && <div className="error">{DTO.Problam[error]}</div>}
     </Form>
   );
 };

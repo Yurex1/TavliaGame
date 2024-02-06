@@ -1,35 +1,65 @@
-import {  FC,  } from "react";
+import { FC, useEffect } from "react";
 import SideBarItem from "./SideBarItem";
 import SideBarLogItem from "./SideBarLogItem";
+import React from "react";
+import { useLanguage } from "@/hooks/useLanguage";
+import sideBarData from "@/Data/SideBar";
+
 type SideBareProps = {
   setShowAuth: (showAuth: boolean) => void;
-}
-import React from 'react'
+};
 
+const SideBare: FC<SideBareProps> = ({ setShowAuth }) => {
+  const { language, setLanguage } = useLanguage();
+  const DTO = sideBarData();
+  useEffect(() => {
+    const tempLanguage = localStorage.getItem("language");
+    if (tempLanguage) {
+      setLanguage(tempLanguage);
+    }
+  }, []);
 
-const SideBare:FC<SideBareProps> = ({setShowAuth}) => {
+  const change = () => {
+    if (language == "En") {
+      localStorage.setItem("language", "Ua");
+    } else {
+      localStorage.setItem("language", "En");
+    }
+    const tempLanguage = localStorage.getItem("language");
+    if (tempLanguage) {
+      setLanguage(tempLanguage);
+    }
+  };
+
   return (
     <aside>
       <div className="top-items">
         <a href="../" className="name">
-          {/* <div className='img'></div> */}
           <div>
-            <b>Tavlia</b>
+            <b className="formobile">T</b>
+            <b className="notformobile">{DTO.Title}</b>
           </div>
         </a>
-        <SideBarItem text="Play" hrefText="../" />
-        <SideBarItem text="Instruction" hrefText="../" />
-        <SideBarItem text="Profile" hrefText="../profile" />
-        <SideBarItem text="Rank" hrefText="../" />
-        <SideBarItem text="Friends" hrefText="../" />
-        <SideBarItem text="Settings" hrefText="../" />
-        <SideBarLogItem setShowAuth = {setShowAuth}/>
+        {DTO.Config.map((item, index) => (
+          <SideBarItem
+            key={index}
+            text={item.text}
+            hrefText={item.hrefText}
+            img_url={item.img_url}
+          />
+        ))}
+        <SideBarLogItem
+          Login={DTO.Login}
+          Logout={DTO.Logout}
+          setShowAuth={setShowAuth}
+        />
       </div>
-      <div className="down-items">
-        <SideBarItem text="Help" hrefText="../" />
+      <div className="language center" onClick={change}>
+        <div className="language-text">{DTO.Language}</div>
+        <b>{language}</b>
       </div>
     </aside>
   );
-}
+};
 
 export default SideBare;

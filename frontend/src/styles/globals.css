@@ -1,61 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;600&display=swap");
 * {
   text-decoration: none;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   color: black;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   cursor: default;
 }
-button{
+
+button {
   border: none;
 }
-body{
+
+body {
   background-color: rgb(232, 211, 186);
 }
 
-.main{
-  width: 80vw;
-  margin-left: 20vw;
+.y {
+  font-size: 1rem;
+  position: absolute;
+  bottom: -1.5rem;
+  /* right: 5px; */
 }
 
-/* games */
-/* -------------------------------------------- */
+.x {
+  font-size: 1rem;
+  position: absolute;
+  /* bottom: 0px; */
+  left: -1.5rem;
+}
 
-.games{
-  width: 70vw;
+.main {
+  width: 80vw;
+  min-height: 100vh;
+  margin-left: 20vw;
   height: 100vh;
-  margin: 0 auto;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: center;
-  display: flex;
-  /* margin-top: 30px; */
+  text-align: center;
 }
 
-.main-game{
-  margin: 20px;
+.column
+{
+  flex-direction: column;
+}
+
+.message {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-size: 200%;
+  width: 100%;
+  height: 100vh;
 }
 
-.game-img{
-  width: 20vw;
-  height: 20vw;
-  border: 1px solid black;
-}
-
-.game-button{
-  width: 15vw;
-  min-height: 5vh;
-  padding: 0.5vh;
-  background-color: #C0A080;
-  border-radius: 5px ;
-  font-size: 20px;
-  margin-top: 20px;
+.btn {
+  margin: 10px;
+  padding: 5px;
+  font-size: 25px;
+  background-color: #c0a080;
+  border-radius: 5px;
   box-shadow: 2px 2px 2px black;
   display: flex;
   align-items: center;
@@ -63,85 +75,13 @@ body{
   justify-content: center;
 }
 
-.game-button:hover{
+.btn:hover {
   background-color: #ad8b739b;
 }
 
-
-.dropdown {
-  position: relative;
-  width: 15vw;
-}
-
-.menu {
-  position: absolute;
-  margin: 5px 0;
-  padding: 0;
-  border: 1px solid  #C0A080;
-  width: 15vw;
-  background-color: #FFFBE9;
-}
-
-.menu > div:hover{
-  background-color: rgb(225, 197, 155);
-}
-
-.menu-link {
-  width: 100%;
-  height: 100%;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-/* @media screen and (max-width: 600px) {
-  aside{
-      width: 0%;
+@media only screen and (max-width: 1100px) {
+  .main {
+    width: calc(100vw - 50px);
+    margin-left: 50px;
   }
-  .main{
-      width: 100%;
-  }
-} */
-
-.auth{
-  border-radius: 2%;
-  border: black solid 1px;
-  box-shadow: 2px 2px 2px black;
-  padding: 100px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #C0A080;
-}
-
-.auth-wraper
-{
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.518);
-  position: fixed;
-  z-index: 100;
-}
-
-form{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-form > *{
-  margin: 10px;
-  font-size: 25px;
-}
-
-.auth>button{
-  margin: 10px;
 }
