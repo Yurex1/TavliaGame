@@ -17,12 +17,13 @@ export class Square {
         this.figure = figure;
         this.board = board;
         this.avaliable = false;
-        this.id = x * 11 + y;
+        this.id = x * board.n + y;
     }
 
     isEmpty(): boolean{
         return this.figure == null;
     }
+
     isEmptyVertcal(target : Square): boolean{
         if(this.x !== target.x) return false;
         const min = Math.min(this.y, target.y), max = Math.max(this.y, target.y);
@@ -33,6 +34,7 @@ export class Square {
             return true;
         return false;
     }
+
     isEmptyHorizontal(target : Square): boolean{
         if(this.y !== target.y) return false;
         const min = Math.min(this.x, target.x), max = Math.max(this.x, target.x);
@@ -46,14 +48,29 @@ export class Square {
 
     moveFigure(target: Square){
         if(this.figure?.canMove(target)){
-            this.figure.moveFigure(target);
             target.figure = this.figure;
             target.figure.square = target;
             this.figure = null;
+            target.killEnemy();
+            this.board.game.changeColor();
+            this.board.game.history.push({from:{x: this.x, y: this.y}, to:{x: target.x, y: target.y}});
+            this.board.checkWin();
         }
     }
 
-    killEnemy(){
+    public haveMove(): boolean{
+        if(this.figure == null) return false;
+        for(let i = 0; i < this.board.n; i++){
+            for(let j = 0; j < this.board.n; j++){
+                if(this.figure?.canMove(this.board.getSquare(i, j))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private killEnemy(){
         if(this.x > 1 && this.figure?.color == this.board.getSquare(this.x - 2, this.y).figure?.color && this.board.getSquare(this.x - 1, this.y).figure?.color != this.figure?.color){
             if(this.board.getSquare(this.x - 1, this.y).figure?.name != FigureNames.KING)
                 this.board.getSquare(this.x - 1, this.y).figure = null;
