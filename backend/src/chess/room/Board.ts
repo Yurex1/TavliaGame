@@ -195,8 +195,10 @@ export default class Board {
                 if (this.isDefender(cell)) {
                     cell.x--;
                     if (this.isBlack(cell)) {
+                        cell.x++;
                         this.cells[cell.x][cell.y].FigureType = FigureType.Empty
                         dies.push(cell);
+                        cell.x--;
                     }
                     cell.x++;
                 }
@@ -207,8 +209,10 @@ export default class Board {
                 if (this.isDefender(cell)) {
                     cell.y--;
                     if (this.isBlack(cell)) {
+                        cell.y++;
                         this.cells[cell.x][cell.y].FigureType = FigureType.Empty
                         dies.push(cell);
+                        cell.y--;
                     }
                     cell.y++;
                 }
@@ -219,8 +223,10 @@ export default class Board {
                 if (this.isDefender(cell)) {
                     cell.x++;
                     if (this.isBlack(cell)) {
+                        cell.x--;
                         this.cells[cell.x][cell.y].FigureType = FigureType.Empty
                         dies.push(cell);
+                        cell.x++;
                     }
                     cell.x--;
                 }
@@ -231,8 +237,10 @@ export default class Board {
                 if (this.isDefender(cell)) {
                     cell.y++;
                     if (this.isBlack(cell)) {
+                        cell.y--;
                         this.cells[cell.x][cell.y].FigureType = FigureType.Empty
                         dies.push(cell);
+                        cell.y++;
                     }
                     cell.y--;
                 }
