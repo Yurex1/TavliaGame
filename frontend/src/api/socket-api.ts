@@ -201,6 +201,12 @@ class SocketApi {
     this.moveStatus = "wait for move";
     this.setMoveStatus(this.moveStatus);
     this.setSelectedSquare = setSelectedSquare;
+    this.socket?.on("move status", (status: string) => {
+      this.moveMessage = status;
+      this.moveStatus = "can move";
+      this.setSelectedSquare(null);
+      this.setMoveStatus(this.moveStatus);
+    });
     this.socket?.on("page status", (status: string) => {
       this.setPageStatus(status);
     });

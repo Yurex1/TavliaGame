@@ -7,6 +7,7 @@ import SocketApi from "@/api/socket-api";
 import { SocketApiType } from "@/hooks/useConnect";
 import { Move } from "@/types/types";
 import TableOnline from "./TableOnline";
+import { set } from "react-hook-form";
 
 type OnlineTavliaGameProps = {
   socket: SocketApiType;
@@ -29,6 +30,10 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
 }) => {
   const [game, setGame] = useState(new Game(socket.n!, socket.history));
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  useEffect(() => {
+    setError(true);
+  }, [moveStatus]);
   function click(square: Square) {
     if (
       moverId == userId &&
@@ -62,6 +67,7 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
   return (
     <>
       <div className="game">
+        {error ? <div style={{margin:"0 50px 0 0"}}>ERROR, please send game history to telegram : @tedi20</div> : 
         <div className="board">
           {game.board.squares.map((row, i) => (
             <React.Fragment key={i}>
@@ -79,6 +85,7 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
             </React.Fragment>
           ))}
         </div>
+        }
         <TableOnline
           socket={socket}
           gameStatus={gameStatus}
