@@ -195,8 +195,8 @@ class SocketApi {
 
   static move(move: Move, setSelectedSquare: (sqare: Square | null) => void) {
     this.socket?.emit("move", {
-      moveFrom: { x: move.from.y, y: move.from.x },
-      moveTo: { x: move.to.y, y: move.to.x },
+      moveFrom: { x: move.from.x, y: move.from.y },
+      moveTo: { x: move.to.x, y: move.to.y },
     });
     this.moveStatus = "wait for move";
     this.setMoveStatus(this.moveStatus);
