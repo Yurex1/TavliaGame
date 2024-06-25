@@ -36,10 +36,13 @@ export class Room {
 
     public position: string[8][8];
 
-    public makeMove(from: { x: number, y: number }, to: { x: number, y: number },): MoveResult {
+    public makeMove(from: { x: number, y: number }, to: { x: number, y: number }): MoveResult {
+        from = { x: from.y, y: from.x };
+        to = { x: to.y, y: to.x };
         if (this.gameManager.isGameEnded()) {
             return { result: "END GAME" }
         }
+
         const moveResult = this.gameManager.processMove(from, to);
         if (moveResult.result !== 'WRONG') {
             this.gameMoves.push({
