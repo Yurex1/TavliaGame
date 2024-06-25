@@ -195,12 +195,18 @@ class SocketApi {
 
   static move(move: Move, setSelectedSquare: (sqare: Square | null) => void) {
     this.socket?.emit("move", {
-      moveFrom: { x: move.from.y, y: move.from.x },
-      moveTo: { x: move.to.y, y: move.to.x },
+      moveFrom: { x: move.from.x, y: move.from.y },
+      moveTo: { x: move.to.x, y: move.to.y },
     });
     this.moveStatus = "wait for move";
     this.setMoveStatus(this.moveStatus);
     this.setSelectedSquare = setSelectedSquare;
+    this.socket?.on("move status", (status: string) => {
+      this.moveMessage = status;
+      this.moveStatus = "can move";
+      this.setSelectedSquare(null);
+      this.setMoveStatus(this.moveStatus);
+    });
     this.socket?.on("page status", (status: string) => {
       this.setPageStatus(status);
     });
