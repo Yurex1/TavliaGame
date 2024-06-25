@@ -44,30 +44,30 @@ export default class Board {
             const row: Figure[] = [];
             for (let j = 0; j < this.n; j++) {
                 if ((i == (this.n - 1) / 2 && j == (this.n - 1) / 2)) {
-                    row.push(new Figure({ x: j, y: i }, FigureType.King))
+                    row.push(new Figure({ x: i, y: j }, FigureType.King))
                     // this.board[j][i].FigureType = 3; // king
 
                 }
                 else if (((i == 0 || i == this.n - 1 || j == 0 || j == this.n - 1) && ((i > 2 && i < this.n - 3) || (j > 2 && j < this.n - 3)))) {
-                    row.push(new Figure({ x: j, y: i }, FigureType.Attacker))
+                    row.push(new Figure({ x: i, y: j }, FigureType.Attacker))
                     // this.board[j][i].FigureType = 1; // attacker
 
                 }
                 else if ((i == (this.n - 1) / 2 && (j == 1 || j == this.n - 2)) || (j == (this.n - 1) / 2 && (i == 1 || i == this.n - 2))) {
-                    row.push(new Figure({ x: j, y: i }, FigureType.Attacker))
+                    row.push(new Figure({ x: i, y: j }, FigureType.Attacker))
                     // this.board[j][i].FigureType = 1; // attacker
                 }
                 else if ((i == (this.n - 1) / 2 && j > (this.n - 1) / 2 - 3 && j < (this.n - 1) / 2 + 3) || (j == (this.n - 1) / 2 && i > (this.n - 1) / 2 - 3 && i < (this.n - 1) / 2 + 3)) {
-                    row.push(new Figure({ x: j, y: i }, FigureType.Defender))
+                    row.push(new Figure({ x: i, y: j }, FigureType.Defender))
                     // this.board[j][i].FigureType = 2; //defender
 
                 }
                 else if (i > 3 && j > 3 && i < this.n - 4 && j < this.n - 4) {
-                    row.push(new Figure({ x: j, y: i }, FigureType.Defender))
+                    row.push(new Figure({ x: i, y: j }, FigureType.Defender))
                     // this.board[j][i].FigureType = 2; //defender
                 }
                 else {
-                    row.push(new Figure({ x: j, y: i }, FigureType.Empty))
+                    row.push(new Figure({ x: i, y: j }, FigureType.Empty))
                 }
             }
             this.cells.push(row);
@@ -109,13 +109,12 @@ export default class Board {
 
         return positionsToCheck.every(position => {
             const { x, y } = position;
-            return x >= 0 && x < this.n && y >= 0 && y < this.n && isCoveredByBlack(x, y);
+            return x < 0 || x >= this.n || y < 0 || y >= this.n || isCoveredByBlack(x, y);
         });
     }
 
 
     isWhite(cell: { x: number, y: number }): boolean {
-
         return this.cells[cell.x][cell.y].FigureType === FigureType.King || this.cells[cell.x][cell.y].FigureType === FigureType.Defender;
     }
 
@@ -123,33 +122,153 @@ export default class Board {
         return this.cells[cell.x][cell.y].FigureType === FigureType.Attacker;
     }
 
-    isFigureDies(cell: { x: number, y: number }): boolean {
-        if (this.cells[cell.x][cell.y].FigureType === FigureType.Attacker) {
-
-            if (cell.x > 1 && cell.x < this.n - 1 && this.isWhite({ x: cell.x + 1, y: cell.y }) && this.isWhite({ x: cell.x - 1, y: cell.y })) {
-                this.cells[cell.x][cell.y].FigureType = FigureType.Empty
-                return true;
-            }
-            else if (cell.y > 1 && cell.y < this.n - 1 && this.isWhite({ x: cell.x, y: cell.y + 1 }) && this.isWhite({ x: cell.x, y: cell.y - 1 })) {
-                this.cells[cell.x][cell.y].FigureType = FigureType.Empty
-                return true;
-            }
-        }
-        if (this.cells[cell.x][cell.y].FigureType === FigureType.Defender) {
-            if (cell.x > 0 && cell.x < this.n && this.isBlack({ x: cell.x + 1, y: cell.y }) && this.isBlack({ x: cell.x - 1, y: cell.y })) {
-                this.cells[cell.x][cell.y].FigureType = FigureType.Empty
-                return true;
-            }
-            else if (cell.y > 0 && cell.y < this.n && this.isBlack({ x: cell.x, y: cell.y + 1 }) && this.isBlack({ x: cell.x, y: cell.y - 1 })) {
-                this.cells[cell.x][cell.y].FigureType = FigureType.Empty
-                return true;
-            }
-        }
-        return false;
+    isDefender(cell: { x: number, y: number }): boolean {
+        return this.cells[cell.x][cell.y].FigureType === FigureType.Defender;
     }
 
-    makeMove(from: { x: number, y: number }, to: { x: number, y: number }, player: number): MoveResult {
+    killFigure(cell: { x: number, y: number }) {
+        const dies: { x: number, y: number }[] = [];
 
+        if (this.isWhite(cell)) {
+
+            if (cell.x > 1) {
+                cell.x--;
+                if (this.isBlack(cell)) {
+                    cell.x--;
+                    if (this.isWhite(cell)) {
+                        cell.x++;
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                        cell.x--;
+                    }
+                    cell.x++;
+                }
+                cell.x++;
+            }
+            if (cell.y > 1) {
+                cell.y--;
+                if (this.isBlack(cell)) {
+                    cell.y--;
+                    if (this.isWhite(cell)) {
+                        cell.y++;
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                        cell.y--;
+                    }
+                    cell.y++;
+                }
+                cell.y++;
+            }
+            if (cell.x < this.n - 2) {
+                cell.x++;
+                if (this.isBlack(cell)) {
+                    cell.x++;
+                    if (this.isWhite(cell)) {
+                        cell.x--;
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                        cell.x++;
+                    }
+                    cell.x--;
+                }
+                cell.x--;
+            }
+            if (cell.y < this.n - 2) {
+                cell.y++;
+                if (this.isBlack(cell)) {
+                    cell.y++;
+                    if (this.isWhite(cell)) {
+                        cell.y--;
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                        cell.y++;
+                    }
+                    cell.y--;
+                }
+                cell.y--;
+            }
+        }
+
+        if (this.isBlack(cell)) {
+            if (cell.x > 1) {
+                cell.x--;
+                if (this.isDefender(cell)) {
+                    cell.x--;
+                    if (this.isBlack(cell)) {
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                    }
+                    cell.x++;
+                }
+                cell.x++;
+            }
+            if (cell.y > 1) {
+                cell.y--;
+                if (this.isDefender(cell)) {
+                    cell.y--;
+                    if (this.isBlack(cell)) {
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                    }
+                    cell.y++;
+                }
+                cell.y++;
+            }
+            if (cell.x < this.n - 2) {
+                cell.x++;
+                if (this.isDefender(cell)) {
+                    cell.x++;
+                    if (this.isBlack(cell)) {
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                    }
+                    cell.x--;
+                }
+                cell.x--;
+            }
+            if (cell.y < this.n - 2) {
+                cell.y++;
+                if (this.isDefender(cell)) {
+                    cell.y++;
+                    if (this.isBlack(cell)) {
+                        this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+                        dies.push(cell);
+                    }
+                    cell.y--;
+                }
+                cell.y--;
+            }
+        }
+
+        return dies;
+
+    }
+    // isFigureDies(cell: { x: number, y: number }): boolean {
+    //     if (this.cells[cell.x][cell.y].FigureType === FigureType.Attacker) {
+
+    //         if (cell.x > 1 && cell.x < this.n - 1 && this.isWhite({ x: cell.x + 1, y: cell.y }) && this.isWhite({ x: cell.x - 1, y: cell.y })) {
+    //             this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+    //             return true;
+    //         }
+    //         else if (cell.y > 1 && cell.y < this.n - 1 && this.isWhite({ x: cell.x, y: cell.y + 1 }) && this.isWhite({ x: cell.x, y: cell.y - 1 })) {
+    //             this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+    //             return true;
+    //         }
+    //     }
+    //     if (this.cells[cell.x][cell.y].FigureType === FigureType.Defender) {
+    //         if (cell.x > 0 && cell.x < this.n && this.isBlack({ x: cell.x + 1, y: cell.y }) && this.isBlack({ x: cell.x - 1, y: cell.y })) {
+    //             this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+    //             return true;
+    //         }
+    //         else if (cell.y > 0 && cell.y < this.n && this.isBlack({ x: cell.x, y: cell.y + 1 }) && this.isBlack({ x: cell.x, y: cell.y - 1 })) {
+    //             this.cells[cell.x][cell.y].FigureType = FigureType.Empty
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    makeMove(from: { x: number, y: number }, to: { x: number, y: number }, player: number): MoveResult {
         if (!this.isValidMove(from, to, player) || this.isEndGame) {
             return { result: "WRONG" };
         }
@@ -157,7 +276,9 @@ export default class Board {
         this.cells[to.x][to.y].FigureType = this.cells[from.x][from.y].FigureType;
         this.cells[from.x][from.y].FigureType = FigureType.Empty;
 
-        const die = [[0, 1], [1, 0], [0, -1], [-1, 0]].map(([dx, dy]) => [to.x + dx, to.y + dy]).filter(([nx, ny]) => nx >= 0 && nx < this.n && ny >= 0 && ny < this.n && this.isFigureDies({ x: nx, y: ny })).map(([y, x]) => ({ x, y }))
+        const die = this.killFigure(to);
+        // const die = [];
+        //const die = [[0, 1], [1, 0], [0, -1], [-1, 0]].map(([dx, dy]) => [to.x + dx, to.y + dy]).filter(([nx, ny]) => nx >= 0 && nx < this.n && ny >= 0 && ny < this.n && this.isFigureDies({ x: nx, y: ny })).map(([y, x]) => ({ x, y }))
 
         this.test()
 
