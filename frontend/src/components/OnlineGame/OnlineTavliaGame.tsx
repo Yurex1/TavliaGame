@@ -31,7 +31,8 @@ const OnlineTavliaGame: FC<OnlineTavliaGameProps> = ({
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [error, setError] = useState<boolean>(false);
   useEffect(() => {
-    setError(true);
+    if(moveStatus == "error")
+      setError(true);
   }, [moveStatus]);
   function click(square: Square) {
     if (
