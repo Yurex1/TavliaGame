@@ -7,7 +7,6 @@ import SocketApi from "@/api/socket-api";
 import { SocketApiType } from "@/hooks/useConnect";
 import { Move } from "@/types/types";
 import TableOnline from "./TableOnline";
-import { set } from "react-hook-form";
 
 type OnlineTavliaGameProps = {
   socket: SocketApiType;
